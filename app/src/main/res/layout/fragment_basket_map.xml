@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.basket.fragment.BasketMapFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <fragment
+        android:id="@+id/google_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:id="@+id/send_location"
+        android:layout_height="wrap_content"
+        android:text="Отправить выбранную гео позицыю"
+        android:textAllCaps="false"
+        android:layout_alignBottom="@id/google_map"
+        />
+
+</RelativeLayout>

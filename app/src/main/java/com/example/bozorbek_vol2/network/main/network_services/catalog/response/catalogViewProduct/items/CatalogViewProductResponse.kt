@@ -1,0 +1,134 @@
+package com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.items
+
+
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.items.features.CatalogViewProductsItemsFeaturesResponse
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+data class CatalogViewProductResponse(
+
+    @SerializedName( "id")
+    @Expose
+    val id:Int,
+
+    @SerializedName( "name")
+    @Expose
+    val name:String,
+
+    @SerializedName( "form")
+    @Expose
+    val form:String,
+
+    @SerializedName( "color")
+    @Expose
+    val color:String,
+
+    @SerializedName( "aroma")
+    @Expose
+    val aroma:String,
+
+    @SerializedName( "taste")
+    @Expose
+    val taste:String,
+
+    @SerializedName( "organic")
+    @Expose
+    val organic:Boolean,
+
+    @SerializedName( "origin")
+    @Expose
+    val origin:String,
+
+    @SerializedName( "piece_size")
+    @Expose
+    val piece_size:String,
+
+    @SerializedName( "in_piece")
+    @Expose
+    val in_piece:Boolean,
+
+    @SerializedName( "price_in_piece")
+    @Expose
+    val price_in_piece:Float,
+
+    @SerializedName( "discount_in_piece")
+    @Expose
+    val discount_in_piece:Float,
+
+    @SerializedName( "in_gramme")
+    @Expose
+    val in_gramme:Boolean,
+
+    @SerializedName( "price_in_gramme")
+    @Expose
+    val price_in_gramme:Float,
+
+    @SerializedName( "discount_in_gramme")
+    @Expose
+    val discount_in_gramme:Float,
+
+    @SerializedName( "size_gramme")
+    @Expose
+    val size_gramme:Int,
+
+    @SerializedName( "size_diameter")
+    @Expose
+    val size_diameter:Int,
+
+    @SerializedName( "expiration")
+    @Expose
+    val expiration:String,
+
+    @SerializedName( "certification")
+    @Expose
+    val certification:String,
+
+    @SerializedName( "condition")
+    @Expose
+    val condition:String,
+
+    @SerializedName( "storage_temp")
+    @Expose
+    val storage_temp:String,
+
+    @SerializedName( "description")
+    @Expose
+    val description:String,
+
+    @SerializedName("features")
+    @Expose
+    val features:List<CatalogViewProductsItemsFeaturesResponse>,
+
+    @SerializedName("product_name")
+    @Expose
+    val product_name:String,
+
+    @SerializedName("large")
+    @Expose
+    val large:Boolean,
+
+    @SerializedName("large_percent")
+    @Expose
+    val large_percent:Float,
+
+    @SerializedName("middle")
+    @Expose
+    val middle:Boolean,
+
+    @SerializedName("middle_percent")
+    @Expose
+    val middle_percent:Float,
+
+    @SerializedName("small")
+    @Expose
+    val small:Boolean,
+
+    @SerializedName("small_percent")
+    @Expose
+    val small_percent:Float,
+
+    @SerializedName( "main_image")
+    @Expose
+    val main_image:String
+
+)

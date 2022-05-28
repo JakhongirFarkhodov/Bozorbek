@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/basket_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/item_mcv_background_basket"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/fruit_yellow_bg"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/item_fruit_image_basket"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:elevation="6dp"
+            android:src="@drawable/ex_fruit4"
+            app:layout_constraintBottom_toBottomOf="@id/item_mcv_background_basket"
+            app:layout_constraintEnd_toEndOf="@id/item_mcv_background_basket"
+            app:layout_constraintStart_toStartOf="@id/item_mcv_background_basket"
+            app:layout_constraintTop_toTopOf="@id/item_mcv_background_basket" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:elevation="10dp"
+            android:src="@drawable/ex_shadow"
+            app:layout_constraintBottom_toBottomOf="@id/item_mcv_background_basket"
+            app:layout_constraintEnd_toEndOf="@id/item_mcv_background_basket"
+            app:layout_constraintStart_toStartOf="@id/item_mcv_background_basket"
+            app:layout_constraintTop_toBottomOf="@id/item_fruit_image_basket" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_tv_title_fruit_basket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="Авакадо"
+            android:textColor="@color/fruit_grey"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/item_mcv_background_basket"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_mtv_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="1 Кг"
+            android:textColor="@color/fruit_text_color"
+            app:layout_constraintStart_toEndOf="@+id/item_mcv_background_basket"
+            app:layout_constraintTop_toBottomOf="@id/item_tv_title_fruit_basket" />
+
+
+        <ImageView
+            android:id="@+id/item_imv_basket_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:src="@drawable/ic_dot"
+            app:layout_constraintBottom_toBottomOf="@+id/item_mtv_weight"
+            app:layout_constraintStart_toEndOf="@id/item_mtv_weight"
+            app:layout_constraintTop_toTopOf="@id/item_mtv_weight" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_mtv_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="Симиренко"
+            android:textColor="@color/fruit_text_color"
+            app:layout_constraintBottom_toBottomOf="@id/item_mtv_weight"
+            app:layout_constraintStart_toEndOf="@id/item_imv_basket_dot"
+            app:layout_constraintTop_toTopOf="@id/item_mtv_weight" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_tv_price_fruit_basket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:alpha="0.5"
+            android:text="(15.000 Сум за 1 кг)"
+            android:textColor="@color/fruit_grey"
+            app:layout_constraintStart_toEndOf="@id/item_tv_title_fruit_basket"
+            app:layout_constraintBottom_toBottomOf="@id/item_tv_title_fruit_basket"
+            app:layout_constraintTop_toTopOf="@id/item_tv_title_fruit_basket"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_price_title_basket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Цена:"
+            android:textColor="@color/fruit_light_dark_blue"
+            app:layout_constraintStart_toEndOf="@id/item_mcv_background_basket"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/item_mtv_weight"
+            tools:layout_editor_absoluteX="161dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_price_basket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:text="15.000 cум"
+            android:textColor='@color/fruit_grey'
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/item_mtv_weight"
+            app:layout_constraintBottom_toBottomOf="@id/item_price_title_basket"
+            app:layout_constraintStart_toEndOf="@id/item_price_title_basket"
+            />
+
+        <ImageView
+            android:id="@+id/item_cancel_image_basket"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/item_edit_image_basket"-->
+        <!--            android:layout_width="17dp"-->
+        <!--            android:layout_height="17dp"-->
+        <!--            android:src="@drawable/ic_edit"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/item_cancel_image_basket"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

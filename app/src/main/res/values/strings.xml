@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Bozorbek_vol2</string>
+
+    <string name="title_home">Главная</string>
+    <string name="title_catalog">Каталог</string>
+    <string name="title_search">Поиск</string>
+    <string name="title_basket">Корзина</string>
+    <string name="title_profile">Профиль</string>
+    <string name="search_history">История поиска</string>
+    <string name="title_notification">Уведомление</string>
+    <string name="title_search_order">История заказа</string>
+    <string name="title_company_info">Информация о компании</string>
+    <string name="title_settings">Настройки безопасности</string>
+    <string name="title_call">Служба поддержки</string>
+    <string name="example_order_title">Покупатель № 15</string>
+    <string name="example_name">Нина Азаматова</string>
+    <string name="example_overview" formatted="true">Авока́до, или Персе́я америка́нская (лат. Persēa americāna), — вечнозелёное плодовое растение; вид рода Персея (Persea) семейства Лавровые (Lauraceae), типовой вид рода. Важная плодовая культура. Плоды растения также называются авокадо: их мякоть богата витаминами и важными минеральными веществами.\n\nОписание\n\nОбъем продукта: 13\n\nАртикул : FR-1\n\nОрганик : Да\n\nПроизводитель : Садоводство</string>
+    <string name="login_registration_text">У вас нет аккаунта?  <b>Зарегистрироваться.</b></string>
+    <string name="register_text">У меня есть аккаунт. <b>Войти.</b></string>
+    <string name="mainfloatingactionbutton">MainFloatingActionButton</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

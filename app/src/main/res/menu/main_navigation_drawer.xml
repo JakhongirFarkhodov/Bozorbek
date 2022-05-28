@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/search_history"
+            android:checked="true"
+            android:icon="@drawable/ic_search"
+            android:title="@string/search_history" />
+
+        <item
+            android:id="@+id/notification"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/title_notification" />
+
+        <item
+            android:id="@+id/search_order"
+            android:icon="@drawable/ic_search_order"
+            android:title="@string/title_search_order" />
+
+        <item
+            android:id="@+id/company_info"
+            android:icon="@drawable/ic_company_info"
+            android:title="@string/title_company_info" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/title_settings" />
+
+        <item
+            android:id="@+id/call"
+            android:icon="@drawable/ic_call"
+            android:title="@string/title_call" />
+
+    </group>
+
+
+</menu>

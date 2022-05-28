@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_catalog_nav_graph"
+    app:startDestination="@id/catalogFragment">
+
+    <fragment
+        android:id="@+id/catalogFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogFragment"
+        android:label="Каталог"
+        tools:layout="@layout/fragment_catalog" >
+        <action
+            android:id="@+id/action_catalogFragment_to_catalogProductFragment"
+            app:destination="@id/catalogProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/catalogProductFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogProductFragment"
+        android:label="Продукты каталога"
+        tools:layout="@layout/fragment_view_catalog" >
+        <action
+            android:id="@+id/action_catalogProductFragment_to_catalogViewProductFragment"
+            app:destination="@id/catalogViewProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_catalogProductFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpToInclusive="true"
+            app:popUpTo="@navigation/main_home_nav_graph"
+            />
+        <argument
+            android:name="slug"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/catalogViewProductFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogViewProductFragment"
+        android:label="Информация о продукте"
+        tools:layout="@layout/fragment_view_catalog_product" >
+        <action
+            android:id="@+id/action_catalogViewProductFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpToInclusive="true"
+            app:popUpTo="@navigation/main_home_nav_graph"
+            />
+        <argument
+            android:name="category_slug"
+            app:argType="string" />
+        <argument
+            android:name="product_slug"
+            app:argType="string" />
+    </fragment>
+</navigation>
