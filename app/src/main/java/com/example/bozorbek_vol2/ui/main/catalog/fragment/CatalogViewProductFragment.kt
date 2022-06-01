@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.catalog.CatalogViewProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
+import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogStateEvent
 import kotlinx.android.synthetic.main.fragment_view_catalog_product.*
@@ -26,24 +27,19 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
-
     private val args: CatalogViewProductFragmentArgs by navArgs()
-    private var positionViewCatalogProduct: Int = 0
-    private var productPrice: Float = 0F
-    private var productCount: Float = 0F
+    private lateinit var sort_adapter:ArrayAdapter<String>
+    private lateinit var paket_adapter:ArrayAdapter<String>
+    private lateinit var product_owner_adapter:ArrayAdapter<String>
 
-    private lateinit var product_item_id: String
-    private var price_in_pieace: Boolean = false
-    private var price_in_gramme: Boolean = false
-    private lateinit var unit: String
+    private var sort_value_position:Int = 0
+    private var change_count_type:String = ""
+    private var change_price_type:String = ""
 
-    private var count: Int = 0
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
-
-    @Inject
-    lateinit var sharedPrefEditor: SharedPreferences.Editor
+    private var in_gramme:Boolean = false
+    private var in_pieace:Boolean = false
+    private var price_in_gramme:Float = 0f
+    private var price_in_pieace:Float = 0f
 
 
     override fun onCreateView(
@@ -57,28 +53,55 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        spinnerOnClick()
         observeData()
+        onClickPriceChange()
     }
 
-    private fun spinnerOnClick() {
-//        view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->  }
+    private fun onClickPriceChange() {
 
+        view_catalog_add.setOnClickListener {
+            if (in_gramme) {
+                change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() + 0.1f).replace(",",".")
+                change_price_type = (price_in_gramme * change_count_type.toFloat()).toInt().toString()
+                view_catalog_count.setText(change_count_type)
+                view_product_price.setText("${change_price_type} Сум")
+            }
+            else if (in_pieace)
+            {
+
+            }
+        }
+
+        view_catalog_minus.setOnClickListener {
+            if (in_gramme)
+            {
+                if (change_count_type.equals("0.0"))
+                {
+                    view_catalog_count.setText("0")
+                }
+                else{
+                    change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() - 0.1f).replace(",",".")
+                    change_price_type = (price_in_gramme * change_count_type.toFloat()).toInt().toString()
+                    view_catalog_count.setText(change_count_type)
+                    view_product_price.setText("${change_price_type} Сум")
+                }
+            }
+            else if (in_pieace)
+            {
+
+            }
+        }
     }
-
 
     private fun observeData() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            if (dataState != null) {
-                onDataStateChangeListener.onDataStateChange(dataState)
-                dataState.data?.let { data ->
-                    data.data?.let { event ->
-                        event.getContentIfNotHandled()?.let { catalogViewState ->
-                            catalogViewState.parametersValue?.let { parametersValue ->
-                                Log.d(TAG, "dataState parametersValue: ${parametersValue}")
-                                viewModel.setParametersValue(parametersValue)
-                            }
+            onDataStateChangeListener.onDataStateChange(dataState)
+            dataState.data?.let { data ->
+                data.data?.let { event ->
+                    event.getContentIfNotHandled()?.let { catalogViewState ->
+                        catalogViewState.parametersValue?.let { parametersValue ->
+                            Log.d(TAG, "dataState: ${parametersValue}")
+                            viewModel.setParametersValue(parametersValue)
                         }
                     }
                 }
@@ -86,90 +109,78 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { catalogViewState ->
-            if (catalogViewState != null) {
-                catalogViewState.parametersValue?.let { parametersValue ->
-                    Log.d(TAG, "viewState parametersValue: ${parametersValue}")
-                    setParametersValue(parametersValue)
-                }
+            catalogViewState.parametersValue?.let { parametersValue ->
+                Log.d(TAG, "viewState: ${parametersValue}")
+                setParameterValueToSpinner(parametersValue)
             }
         })
     }
 
-    private fun setParametersValue(parametersValue: ParametersValue) {
-
-
-        val sortList = ArrayList<String>()
+    private fun setParameterValueToSpinner(parametersValue: ParametersValue) {
+        val sort_list = ArrayList<String>()
+        val paket_list = ArrayList<String>()
         val product_owner_list = ArrayList<String>()
-        val paketList = ArrayList<String>()
 
-        for (sort_name in parametersValue.sort) {
-            sortList.add(sort_name.sort_value)
+        for (sort in parametersValue.sort)
+        {
+            sort_list.add(sort.sort_value)
+        }
+        for (paket in parametersValue.paket)
+        {
+            paket_list.add(paket.paket_value)
+        }
+        for (product_owner in parametersValue.productOwner)
+        {
+            product_owner_list.add(product_owner.product_owner_value)
         }
 
-        for (product_owner_name in parametersValue.productOwner) {
-            product_owner_list.add(product_owner_name.product_owner_value)
-        }
-
-        for (paket in parametersValue.paket) {
-            paketList.add(paket.paket_value)
-        }
-
-
-        val sortAdapter = ArrayAdapter(requireContext(), R.layout.item_drop_down, sortList)
-        val productOwnerAdapter = ArrayAdapter(requireContext(), R.layout.item_drop_down, product_owner_list)
-        val paketAdapter = ArrayAdapter(requireContext(), R.layout.item_drop_down, paketList)
-
-        view_product_sort_autocomplete.setAdapter(sortAdapter)
-        view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-            Toast.makeText(requireContext(), "${sortList[position]}", Toast.LENGTH_LONG).show()
-            viewModel.setStateEvent(
-                event = CatalogStateEvent.GetCatalogViewProductBySortValue(
-                    sort_value = sortList[position]
-                )
-            )
-
-            for ((index, item) in parametersValue.items.withIndex())
+        if (!parametersValue.items.isEmpty())
+        {
+            item_view_project_image.animation = AnimationUtils.loadAnimation(this.requireContext(),R.anim.fade_scale_animation)
+            for (items in parametersValue.items)
             {
-                if (sortList[position].equals(item.sort_value))
+                if (items.sort_value.equals(sort_list[sort_value_position]))
                 {
-                    positionViewCatalogProduct = index
+                    requestManager.load(items.main_image).transition(withCrossFade()).into(item_view_project_image)
+                    view_product_title.setText(items.sort_value)
+                    if (items.in_gramme && !items.in_piece)
+                    {
+                        view_product_price.setText("${items.price_in_gramme.toInt()} Сум")
+                        view_product_price_type.setText("(${items.price_in_gramme.toInt()} Сум - за 1 кг)")
+                        in_gramme = true
+                        in_pieace = false
+                        price_in_gramme = items.price_in_gramme
+                    }
+                    else if (items.in_piece && !items.in_gramme)
+                    {
+                        view_product_price.setText("${items.price_in_piece.toInt()} Cум")
+                        view_product_price_type.setText("(${items.price_in_piece.toInt()} Сум - за 1 шт)")
+                        in_gramme = false
+                        in_pieace = true
+                        price_in_pieace = items.price_in_piece
+                    }
+                    view_product_overview.setText(items.description)
                 }
             }
 
-            setCatalogViewProductDataToUI(items = parametersValue.items)
         }
 
-        view_product_product_owner_autocomplete.setAdapter(productOwnerAdapter)
-        view_product_paket_autocomplete.setAdapter(paketAdapter)
+        sort_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, sort_list)
+        paket_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, paket_list)
+        product_owner_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, product_owner_list)
 
 
+        view_product_sort_autocomplete.setAdapter(sort_adapter)
+        view_product_paket_autocomplete.setAdapter(paket_adapter)
+        view_product_product_owner_autocomplete.setAdapter(product_owner_adapter)
 
+        view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
+            Toast.makeText(this.requireContext(), "${sort_list[position]}", Toast.LENGTH_LONG).show()
+            viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogViewProductBySortValue(sort_value = sort_list[position]))
+            sort_value_position = position
+        }
     }
 
-    private fun setCatalogViewProductDataToUI(items: List<CatalogViewProduct>) {
-
-
-        requestManager.load(items[positionViewCatalogProduct].main_image).transition(withCrossFade()).into(item_view_project_image)
-        view_product_title.setText(items[positionViewCatalogProduct].name)
-        price_in_pieace = items[positionViewCatalogProduct].in_piece
-        price_in_gramme = items[positionViewCatalogProduct].in_gramme
-
-        if (price_in_pieace == true && price_in_gramme == false)
-        {
-            view_product_price.setText("${(items[positionViewCatalogProduct].price_in_gramme * 1000).toInt()} Сум")
-            view_product_price_type.setText("(${(items[positionViewCatalogProduct].price_in_gramme * 1000).toInt()} Сум - за 1 кг)")
-
-        }
-        else if (price_in_pieace == false && price_in_gramme == true)
-        {
-            view_product_price.setText("${(items[positionViewCatalogProduct].price_in_piece).toInt()} Сум")
-            view_product_price_type.setText("(${(items[positionViewCatalogProduct].price_in_piece).toInt()} Сум - за 1 кг)")
-
-        }
-
-        view_product_overview.setText(items[positionViewCatalogProduct].description)
-
-    }
 
     override fun onResume() {
         super.onResume()
@@ -181,6 +192,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             )
         )
     }
+
 
 
     override fun onAttach(context: Context) {

@@ -36,18 +36,16 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
             }
 
             is GetCatalogViewProductListOfData ->{
-                return catalogRepository.getCatalogParameters(category_slug = stateEvent.category_slug, product_slug = stateEvent.product_slug)
+                return catalogRepository.getCatalogViewProduct(category_slug = stateEvent.category_slug, product_slug = stateEvent.product_slug)
             }
 
             is GetCatalogViewProductBySortValue -> {
-                return catalogRepository.getCatalogViewProductBySortValue(sort_value = stateEvent.sort_value)
+                Log.d(TAG, "GetCatalogViewProductBySortValue:${stateEvent.sort_value} ")
+                return catalogRepository.getSelectedCatalogViewProduct(sortValue = stateEvent.sort_value)
             }
 
             is AddCatalogOrderItem ->{
-                return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    Log.d(TAG, "handleStateEvent: AddCatalogOrderItem")
-                    catalogRepository.addOrderItem(authToken = authToken, product_item_id = stateEvent.product_item_id, quantity = stateEvent.quantity, unit = stateEvent.unit)
-                }?:AbsentLiveData.create()
+                return AbsentLiveData.create()
             }
 
             is None -> {

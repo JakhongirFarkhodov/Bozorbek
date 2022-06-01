@@ -34,6 +34,7 @@ import com.example.bozorbek_vol2.util.GenericApiResponse
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -159,37 +160,39 @@ constructor(
                     val loadCache = loadFromCache()
                     result.addSource(loadCache, Observer { catalogViewState ->
                         result.removeSource(loadCache)
-                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                        onCompleteJob(
+                            dataState = DataState.data(
+                                data = catalogViewState,
+                                response = null
+                            )
+                        )
                     })
                 }
             }
 
             override fun loadFromCache(): LiveData<CatalogViewState> {
                 return catalogDao.getListOfCatalogProduct()?.switchMap { list ->
-                    object : LiveData<CatalogViewState>()
-                    {
+                    object : LiveData<CatalogViewState>() {
                         override fun onActive() {
                             super.onActive()
-                            value = CatalogViewState(catalogProductList = CatalogProductList(list = list))
+                            value =
+                                CatalogViewState(catalogProductList = CatalogProductList(list = list))
                         }
                     }
-                }?:AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: List<CatalogProduct>?) {
                 cacheObject?.let { list ->
                     withContext(IO)
                     {
-                        for (catalogProduct in list)
-                        {
+                        for (catalogProduct in list) {
                             try {
                                 launch {
                                     Log.d(TAG, "updateCache: Inserting data:${catalogProduct}")
                                     catalogDao.insertCatalogProducts(catalogProduct)
                                 }
-                            }
-                            catch (e:Exception)
-                            {
+                            } catch (e: Exception) {
                                 Log.d(TAG, "updateCache: Error inserting data:${catalogProduct}")
                             }
                         }
@@ -230,198 +233,181 @@ constructor(
         }.asLiveData()
     }
 
-    fun getCatalogParameters(category_slug: String, product_slug: String):LiveData<DataState<CatalogViewState>>
-    {
-        return object : NetworkBoundResource<CatalogViewProductListResponse, ParametersValue, CatalogViewState>(
-            isNetworkRequest = true,
-            isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = true,
-            cancelJobIfNoInternet = true
-        )
-        {
+    fun getCatalogViewProduct(
+        category_slug: String,
+        product_slug: String
+    ): LiveData<DataState<CatalogViewState>> {
+        return object :
+            NetworkBoundResource<CatalogViewProductListResponse, ParametersValue, CatalogViewState>(
+                isNetworkRequest = true,
+                isNetworkAvailable = sessionManager.isInternetAvailable(),
+                shouldUseCacheObject = true,
+                cancelJobIfNoInternet = true
+            ) {
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
                 {
                     val loadCache = loadFromCache()
                     result.addSource(loadCache, Observer { catalogViewState ->
                         result.removeSource(loadCache)
-                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                        onCompleteJob(
+                            dataState = DataState.data(
+                                data = catalogViewState,
+                                response = null
+                            )
+                        )
                     })
                 }
             }
 
             override fun loadFromCache(): LiveData<CatalogViewState> {
-                return catalogDao.getAllPaketData()?.switchMap { paketList ->
-                    catalogDao.getALlProductOwnerData()?.switchMap { productOwnerList ->
-                        catalogDao.getAllSortData()?.switchMap { sortList ->
-                            catalogDao.getAllCatalogViewProduct()?.switchMap { catalogViewProductList ->
-                                object : LiveData<CatalogViewState>()
-                                {
-                                    override fun onActive() {
-                                        super.onActive()
-                                        value = CatalogViewState(parametersValue = ParametersValue(
-                                            paket = paketList, productOwner = productOwnerList, sort = sortList, items = catalogViewProductList
-                                        ))
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getAllCatalogViewProduct()
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
                                     }
-                                }
-                            }?:AbsentLiveData.create()
-                        }?:AbsentLiveData.create()
-                    }?:AbsentLiveData.create()
-                }?:AbsentLiveData.create()
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: ParametersValue?) {
                 cacheObject?.let { parametersValue ->
                     withContext(IO)
                     {
-                        catalogDao.deleteAllPaketDate()
-                        for (paket in parametersValue.paket)
-                        {
+                        catalogDao.deleteAllSortData()
+                        for (sort in parametersValue.sort) {
                             try {
                                 launch {
-                                    Log.d(TAG, "updateCache: Inserting paket: ${paket}")
+                                    Log.d(TAG, "updateCache: Inserting sort:${sort}")
+                                    catalogDao.insertSortData(sort)
+                                }.join()
+                            } catch (e: Exception) {
+                                Log.d(TAG, "updateCache: Error inserting sort:${sort}")
+                            }
+                        }
+
+                        catalogDao.deleteAllPaketDate()
+                        for (paket in parametersValue.paket) {
+                            try {
+                                launch {
+                                    Log.d(TAG, "updateCache: Inserting paket:${paket}")
                                     catalogDao.insertPaket(paket)
                                 }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting paket data: ${paket}")
+                            } catch (e: Exception) {
+                                Log.d(TAG, "updateCache: Error inserting paket:${paket}")
                             }
                         }
 
                         catalogDao.deleteAllProductOwnerData()
-                        for (product_owner in parametersValue.productOwner)
-                        {
+                        for (product_owner in parametersValue.productOwner) {
                             try {
                                 launch {
-                                    Log.d(TAG, "updateCache: Inserting product_owner data: ${product_owner}")
+                                    Log.d(TAG, "updateCache: Inserting data:${product_owner}")
                                     catalogDao.insertProductOwnerData(product_owner)
                                 }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting product_owner data: ${product_owner}")
-                            }
-                        }
-
-                        catalogDao.deleteAllSortData()
-                        for (sort in parametersValue.sort)
-                        {
-                            try {
-                                launch {
-                                    Log.d(TAG, "updateCache: Inserting sort data: ${sort}")
-                                    catalogDao.insertSortData(sort)
-                                }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting sort data: ${sort}")
+                            } catch (e: Exception) {
+                                Log.d(
+                                    TAG,
+                                    "updateCache: Error inserting product_owner:${product_owner}"
+                                )
                             }
                         }
 
                         catalogDao.deleteAllItemCatalogViewProductTable()
-                        for (item in parametersValue.items)
-                        {
+                        for (items in parametersValue.items) {
                             try {
                                 launch {
-                                    Log.d(TAG, "updateCache: Inserting items data: ${item}")
-                                    catalogDao.insertCatalogViewProduct(item)
+                                    Log.d(TAG, "updateCache: Inserting items:${items}")
+                                    catalogDao.insertCatalogViewProduct(items)
                                 }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting items data: ${item}")
+                            } catch (e: Exception) {
+                                Log.d(TAG, "updateCache: Error inserting items:${items}")
                             }
                         }
-
-
                     }
                 }
             }
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogViewProductListResponse>) {
-                val paketList = ArrayList<Paket>()
-                val product_owner_list = ArrayList<ProductOwner>()
-                val sort_list = ArrayList<Sort>()
-                val items_list = ArrayList<CatalogViewProduct>()
+                var sort_list = ArrayList<Sort>()
+                var paket_list = ArrayList<Paket>()
+                var product_owner_list = ArrayList<ProductOwner>()
 
-
-                Log.d(TAG, "handleSuccessResponse: ${response.body.items}")
-
-                for ((index_parameter, parameter) in response.body.parameters.withIndex()){
-                    for ((index_value, value) in parameter.values.withIndex())
-                    {
-
-                        if (response.body.parameters[index_parameter].id == 1)
-                        {
+                for (parameters in response.body.parameters) {
+                    if (parameters.id == 1) {
+                        for (sort in parameters.values) {
                             sort_list.add(
                                 Sort(
-                                    sort_id = parameter.id,
-                                    sort_name = parameter.name,
-                                    sort_value = parameter.values[index_value].value,
-                                    sort_value_id = parameter.values[index_value].id
+                                    sort_id = parameters.id,
+                                    sort_name = parameters.name,
+                                    sort_value_id = sort.id,
+                                    sort_value = sort.value
                                 )
                             )
                         }
-
-                        if (response.body.parameters[index_parameter].id == 2)
-                        {
-                            paketList.add(Paket(
-                                paket_id = parameter.id,
-                                paket_name = parameter.name,
-                                paket_value = parameter.values[index_value].value,
-                                paket_value_id = parameter.values[index_value].id
-                            ))
+                    } else if (parameters.id == 2) {
+                        for (paket in parameters.values) {
+                            paket_list.add(
+                                Paket(
+                                    paket_id = parameters.id,
+                                    paket_name = parameters.name,
+                                    paket_value_id = paket.id,
+                                    paket_value = paket.value
+                                )
+                            )
                         }
-
-                        if (response.body.parameters[index_parameter].id == 3)
-                        {
-                            product_owner_list.add(ProductOwner(
-                                product_owner_id = parameter.id,
-                                product_owner_name = parameter.name,
-                                product_owner_value = parameter.values[index_value].value,
-                                product_owner_value_id = parameter.values[index_value].id
-                            ))
+                    } else if (parameters.id == 3) {
+                        for (product_owner in parameters.values) {
+                            product_owner_list.add(
+                                ProductOwner(
+                                    product_owner_id = parameters.id,
+                                    product_owner_name = parameters.name,
+                                    product_owner_value_id = product_owner.id,
+                                    product_owner_value = product_owner.value
+                                )
+                            )
                         }
-
                     }
-
                 }
 
-
-                for ((index_items, items) in response.body.items.withIndex())
-                {
-                    if (items.features.isNotEmpty())
-                    {
-                        Log.d(TAG, "handleSuccessResponse: ${items.id} : ${items.form}")
-                        for ((index_feature, features) in items.features.withIndex())
-                        {
-                            if (response.body.items[index_items].features[index_feature].parameter_id == sort_list[0].sort_id)
-                            {
+                var catalogViewProductList = ArrayList<CatalogViewProduct>()
+                for (items in response.body.items) {
+                    if (!items.features.isEmpty()) {
+                        for (features in items.features) {
+                            if (features.parameter_id == 1) {
                                 sort_parameter_id = features.parameter_id
                                 sort_parameter = features.parameter
-                                sort_value = features.value
                                 sort_value_id = features.value_id
-                            }
-
-                            if (response.body.items[index_items].features[index_feature].parameter_id == product_owner_list[0].product_owner_id)
-                            {
-                                product_owner_parameter_id = features.parameter_id
-                                product_owner_parameter = features.parameter
-                                product_owner_value = features.value
-                                product_owner_value_id = features.value_id
-                            }
-
-                            if (response.body.items[index_items].features[index_feature].parameter_id == paketList[0].paket_id)
-                            {
+                                sort_value = features.value
+                            } else if (features.parameter_id == 2) {
                                 paket_parameter_id = features.parameter_id
                                 paket_parameter = features.parameter
-                                paket_value = features.value
                                 paket_value_id = features.value_id
+                                paket_value = features.value
+                            } else if (features.parameter_id == 3) {
+                                product_owner_parameter_id = features.parameter_id
+                                product_owner_parameter = features.parameter
+                                product_owner_value_id = features.value_id
+                                product_owner_value = features.value
                             }
                         }
 
-                        items_list.add(
+                        catalogViewProductList.add(
                             CatalogViewProduct(
                                 id = items.id,
                                 name = items.name,
@@ -436,7 +422,7 @@ constructor(
                                 price_in_piece = items.price_in_piece,
                                 discount_in_piece = items.discount_in_piece,
                                 in_gramme = items.in_gramme,
-                                price_in_gramme = items.price_in_gramme,
+                                price_in_gramme = items.price_in_gramme * 1000,
                                 discount_in_gramme = items.discount_in_gramme,
                                 size_gramme = items.size_gramme,
                                 size_diameter = items.size_diameter,
@@ -453,38 +439,30 @@ constructor(
                                 middle_percent = items.middle_percent,
                                 small = items.small,
                                 small_percent = items.small_percent,
-
-                                product_owner_value_id = product_owner_value_id,
-                                product_owner_value = product_owner_value,
-                                product_owner_parameter = product_owner_parameter,
-                                product_owner_parameter_id = product_owner_parameter_id,
-
+                                sort_parameter_id = sort_parameter_id,
+                                sort_parameter = sort_parameter,
                                 sort_value_id = sort_value_id,
                                 sort_value = sort_value,
-                                sort_parameter = sort_parameter,
-                                sort_parameter_id = sort_parameter_id,
-
+                                paket_parameter_id = paket_parameter_id,
+                                paket_parameter = paket_parameter,
                                 paket_value_id = paket_value_id,
                                 paket_value = paket_value,
-                                paket_parameter = paket_parameter,
-                                paket_parameter_id = paket_parameter_id
-
-
+                                product_owner_parameter_id = product_owner_parameter_id,
+                                product_owner_parameter = product_owner_parameter,
+                                product_owner_value_id = product_owner_value_id,
+                                product_owner_value = product_owner_value
                             )
                         )
                     }
                 }
 
-
-
                 val parametersValue = ParametersValue(
-                    paket = paketList,
+                    paket = paket_list,
                     productOwner = product_owner_list,
                     sort = sort_list,
-                    items = items_list
+                    items = catalogViewProductList
                 )
-
-                updateCache(cacheObject = parametersValue)
+                updateCache(parametersValue)
                 createCacheAndReturn()
             }
 
@@ -500,127 +478,64 @@ constructor(
         }.asLiveData()
     }
 
-
-    fun getCatalogViewProductBySortValue(sort_value:String):LiveData<DataState<CatalogViewState>>
-    {
-        return object : NetworkBoundResource<Void, List<CatalogViewProduct>, CatalogViewState>(
+    fun getSelectedCatalogViewProduct(sortValue: String): LiveData<DataState<CatalogViewState>> {
+        return object : NetworkBoundResource<Void, Void, CatalogViewState>(
             isNetworkRequest = false,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
             shouldUseCacheObject = true,
-            cancelJobIfNoInternet = false
-        )
-        {
+            cancelJobIfNoInternet = true
+        ) {
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
                 {
                     val loadCache = loadFromCache()
                     result.addSource(loadCache, Observer { catalogViewState ->
                         result.removeSource(loadCache)
-                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                        onCompleteJob(
+                            dataState = DataState.data(
+                                data = catalogViewState,
+                                response = null
+                            )
+                        )
                     })
                 }
             }
 
             override fun loadFromCache(): LiveData<CatalogViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getCatalogViewProductBySortValue(sort_value = sort_value)?.switchMap { list ->
-                        catalogDao.getAllCatalogViewProduct()?.switchMap { allCatalogList ->
-                            object : LiveData<CatalogViewState>()
-                            {
-                                override fun onActive() {
-                                    super.onActive()
-                                    Log.d(TAG, "onActive: ${sort_list}")
-
-                                    val paketList = ArrayList<Paket>()
-                                    val product_owner_list = ArrayList<ProductOwner>()
-//                                val sort_list = ArrayList<Sort>()
-
-                                    for ((index, item) in list.withIndex())
-                                    {
-                                        paketList.add(
-                                            Paket(
-                                                paket_id = item.paket_parameter_id,
-                                                paket_name = item.paket_parameter,
-                                                paket_value = item.paket_value,
-                                                paket_value_id = item.paket_value_id
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySortValue(sortValue)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
                                             )
-                                        )
-
-
-                                        product_owner_list.add(
-                                            ProductOwner(
-                                                product_owner_id = item.product_owner_parameter_id,
-                                                product_owner_name = item.product_owner_parameter,
-                                                product_owner_value = item.product_owner_value,
-                                                product_owner_value_id = item.product_owner_value_id
-                                            )
-                                        )
-
+                                        }
                                     }
-
-                                    val districtPaket = paketList.toSet().toList()
-                                    val districtProductOwner = product_owner_list.toSet().toList()
-
-                                    value = CatalogViewState(parametersValue = ParametersValue(items = allCatalogList, paket = districtPaket, productOwner = districtProductOwner, sort = sort_list))
-                                }
-                            }
-                        }?:AbsentLiveData.create()
-                    }?:AbsentLiveData.create()
-                }?:AbsentLiveData.create()
-            }
-
-            override suspend fun updateCache(cacheObject: List<CatalogViewProduct>?) {
-                TODO("Not yet implemented")
-            }
-
-            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
-                createCacheAndReturn()
-            }
-
-            override fun createCall(): LiveData<GenericApiResponse<Void>> {
-                return AbsentLiveData.create()
-            }
-
-            override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
-            }
-
-        }.asLiveData()
-    }
-
-
-    fun addOrderItem(authToken: AuthToken, product_item_id:String, quantity:Int, unit:String):LiveData<DataState<CatalogViewState>>
-    {
-        return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
-            isNetworkRequest = true,
-            isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = false,
-            cancelJobIfNoInternet = true
-        )
-        {
-            override suspend fun createCacheAndReturn() {
-                TODO("Not yet implemented")
-            }
-
-            override fun loadFromCache(): LiveData<CatalogViewState> {
-                TODO("Not yet implemented")
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Void?) {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
-                withContext(Main)
-                {
-                    Log.d(TAG, "handleSuccessResponse: ${response.body.message}")
-                    onCompleteJob(dataState = DataState.data(data = CatalogViewState(message = response.body.message),response = Response(message = response.body.message, responseType = ResponseType.Dialog())))
-                }
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                TODO("Not yet implemented")
             }
 
-            override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
-                return apiServices.addOrderItem(token = "Bearer ${authToken.access_token}", CatalogAddItemOrderRequest(product_item_id = product_item_id, quantity = quantity, unit = unit))
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return AbsentLiveData.create()
             }
 
             override fun setJob(job: Job) {
