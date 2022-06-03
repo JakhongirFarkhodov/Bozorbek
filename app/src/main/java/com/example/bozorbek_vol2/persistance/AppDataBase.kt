@@ -28,7 +28,7 @@ import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
         ProductOwner::class,
         Paket::class,
         BasketOrderProduct::class,
-        Profile::class], version = 17
+        Profile::class], version = 19
 )
 abstract class AppDataBase : RoomDatabase() {
 

@@ -15,6 +15,10 @@ data class CatalogAddItemOrderRequest(
 
     @SerializedName("unit")
     @Expose
-    val unit:String
+    val unit:String,
+
+    @SerializedName("size")
+    @Expose
+    val size:String
 
 )

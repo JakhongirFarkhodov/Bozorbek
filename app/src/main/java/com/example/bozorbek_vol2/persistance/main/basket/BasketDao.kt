@@ -16,4 +16,7 @@ interface BasketDao {
     @Query("SELECT * FROM basket_order_product_table")
     fun getListOfBasketOrderProduct(): LiveData<List<BasketOrderProduct>>?
 
+    @Query("DELETE FROM basket_order_product_table")
+    suspend fun deleteAllListOfBasketOrderProduct()
+
 }

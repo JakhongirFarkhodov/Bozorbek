@@ -1,518 +1,517 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.basket.fragment.BasketFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/basket_lottie_constraint"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_animation"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lottie_constraint_basket"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_260sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/error_page" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtv_profile_error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ой вы походу ещё не зарегистрированы :("
-            android:textAlignment="center"
-            android:textColor="@color/fruit_light_green"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lottie_animation" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/basket_go_to_registration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Перейти к регистрации"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            app:backgroundTint="@color/fruit_light_green"
-            app:cornerRadius="6dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mtv_profile_error" />
+            android:visibility="visible"
+            >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_basket"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_animation"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="@dimen/_260sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/error_page" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtv_profile_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ой вы походу ещё не зарегистрированы :("
+                android:textAlignment="center"
+                android:textColor="@color/fruit_light_green"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lottie_animation" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mb_basket_go_to_registration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Перейти к регистрации"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                app:backgroundTint="@color/fruit_light_green"
+                app:cornerRadius="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mtv_profile_error" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_basket"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcv_recyclerView_basket"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/mcv_recyclerView_basket"
-                    android:layout_width="0dp"
-                    android:layout_height="400dp"
-                    android:layout_margin="10dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/basket_recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/fruit_light_blue"
-                        android:elevation="10dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        tools:listitem="@layout/item_basket_container" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_view_price"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/basket_recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cardBackgroundColor="@color/fruit_light_blue"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/mcv_recyclerView_basket">
+                    android:layout_height="match_parent"
+                    android:background="@color/fruit_light_blue"
+                    android:elevation="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    tools:listitem="@layout/item_basket_container" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+            </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Сумма доставки:"
-                            android:textColor="@color/fruit_grey"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@color/fruit_light_blue"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mcv_recyclerView_basket">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="20dp"
-                            android:text="15.000 Сум"
-                            android:textColor="@color/fruit_grey"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="40dp"
-                            android:text="Общая сумма"
-                            android:textColor="@color/fruit_light_green"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="40dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="90.000 Сум"
-                            android:textColor="@color/fruit_light_green"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_view_name"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cardBackgroundColor="@color/fruit_light_blue"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_view_price">
+                    android:layout_height="match_parent">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Сумма доставки:"
+                        android:textColor="@color/fruit_grey"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="15.000 Сум"
+                        android:textColor="@color/fruit_grey"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="40dp"
+                        android:text="Общая сумма"
+                        android:textColor="@color/fruit_light_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/basket_sum_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="90.000 Сум"
+                        android:textColor="@color/fruit_light_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@color/fruit_light_blue"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_view_price">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_basket_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Имя:"
+                        android:textColor="@color/fruit_grey"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/card_view_name_basket"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/card_view_name_basket" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_name_basket"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_basket_name"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            app:boxStrokeColor="@color/white"
+                            app:boxStrokeWidth="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edText_name_basket"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.5"
+                                android:paddingTop="5dp"
+                                android:text="Имя"
+                                android:textColor="@color/fruit_grey"
+                                android:textSize="15sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_basket_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Номер:"
+                        android:textColor="@color/fruit_grey"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/card_view_phone_basket"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/card_view_phone_basket" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_phone_basket"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_basket_name"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_name_basket">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            app:boxStrokeColor="@color/white"
+                            app:boxStrokeWidth="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edText_phone_basket"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.5"
+                                android:inputType="phone"
+                                android:paddingTop="5dp"
+                                android:text="Номер телефона"
+                                android:textColor="@color/fruit_grey"
+                                android:textSize="15sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_basket_adress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Адрес:"
+                        android:textColor="@color/fruit_grey"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/card_view_adress_basket"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/card_view_adress_basket" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_adress_basket"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_basket_name"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_phone_basket">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            app:boxStrokeColor="@color/white"
+                            app:boxStrokeWidth="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edText_adress_basket"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.5"
+                                android:paddingTop="5dp"
+                                android:text="Адрес"
+                                android:textColor="@color/fruit_grey"
+                                android:textSize="15sp" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_show_on_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="@color/fruit_light_dark_blue"
+                        android:text="Показать на карте"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        app:cornerRadius="7dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_adress_basket" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcv_comment_basket"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_show_on_map">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_basket_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Имя:"
-                            android:textColor="@color/fruit_grey"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/card_view_name_basket"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/card_view_name_basket" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_view_name_basket"
-                            android:layout_width="0dp"
-                            android:layout_height="45dp"
-                            android:layout_marginStart="35dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="15dp"
-                            app:cardCornerRadius="5dp"
-                            app:cardElevation="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_basket_name"
-                            app:layout_constraintTop_toTopOf="parent">
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_comment_order"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10dp"
+                                android:text="Комментарий к заказу"
+                                android:textColor="@color/fruit_grey"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:alpha="0.5"
+                                android:text="Добавить комментарии"
+                                android:textColor="@color/fruit_grey"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_comment_order" />
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                app:boxStrokeColor="@color/white"
-                                app:boxStrokeWidth="0dp">
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="14dp"
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/ic_next"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edText_name_basket"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.5"
-                                    android:paddingTop="5dp"
-                                    android:text="Имя"
-                                    android:textColor="@color/fruit_grey"
-                                    android:textSize="15sp" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcv_line"
+                        android:layout_width="100dp"
+                        android:layout_height="5dp"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mcv_comment_basket" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_basket_phone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Номер:"
-                            android:textColor="@color/fruit_grey"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/card_view_phone_basket"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/card_view_phone_basket" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_view_send_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mcv_line">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_view_phone_basket"
-                            android:layout_width="0dp"
-                            android:layout_height="45dp"
-                            android:layout_marginStart="35dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="15dp"
-                            app:cardCornerRadius="5dp"
-                            app:cardElevation="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_basket_name"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_name_basket">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                app:boxStrokeColor="@color/white"
-                                app:boxStrokeWidth="0dp">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edText_phone_basket"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.5"
-                                    android:paddingTop="5dp"
-                                    android:inputType="phone"
-                                    android:text="Номер телефона"
-                                    android:textColor="@color/fruit_grey"
-                                    android:textSize="15sp" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tv_basket_adress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Адрес:"
-                            android:textColor="@color/fruit_grey"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/card_view_adress_basket"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/card_view_adress_basket" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_view_adress_basket"
-                            android:layout_width="0dp"
-                            android:layout_height="45dp"
-                            android:layout_marginStart="35dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="15dp"
-                            app:cardCornerRadius="5dp"
-                            app:cardElevation="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_basket_name"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_phone_basket">
-
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_add_comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10dp"
+                                android:text="Добавить комментарии"
+                                android:textColor="@color/fruit_grey"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                app:boxStrokeColor="@color/white"
-                                app:boxStrokeWidth="0dp">
+                                android:layout_width="150dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_add_comment">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edText_adress_basket"
+                                    android:id="@+id/edText_comment_basket"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="40dp"
                                     android:alpha="0.5"
+                                    android:padding="0dp"
                                     android:paddingTop="5dp"
                                     android:text="Адрес"
                                     android:textColor="@color/fruit_grey"
                                     android:textSize="15sp" />
 
-
                             </com.google.android.material.textfield.TextInputLayout>
 
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_show_on_map"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:backgroundTint="@color/fruit_light_dark_blue"
-                            android:text="Показать на карте"
-                            android:textAllCaps="false"
-                            android:textSize="15sp"
-                            app:cornerRadius="7dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_adress_basket" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/mcv_comment_basket"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="15dp"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_show_on_map">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/tv_comment_order"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Комментарий к заказу"
-                                    android:textColor="@color/fruit_grey"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:alpha="0.5"
-                                    android:text="Добавить комментарии"
-                                    android:textColor="@color/fruit_grey"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/tv_comment_order" />
-
-                                <ImageView
-                                    android:layout_width="8dp"
-                                    android:layout_height="14dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:src="@drawable/ic_next"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/mcv_line"
-                            android:layout_width="100dp"
-                            android:layout_height="5dp"
-                            android:layout_marginTop="10dp"
-                            app:cardCornerRadius="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/mcv_comment_basket" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_view_send_comment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="15dp"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/mcv_line">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/tv_add_comment"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Добавить комментарии"
-                                    android:textColor="@color/fruit_grey"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                    android:layout_width="150dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="10dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/tv_add_comment">
-
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/edText_comment_basket"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="40dp"
-                                        android:alpha="0.5"
-                                        android:padding="0dp"
-                                        android:paddingTop="5dp"
-                                        android:text="Адрес"
-                                        android:textColor="@color/fruit_grey"
-                                        android:textSize="15sp" />
-
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/btn_send_comment"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginEnd="15dp"
-                                    android:backgroundTint="@color/fruit_light_dark_blue"
-                                    android:drawableEnd="@drawable/ic_telegram"
-                                    android:text="Отправить"
-                                    android:textAllCaps="false"
-                                    app:cornerRadius="7dp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/tv_add_comment" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_send_comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="15dp"
+                                android:backgroundTint="@color/fruit_light_dark_blue"
+                                android:drawableEnd="@drawable/ic_telegram"
+                                android:text="Отправить"
+                                android:textAllCaps="false"
+                                app:cornerRadius="7dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_add_comment" />
 
 
-                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/basket_send_order_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginBottom="30dp"
-                            android:backgroundTint="@color/fruit_light_green"
-                            android:elevation="10dp"
-                            android:text="Оформить заказ"
-                            android:textAllCaps="false"
-                            android:textSize="17sp"
-                            app:cornerRadius="7dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/card_view_send_comment" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/basket_send_order_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="30dp"
+                        android:backgroundTint="@color/fruit_light_green"
+                        android:elevation="10dp"
+                        android:text="Оформить заказ"
+                        android:textAllCaps="false"
+                        android:textSize="17sp"
+                        app:cornerRadius="7dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_view_send_comment" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>
 

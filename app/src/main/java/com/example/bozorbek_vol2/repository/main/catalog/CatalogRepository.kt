@@ -546,4 +546,52 @@ constructor(
         }.asLiveData()
     }
 
+    fun addItemCatalogViewProduct(authToken: AuthToken,product_item_id:String, quantity:Int, unit:String, size:String):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
+                withContext(Main)
+                {
+                    onCompleteJob(
+                        dataState = DataState.data(data = CatalogViewState(message = response.body.message), response = Response(message = response.body.message, responseType = ResponseType.Toast()))
+                    )
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
+                return apiServices.addOrderItem("Bearer ${authToken.access_token}", catalogAddItemOrder = CatalogAddItemOrderRequest(
+                    product_item_id = product_item_id,
+                    quantity = quantity,
+                    unit = unit,
+                    size = size
+                )
+                )
+            }
+
+            override fun setJob(job: Job) {
+                repositoryJob?.cancel()
+                repositoryJob = job
+            }
+
+        }.asLiveData()
+    }
+
 }

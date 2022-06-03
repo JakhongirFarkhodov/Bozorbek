@@ -18,6 +18,7 @@ import retrofit2.http.*
 
 interface MainApiServices {
 
+    //Profile
     @GET("/customer/get_info/")
     fun getProfileInfo(@Header("Authorization") token: String): LiveData<GenericApiResponse<ProfileResponse>>
 

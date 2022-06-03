@@ -4,6 +4,8 @@ sealed class BasketStateEvent{
 
     class GetBasketProductOrderList : BasketStateEvent()
 
+    class GetBasketProfileInfo() : BasketStateEvent()
+
     data class AddAddressProductOrder(val full_address:String, val latitude:String, val longtitude:String) : BasketStateEvent()
 
     class GetBasketAddressOrderList : BasketStateEvent()

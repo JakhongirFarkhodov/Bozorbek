@@ -45,7 +45,15 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
             }
 
             is AddCatalogOrderItem ->{
-                return AbsentLiveData.create()
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    catalogRepository.addItemCatalogViewProduct(
+                        authToken = authToken,
+                        product_item_id = stateEvent.product_item_id,
+                        quantity = stateEvent.quantity,
+                        unit = stateEvent.unit,
+                        size = stateEvent.size
+                    )
+                }?:AbsentLiveData.create()
             }
 
             is None -> {

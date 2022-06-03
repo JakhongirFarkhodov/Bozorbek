@@ -190,11 +190,22 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     override fun getOnOrderItemCount(itemCount: Int) {
         Log.d(TAG, "getOnOrderItemCount: ${itemCount}")
         count = itemCount
-        bottomNavigationView.getOrCreateBadge(R.id.nav_basket).apply {
-            Log.d(TAG, "changeBottomNavigationView: ${count}")
-            number = count
-            isVisible = true
+        if (count != 0) {
+            bottomNavigationView.getOrCreateBadge(R.id.nav_basket).apply {
+                Log.d(TAG, "changeBottomNavigationView: ${count}")
+                number = count
+                isVisible = true
+            }
         }
+        else
+        {
+            bottomNavigationView.getBadge(R.id.nav_basket)?.apply {
+                number = 0
+            }
+            bottomNavigationView.removeBadge(R.id.nav_basket)
+        }
+
+
     }
 
 }

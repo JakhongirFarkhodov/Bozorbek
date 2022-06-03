@@ -3,10 +3,12 @@ package com.example.bozorbek_vol2.ui.main.basket.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import kotlinx.android.synthetic.main.item_basket_container.view.*
@@ -22,6 +24,7 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener, va
         {
             is BasketViewHolder ->{
                 holder.bind(diffConfig.currentList[position])
+//                holder.itemView.basket_container.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
             }
         }
     }
@@ -63,7 +66,7 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener, va
                 onBasketItemClickListener.onBasketItemClick(absoluteAdapterPosition, item)
             }
 
-            requestManager.load(item.main_image).into(itemView.item_fruit_image_basket)
+            requestManager.load(item.main_image).transition(withCrossFade()).into(itemView.item_fruit_image_basket)
             val size_in_gramme = String.format("%.1f", (item.sum_of_size/1000)).replace(",", ".").toFloat()
             itemView.item_mtv_weight.setText("${size_in_gramme} Кг")
             itemView.item_mtv_product_name.setText(item.name)

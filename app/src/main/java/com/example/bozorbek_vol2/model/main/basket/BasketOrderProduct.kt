@@ -44,7 +44,7 @@ data class BasketOrderProduct(
     val price_in_piece:Int,
 
     @ColumnInfo(name = "discount_in_piece")
-    val discount_in_piece:Int,
+    val discount_in_piece:Float,
 
     @ColumnInfo(name = "in_gramme")
     val in_gramme:Boolean,
@@ -56,7 +56,7 @@ data class BasketOrderProduct(
     val sum_price_gramme:Float,
 
     @ColumnInfo(name = "discount_in_gramme")
-    val discount_in_gramme:Int,
+    val discount_in_gramme:Float,
 
     @ColumnInfo(name = "size_gramme")
     val size_gramme:Float,

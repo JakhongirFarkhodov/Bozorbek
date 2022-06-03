@@ -58,9 +58,9 @@ class MainModule {
 
     @MainScope
     @Provides
-    fun providesBasketRepository(sessionManager: SessionManager, apiServices: MainApiServices, basketDao: BasketDao):BasketRepository
+    fun providesBasketRepository(sessionManager: SessionManager, apiServices: MainApiServices, basketDao: BasketDao, profileDao: ProfileDao):BasketRepository
     {
-        return BasketRepository(sessionManager, apiServices, basketDao)
+        return BasketRepository(sessionManager, apiServices, basketDao, profileDao)
     }
 
     @MainScope

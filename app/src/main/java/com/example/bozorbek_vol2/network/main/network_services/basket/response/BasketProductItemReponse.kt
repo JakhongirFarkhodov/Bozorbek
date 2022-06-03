@@ -14,7 +14,7 @@ data class BasketProductItemReponse(
 
     @SerializedName("form")
     @Expose
-    val from:String,
+    val form:String,
 
     @SerializedName("color")
     @Expose
@@ -50,7 +50,7 @@ data class BasketProductItemReponse(
 
     @SerializedName("discount_in_piece")
     @Expose
-    val discount_in_piece:Int,
+    val discount_in_piece:Float,
 
     @SerializedName("in_gramme")
     @Expose
@@ -62,7 +62,7 @@ data class BasketProductItemReponse(
 
     @SerializedName("discount_in_gramme")
     @Expose
-    val discount_in_gramme:Int,
+    val discount_in_gramme:Float,
 
     @SerializedName("size_gramme")
     @Expose

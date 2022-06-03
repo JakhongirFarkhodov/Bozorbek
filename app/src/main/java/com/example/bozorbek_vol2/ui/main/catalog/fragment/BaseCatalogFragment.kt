@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.RequestManager
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.main.catalog.viewmodel.CatalogViewModel
 import com.example.bozorbek_vol2.util.Constants
 import com.example.bozorbek_vol2.viewmodels.ViewModelProviderFactory
@@ -23,6 +24,9 @@ abstract class BaseCatalogFragment : DaggerFragment() {
     lateinit var viewModel: CatalogViewModel
     @Inject
     lateinit var requestManager: RequestManager
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

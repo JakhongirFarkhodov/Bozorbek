@@ -139,7 +139,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/view_product_txIL_paket"
+                android:id="@+id/view_product_txIL_size"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="@dimen/_130sdp"
                 android:layout_height="wrap_content"
@@ -149,12 +149,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_product_txIL_sort">
 
                 <AutoCompleteTextView
-                    android:id="@+id/view_product_paket_autocomplete"
+                    android:id="@+id/view_product_size_autocomplete"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_20sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Упаковка"
+                    android:text="Размер"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintStart_toEndOf="@id/view_product_txIL_paket"
+                app:layout_constraintStart_toEndOf="@id/view_product_txIL_size"
                 app:layout_constraintTop_toBottomOf="@+id/view_product_txIL_sort">
 
                 <AutoCompleteTextView
@@ -175,6 +175,26 @@
                     android:inputType="none"
                     android:padding="0dp"
                     android:text="Килограм"
+                    android:textSize="@dimen/_10ssp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/view_product_txIL_paket"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_product_txIL_size">
+
+                <AutoCompleteTextView
+                    android:id="@+id/view_product_paket_autocomplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:inputType="none"
+                    android:padding="0dp"
+                    android:text="Упаковка"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -230,9 +250,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/background_overview"
                 android:elevation="6dp"
                 app:layout_constraintBottom_toTopOf="@id/basket_button"
@@ -273,6 +293,7 @@
                 android:text="В корзину"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_15ssp"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

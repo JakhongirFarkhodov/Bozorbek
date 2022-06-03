@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.main.search.viewmodel.SearchViewModel
 import com.example.bozorbek_vol2.util.Constants
 import com.example.bozorbek_vol2.viewmodels.ViewModelProviderFactory
@@ -17,6 +18,8 @@ import javax.inject.Inject
 abstract class BaseSearchFragment : DaggerFragment() {
 
     val TAG = Constants.LOG
+
+
 
     @Inject
     protected lateinit var providerFactory: ViewModelProviderFactory

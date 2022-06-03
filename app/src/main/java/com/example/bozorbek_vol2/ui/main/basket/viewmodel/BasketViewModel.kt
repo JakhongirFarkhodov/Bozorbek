@@ -2,6 +2,7 @@ package com.example.bozorbek_vol2.ui.main.basket.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.profile.Profile
 import com.example.bozorbek_vol2.network.main.network_services.basket.response.GetBasketListAddressResponse
 import com.example.bozorbek_vol2.repository.main.basket.BasketRepository
 import com.example.bozorbek_vol2.session.SessionManager
@@ -28,27 +29,27 @@ class BasketViewModel
         {
             is BasketStateEvent.GetBasketProductOrderList ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    basketRepository.getListOfBasketProductItemOrder(authToken)
+                    basketRepository.getBasketProductOrderList(authToken)
+                }?:AbsentLiveData.create()
+            }
+
+            is BasketStateEvent.GetBasketProfileInfo -> {
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    basketRepository.getProfileInfo(authToken)
                 }?:AbsentLiveData.create()
             }
 
             is BasketStateEvent.AddAddressProductOrder ->{
-                return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    basketRepository.addAddressProductOrder(authToken = authToken, full_address = stateEvent.full_address, latitude = stateEvent.latitude, longtitude = stateEvent.longtitude)
-                }?:AbsentLiveData.create()
+                return AbsentLiveData.create()
             }
 
             is BasketStateEvent.GetBasketAddressOrderList ->{
-                return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    basketRepository.getOrderAddressList(authToken)
-                }?:AbsentLiveData.create()
+                return AbsentLiveData.create()
             }
 
             is BasketStateEvent.ApproveOrder ->
             {
-                return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    basketRepository.approveOrder(authToken = authToken, address_id = stateEvent.address_id)
-                }?:AbsentLiveData.create()
+                return AbsentLiveData.create()
             }
 
             is BasketStateEvent.None ->{
@@ -60,7 +61,18 @@ class BasketViewModel
     fun setBasketProductOrderList(list: List<BasketOrderProduct>)
     {
         val update = getCurrentViewStateOrCreateNew()
-        update.basketOrderProductList.list = list
+        update.basketOrderProductList!!.list = list
+        _viewState.value = update
+    }
+
+    fun setProfileInfo(profile: Profile)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        if (update.profile == profile)
+        {
+            return
+        }
+        update.profile = profile
         _viewState.value = update
     }
 

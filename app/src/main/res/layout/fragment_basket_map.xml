@@ -13,13 +13,25 @@
         android:layout_height="match_parent"
         />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/send_location"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Отправить выбранную гео позицыю"
-        android:textAllCaps="false"
-        android:layout_alignBottom="@id/google_map"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:src="@drawable/ic_send_location"
+        android:backgroundTint="#FFE64F"
         />
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:id="@+id/send_location"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Отправить выбранную гео позицыю"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:layout_alignBottom="@id/google_map"-->
+<!--        />-->
 
 </RelativeLayout>
