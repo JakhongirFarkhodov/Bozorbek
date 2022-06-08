@@ -10,7 +10,7 @@ import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 @Dao
 interface BasketDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertBasketOrderProduct(basketOrderProduct: BasketOrderProduct):Long
 
     @Query("SELECT * FROM basket_order_product_table")

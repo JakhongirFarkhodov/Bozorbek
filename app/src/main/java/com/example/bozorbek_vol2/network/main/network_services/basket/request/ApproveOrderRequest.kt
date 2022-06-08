@@ -7,6 +7,14 @@ data class ApproveOrderRequest(
 
     @SerializedName("address_id")
     @Expose
-    val address_id:String
+    val address_id:String,
+
+    @SerializedName("name")
+    @Expose
+    val name:String,
+
+    @SerializedName("phone_num")
+    @Expose
+    val phone_num:String
 
 )

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.profile.Profile
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
@@ -113,7 +114,7 @@ class ProfileFragment : BaseProfileFragment() {
         when(item.itemId)
         {
             R.id.menu ->{
-                //TODO OPEN BOTTOM SHEET DIALOG
+                findNavController().navigate(R.id.action_profileFragment_to_profileBottomSheetDialogFragment)
             }
 
             R.id.log_out ->{

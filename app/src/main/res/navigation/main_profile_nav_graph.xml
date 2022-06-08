@@ -9,5 +9,139 @@
         android:id="@+id/profileFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileFragment"
         android:label="Профиль"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileBottomSheetDialogFragment"
+            app:destination="@id/profileBottomSheetDialogFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
+    <dialog
+        android:id="@+id/profileBottomSheetDialogFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileBottomSheetDialogFragment"
+        android:label="fragment_profile_bottom_sheet_dialog"
+        tools:layout="@layout/fragment_profile_bottom_sheet_dialog" >
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_searchHistoryFragment"
+            app:destination="@id/searchHistoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_orderHistoryFragment"
+            app:destination="@id/orderHistoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_companyInfoFragment"
+            app:destination="@id/companyInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_securitySettingsFragment"
+            app:destination="@id/securitySettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_complaintsFragment"
+            app:destination="@id/complaintsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_readyPackagesFragment"
+            app:destination="@id/readyPackagesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_autoOrderFragment"
+            app:destination="@id/autoOrderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </dialog>
+    <fragment
+        android:id="@+id/searchHistoryFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.SearchHistoryFragment"
+        android:label="fragment_search_history"
+        tools:layout="@layout/fragment_search_history" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.OrderHistoryFragment"
+        android:label="fragment_order_history"
+        tools:layout="@layout/fragment_order_history" />
+    <fragment
+        android:id="@+id/companyInfoFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.CompanyInfoFragment"
+        android:label="fragment_company_info"
+        tools:layout="@layout/fragment_company_info" />
+    <fragment
+        android:id="@+id/securitySettingsFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.SecuritySettingsFragment"
+        android:label="fragment_security_settings"
+        tools:layout="@layout/fragment_security_settings" />
+    <fragment
+        android:id="@+id/complaintsFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ComplaintsFragment"
+        android:label="fragment_complaints"
+        tools:layout="@layout/fragment_complaints" />
+    <fragment
+        android:id="@+id/readyPackagesFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ReadyPackagesFragment"
+        android:label="fragment_ready_packages"
+        tools:layout="@layout/fragment_ready_packages" />
+    <fragment
+        android:id="@+id/autoOrderFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.AutoOrderFragment"
+        android:label="fragment_auto_order"
+        tools:layout="@layout/fragment_auto_order" />
+    <fragment
+        android:id="@+id/allReadyPackagesFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment"
+        android:label="fragment_all_ready_packages"
+        tools:layout="@layout/fragment_all_ready_packages" />
+    <fragment
+        android:id="@+id/mineReadyPackagesFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment"
+        android:label="fragment_mine_ready_packages"
+        tools:layout="@layout/fragment_mine_ready_packages" />
+    <fragment
+        android:id="@+id/recommendedReadyPackagesFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment"
+        android:label="fragment_recommended_ready_packages"
+        tools:layout="@layout/fragment_recommended_ready_packages" />
 </navigation>

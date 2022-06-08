@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_10sdp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E0F3FF"
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_ready_packages_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Корзина для плова"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/item_ready_packages_title"
+            app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_title"
+            android:src="@drawable/ic_dot"
+            app:layout_constraintStart_toEndOf="@id/item_ready_packages_title"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_ready_packages_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_category_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/item_ready_packages_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_ready_packages_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Всего"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_category_rv"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            />
+
+        <ImageView
+            android:id="@+id/dot_imv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/item_ready_packages_all"
+            app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_all"
+            android:src="@drawable/ic_dot"
+            app:layout_constraintStart_toEndOf="@id/item_ready_packages_all"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_ready_packages_all_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14 продуктов"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/dot_imv"
+            app:layout_constraintTop_toBottomOf="@id/item_category_rv"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_ready_packages_all_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Общая сумма"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_ready_packages_all"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            />
+
+        <ImageView
+            android:id="@+id/dot_sum_imv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/item_ready_packages_all_sum"
+            app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_all_sum"
+            android:src="@drawable/ic_dot"
+            app:layout_constraintStart_toEndOf="@id/item_ready_packages_all_sum"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_ready_packages_all_count_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="150.000 Сум"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dot_sum_imv"
+            app:layout_constraintStart_toEndOf="@id/dot_sum_imv"
+            app:layout_constraintTop_toTopOf="@id/dot_sum_imv" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/item_ready_packages_basket_mbt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/item_ready_packages_all_count_sum"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="В корзину"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:textSize="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            app:cornerRadius="@dimen/_5sdp"
+            android:elevation="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_10sdp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/item_ready_packages_delete_mbt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/item_ready_packages_all_count_sum"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Удалить"
+            android:textAllCaps="false"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:textSize="@dimen/_12sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            app:cornerRadius="@dimen/_5sdp"
+            android:elevation="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/_10sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

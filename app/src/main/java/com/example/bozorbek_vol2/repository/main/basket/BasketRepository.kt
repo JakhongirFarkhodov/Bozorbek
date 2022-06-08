@@ -10,22 +10,20 @@ import com.example.bozorbek_vol2.model.main.profile.Profile
 import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.AddAddressOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.ApproveOrderRequest
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.AddAddressOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.ApproveOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.BasketOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.GetBasketListAddressResponse
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.BasketRemoveProductRequest
+import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
 import com.example.bozorbek_vol2.session.SessionManager
+import com.example.bozorbek_vol2.ui.Data
 import com.example.bozorbek_vol2.ui.DataState
 import com.example.bozorbek_vol2.ui.Response
 import com.example.bozorbek_vol2.ui.ResponseType
 import com.example.bozorbek_vol2.ui.main.basket.state.BasketGetAddressOrderList
 import com.example.bozorbek_vol2.ui.main.basket.state.BasketOrderProductList
 import com.example.bozorbek_vol2.ui.main.basket.state.BasketViewState
-import com.example.bozorbek_vol2.ui.main.profile.state.ProfileViewState
 import com.example.bozorbek_vol2.util.AbsentLiveData
 import com.example.bozorbek_vol2.util.ApiSuccessResponse
 import com.example.bozorbek_vol2.util.Constants
@@ -52,34 +50,18 @@ constructor(
         return object : NetworkBoundResource<ProfileResponse, Profile, BasketViewState>(
             isNetworkRequest = true,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = true,
+            shouldUseCacheObject = false,
             cancelJobIfNoInternet = true
         ) {
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
                 {
-                    val loadCache = loadFromCache()
-                    result.addSource(loadCache, Observer { basketViewState ->
-                        result.removeSource(loadCache)
-                        onCompleteJob(DataState.data(data = basketViewState, response = null))
-                    })
+                    onCompleteJob(DataState.data(data = null, response = null))
                 }
             }
 
             override fun loadFromCache(): LiveData<BasketViewState> {
-                return profileDao.getProfileData()?.switchMap { profile ->
-                    basketDao.getListOfBasketOrderProduct()?.switchMap { list ->
-                        object : LiveData<BasketViewState>() {
-                            override fun onActive() {
-                                super.onActive()
-                                value = BasketViewState(
-                                    basketOrderProductList = BasketOrderProductList(list),
-                                    profile = profile
-                                )
-                            }
-                        }
-                    } ?: AbsentLiveData.create()
-                } ?: AbsentLiveData.create()
+                return AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Profile?) {
@@ -151,14 +133,18 @@ constructor(
 
             override fun loadFromCache(): LiveData<BasketViewState> {
                 return basketDao.getListOfBasketOrderProduct()?.switchMap { list ->
-
-                    object : LiveData<BasketViewState>() {
-                        override fun onActive() {
-                            super.onActive()
-                            value =
-                                BasketViewState(basketOrderProductList = BasketOrderProductList(list))
+                    profileDao.getProfileData()?.switchMap { profile ->
+                        object : LiveData<BasketViewState>() {
+                            override fun onActive() {
+                                super.onActive()
+                                Log.d(TAG, "loadFromCache: ${list}")
+                                value = BasketViewState(
+                                    basketOrderProductList = BasketOrderProductList(list),
+                                    profile = profile
+                                )
+                            }
                         }
-                    }
+                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -186,10 +172,14 @@ constructor(
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<BasketOrderResponse>) {
                 val basketOrderList = ArrayList<BasketOrderProduct>()
+                var count = 0
                 for (item in response.body.items) {
+                    count++
                     basketOrderList.add(
                         BasketOrderProduct(
+                            basket_id = count,
                             id = item.product_item.id,
+                            basket_product_item_id = item.id,
                             name = item.product_item.name,
                             product_name = item.product_item.product_name,
                             from = item.product_item.form,
@@ -215,7 +205,6 @@ constructor(
                             storage_temp = item.product_item.storage_temp,
                             description = item.product_item.description,
                             main_image = Constants.BASE_URL + item.product_item.main_image
-
                         )
                     )
                 }
@@ -226,6 +215,195 @@ constructor(
 
             override fun createCall(): LiveData<GenericApiResponse<BasketOrderResponse>> {
                 return apiServices.getBasketOrderList(accessToken = "Bearer ${authToken.access_token}")
+            }
+
+            override fun setJob(job: Job) {
+                repositoryJob?.cancel()
+                repositoryJob = job
+            }
+
+        }.asLiveData()
+    }
+
+    fun removeBasketProductById(
+        authToken: AuthToken,
+        item_id: String
+    ): LiveData<DataState<BasketViewState>> {
+        return object : NetworkBoundResource<BasketRemoveProductResponse, Void, BasketViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        ) {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<BasketViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<BasketRemoveProductResponse>) {
+                withContext(Main)
+                {
+                    if (response.body.remove_message.lowercase().equals("success")) {
+                        onCompleteJob(
+                            dataState = DataState.data(
+                                data = null,
+                                response = Response(
+                                    message = "Remove successfully",
+                                    responseType = ResponseType.Toast()
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<BasketRemoveProductResponse>> {
+                Log.d(TAG, "show remove id: ${item_id}")
+                return apiServices.removeBasketOrderProductById(
+                    accessToken = "Bearer ${authToken.access_token}",
+                    basketRemoveProductRequest = BasketRemoveProductRequest(remove_item_id = item_id)
+                )
+            }
+
+            override fun setJob(job: Job) {
+                repositoryJob?.cancel()
+                repositoryJob = job
+            }
+
+        }.asLiveData()
+    }
+
+    fun setOrderAddress(
+        authToken: AuthToken,
+        full_address: String,
+        latitude: String,
+        longtitude: String
+    ): LiveData<DataState<BasketViewState>> {
+        return object : NetworkBoundResource<AddAddressOrderResponse, Void, BasketViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        ) {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<BasketViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<AddAddressOrderResponse>) {
+                withContext(Main)
+                {
+                    if (response.body.message.lowercase().equals("success"))
+                    {
+                        onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Address added successfully", responseType = ResponseType.Toast())))
+                    }
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<AddAddressOrderResponse>> {
+                return apiServices.setOrderAddress(
+                    accessToken = "Bearer ${authToken.access_token}",
+                    AddAddressOrderRequest(
+                        full_address, latitude, longtitude
+                    )
+                )
+            }
+
+            override fun setJob(job: Job) {
+                repositoryJob?.cancel()
+                repositoryJob = job
+            }
+
+        }.asLiveData()
+    }
+
+    fun getAddressList(authToken: AuthToken):LiveData<DataState<BasketViewState>>
+    {
+        return object : NetworkBoundResource<List<GetBasketListAddressResponse>, Void, BasketViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<BasketViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<List<GetBasketListAddressResponse>>) {
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = BasketViewState(basketGetAddressOrderList = BasketGetAddressOrderList(list = response.body)), response = null))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<List<GetBasketListAddressResponse>>> {
+                return apiServices.getBasketAddressList("Bearer ${authToken.access_token}")
+            }
+
+            override fun setJob(job: Job) {
+                repositoryJob?.cancel()
+                repositoryJob = job
+            }
+
+        }.asLiveData()
+    }
+
+    fun approveBasketOrder(authToken: AuthToken, address_id:String, name:String, phone_num:String):LiveData<DataState<BasketViewState>>
+    {
+        return object : NetworkBoundResource<ApproveOrderResponse, Void, BasketViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<BasketViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ApproveOrderResponse>) {
+                withContext(Main)
+                {
+                    if (response.body.message.lowercase().equals("success"))
+                    {
+                        onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Заказ успешно оформлен", responseType = ResponseType.Toast())))
+                    }
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<ApproveOrderResponse>> {
+                return apiServices.approveOrder(accessToken = "Bearer ${authToken.access_token}", approveOrderRequest = ApproveOrderRequest(address_id, name, phone_num))
             }
 
             override fun setJob(job: Job) {

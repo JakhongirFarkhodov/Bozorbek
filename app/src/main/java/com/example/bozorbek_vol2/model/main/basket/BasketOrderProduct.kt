@@ -6,7 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "basket_order_product_table")
 data class BasketOrderProduct(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "basket_id")
+    val basket_id:Int,
+
+    @ColumnInfo(name = "basket_product_item_id")
+    val basket_product_item_id:Int,
+
     @ColumnInfo(name = "id")
     val id:Int,
 

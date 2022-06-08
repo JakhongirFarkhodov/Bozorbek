@@ -39,17 +39,29 @@ class BasketViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is BasketStateEvent.RemoveBasketOrderProductById ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    basketRepository.removeBasketProductById(authToken = authToken, item_id = stateEvent.product_item_id)
+                }?:AbsentLiveData.create()
+            }
+
             is BasketStateEvent.AddAddressProductOrder ->{
-                return AbsentLiveData.create()
+                return sessionManager.cachedAuthToken.value?.let { auth_token ->
+                    basketRepository.setOrderAddress(authToken = auth_token, full_address = stateEvent.full_address, latitude = stateEvent.latitude, longtitude = stateEvent.longtitude)
+                }?:AbsentLiveData.create()
             }
 
             is BasketStateEvent.GetBasketAddressOrderList ->{
-                return AbsentLiveData.create()
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    basketRepository.getAddressList(authToken = authToken)
+                }?:AbsentLiveData.create()
             }
 
             is BasketStateEvent.ApproveOrder ->
             {
-                return AbsentLiveData.create()
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    basketRepository.approveBasketOrder(authToken = authToken, address_id = stateEvent.address_id, name = stateEvent.name, phone_num = stateEvent.phone_num)
+                }?:AbsentLiveData.create()
             }
 
             is BasketStateEvent.None ->{

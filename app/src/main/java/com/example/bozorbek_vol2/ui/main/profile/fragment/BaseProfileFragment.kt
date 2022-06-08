@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.bumptech.glide.RequestManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.main.profile.viewmodel.ProfileViewModel
@@ -24,6 +25,9 @@ abstract class BaseProfileFragment : DaggerFragment() {
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
     lateinit var viewModel:ProfileViewModel
+
+    @Inject
+    lateinit var requestManager: RequestManager
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

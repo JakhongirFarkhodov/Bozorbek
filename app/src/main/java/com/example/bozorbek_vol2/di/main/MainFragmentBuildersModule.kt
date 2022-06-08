@@ -9,6 +9,10 @@ import com.example.bozorbek_vol2.ui.main.home.fragment.HomeFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.*
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.search.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -16,6 +20,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class MainFragmentBuildersModule {
 
+    //Home
     @ContributesAndroidInjector
     abstract fun contributesHomeFragment(): HomeFragment
 
@@ -25,6 +30,7 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributesViewProductsFragment(): HomeViewProductFragment
 
+    //Catalog
     @ContributesAndroidInjector
     abstract fun contributesCatalogFragment(): CatalogFragment
 
@@ -34,17 +40,56 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributesViewCatalogProductFragment(): CatalogViewProductFragment
 
+    //Search
     @ContributesAndroidInjector
     abstract fun contributesSearchFragment(): SearchFragment
 
+    //Basket
     @ContributesAndroidInjector
     abstract fun contributesBasketFragment(): BasketFragment
 
     @ContributesAndroidInjector
     abstract fun contributesBasketMapFragment() : BasketMapFragment
 
+    //Profile
     @ContributesAndroidInjector
     abstract fun contributesProfileFragment(): ProfileFragment
 
+
+    //Profile Menu
+    @ContributesAndroidInjector
+    abstract fun contributesSearchHistoryFragment():SearchHistoryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesNotificationFragment():NotificationFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesOrderHistoryFragment():OrderHistoryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesCompanyInfoFragment():CompanyInfoFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesSecuritySettingsFragment():SecuritySettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesComplaintsFragment():ComplaintsFragment
+
+    //Ready Packages
+    @ContributesAndroidInjector
+    abstract fun contributesReadyPackagesFragment():ReadyPackagesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesAllReadyPackagesFragment():AllReadyPackagesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesMineReadyPackagesFragment():MineReadyPackagesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesRecommendedReadyPackagesFragment():RecommendedReadyPackagesFragment
+
+
+    @ContributesAndroidInjector
+    abstract fun contributesAutoOrderFragment():AutoOrderFragment
 
 }

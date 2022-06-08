@@ -13,10 +13,10 @@ import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import kotlinx.android.synthetic.main.item_basket_container.view.*
 
-class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener, val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener,val onBasketOrderRemoveItemListener: OnBasketOrderRemoveItemListener, val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return BasketViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_basket_container, parent, false), onBasketItemClickListener, requestManager)
+        return BasketViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_basket_container, parent, false), onBasketItemClickListener, onBasketOrderRemoveItemListener, requestManager)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -58,12 +58,16 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener, va
         diffConfig.submitList(list)
     }
 
-    inner class BasketViewHolder(itemView:View, val onBasketItemClickListener: OnBasketItemClickListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
+    inner class BasketViewHolder(itemView:View, val onBasketItemClickListener: OnBasketItemClickListener, val onBasketOrderRemoveItemListener: OnBasketOrderRemoveItemListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
     {
         fun bind(item:BasketOrderProduct)
         {
             itemView.setOnClickListener {
                 onBasketItemClickListener.onBasketItemClick(absoluteAdapterPosition, item)
+            }
+
+            itemView.item_cancel_image_basket.setOnClickListener {
+                onBasketOrderRemoveItemListener.onBasketItemRemove(absoluteAdapterPosition, item)
             }
 
             requestManager.load(item.main_image).transition(withCrossFade()).into(itemView.item_fruit_image_basket)
@@ -78,6 +82,10 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener, va
 
     interface OnBasketItemClickListener{
         fun onBasketItemClick(position:Int, item:BasketOrderProduct)
+    }
+
+    interface OnBasketOrderRemoveItemListener{
+        fun onBasketItemRemove(position: Int, item: BasketOrderProduct)
     }
 
 }

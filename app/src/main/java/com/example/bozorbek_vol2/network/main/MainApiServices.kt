@@ -3,16 +3,17 @@ package com.example.bozorbek_vol2.network.main
 import androidx.lifecycle.LiveData
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.AddAddressOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.ApproveOrderRequest
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.AddAddressOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.ApproveOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.BasketOrderResponse
-import com.example.bozorbek_vol2.network.main.network_services.basket.response.GetBasketListAddressResponse
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.BasketRemoveProductRequest
+import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalog.CatalogResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUpdatePasswordResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
 import retrofit2.http.*
 
@@ -21,6 +22,14 @@ interface MainApiServices {
     //Profile
     @GET("/customer/get_info/")
     fun getProfileInfo(@Header("Authorization") token: String): LiveData<GenericApiResponse<ProfileResponse>>
+
+    //Profile ready package
+    @GET("/readypackages/")
+    fun getAllReadyPackages(@Header("Authorization") token: String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
+
+    //Update password
+    @POST("/customer/update_password/")
+    fun updateProfilePassword(@Header("Authorization") token: String, @Body profileUpdatePasswordRequest: ProfileUpdatePasswordRequest):LiveData<GenericApiResponse<ProfileUpdatePasswordResponse>>
 
     //Catalog
     @GET("/products/categories/")
@@ -44,6 +53,9 @@ interface MainApiServices {
     //Basket
     @GET("/orders/cart/")
     fun getBasketOrderList(@Header("Authorization") accessToken: String): LiveData<GenericApiResponse<BasketOrderResponse>>
+
+    @POST("/orders/remove_item/")
+    fun removeBasketOrderProductById(@Header("Authorization") accessToken: String, @Body basketRemoveProductRequest: BasketRemoveProductRequest):LiveData<GenericApiResponse<BasketRemoveProductResponse>>
 
     @POST("/orders/add_address/")
     fun setOrderAddress(@Header("Authorization") accessToken: String, @Body addAddressOrderRequest: AddAddressOrderRequest):LiveData<GenericApiResponse<AddAddressOrderResponse>>

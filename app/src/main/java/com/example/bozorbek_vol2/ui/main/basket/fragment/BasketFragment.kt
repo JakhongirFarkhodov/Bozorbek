@@ -26,7 +26,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 
 
-class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickListener {
+class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickListener,
+    BasketAdapter.OnBasketOrderRemoveItemListener {
 
     private val args: BasketFragmentArgs by navArgs()
     private lateinit var latitude: String
@@ -68,8 +69,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
 
         basket_send_order_button.setOnClickListener {
 
-            val fullAddress =
-                "Имя: ${edText_name_basket.text.toString()}\nТелефон: ${edText_phone_basket.text.toString()}"
+            val fullAddress = "${edText_name_basket.text.toString()}\n${edText_phone_basket.text.toString()}"
             args.latitude?.let { latitude ->
                 args.longitude?.let { longitude ->
 //                    Toast.makeText(requireContext(), "fullAddress:${fullAddress}\nlatitude:${latitude}\nlongtitude:${longitude}",Toast.LENGTH_LONG).show()
@@ -105,11 +105,11 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
 
         GlobalScope.launch(Main) {
             launch {
-                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
+                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
             }.join()
             launch {
-                delay(500)
-                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
+                delay(2000)
+                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
             }.join()
         }
 
@@ -117,6 +117,22 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
                 dataState.data?.let { data ->
+
+                    data.response?.let { event ->
+                        event.peekContent()?.let { response ->
+                            response.message?.let { message ->
+                                if (message.equals("Remove successfully"))
+                                {
+                                    viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
+                                }
+                                if (message.equals("Address added successfully"))
+                                {
+                                    viewModel.setStateEvent(event = BasketStateEvent.GetBasketAddressOrderList())
+                                }
+                            }
+                        }
+                    }
+
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { basketViewState ->
                             basketViewState.profile?.let { profile ->
@@ -129,6 +145,12 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                                     viewModel.setBasketProductOrderList(list)
                                 }
                             }
+
+                            basketViewState.basketGetAddressOrderList.list?.let { listAddress ->
+                                if (!listAddress.isEmpty()) {
+                                    viewModel.setBasketAddressOrderProductList(listAddress)
+                                }
+                            }
                         }
                     }
                 }
@@ -136,13 +158,22 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { basketViewState ->
-            basketViewState.profile?.let { profile ->
-                setProfileDataToView(profile)
-            }
+
             basketViewState.basketOrderProductList?.let { basketOrderProductList ->
                 basketOrderProductList.list?.let { list ->
                     Log.d(TAG, "basketOrderProductList viewState: ${list}")
                     setBasketOrderListToView(list)
+                }
+            }
+
+            basketViewState.profile?.let { profile ->
+                setProfileDataToView(profile)
+            }
+
+            basketViewState.basketGetAddressOrderList.list?.let { listAddress ->
+                if (!listAddress.isEmpty())
+                {
+                    viewModel.setStateEvent(event = BasketStateEvent.ApproveOrder(address_id = listAddress[0].id, name = edText_name_basket.text.toString(), phone_num = edText_phone_basket.text.toString()))
                 }
             }
         })
@@ -150,11 +181,8 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     }
 
     private fun setBasketOrderListToView(list: List<BasketOrderProduct>) {
-        if (!list.isEmpty())
-        {
 
-        }
-        adapter = BasketAdapter(this, requestManager)
+        adapter = BasketAdapter(this, this, requestManager)
         adapter.submitList(list)
         basket_recyclerView.adapter = adapter
         basket_recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -167,7 +195,12 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
 
 
     override fun onBasketItemClick(position: Int, item: BasketOrderProduct) {
-        TODO("Not yet implemented")
+        Toast.makeText(this.requireContext(), "${item.name}", Toast.LENGTH_LONG).show()
+
+    }
+
+    override fun onBasketItemRemove(position: Int, item: BasketOrderProduct) {
+        viewModel.setStateEvent(event = BasketStateEvent.RemoveBasketOrderProductById(item.basket_product_item_id.toString()))
     }
 
     override fun onAttach(context: Context) {
@@ -178,5 +211,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
         }
     }
+
+
 
 }
