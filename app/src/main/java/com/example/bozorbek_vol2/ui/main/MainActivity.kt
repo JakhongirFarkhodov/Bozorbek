@@ -205,7 +205,9 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
             bottomNavigationView.removeBadge(R.id.nav_basket)
         }
 
-
     }
 
+    override fun getItemCount(): Int {
+        return count
+    }
 }

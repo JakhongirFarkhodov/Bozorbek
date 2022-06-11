@@ -12,6 +12,7 @@ import com.example.bozorbek_vol2.model.main.catalog.parametrs.paket.Paket
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.product_owner.ProductOwner
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
 import com.example.bozorbek_vol2.model.main.profile.Profile
+import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
@@ -30,7 +31,8 @@ import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
         Paket::class,
         BasketOrderProduct::class,
         Profile::class,
-        ProfileReadyPackages::class], version = 27
+        ProfileReadyPackages::class,
+        ProfileActiveOrHistoryOrder::class], version = 1
 )
 abstract class AppDataBase : RoomDatabase() {
 

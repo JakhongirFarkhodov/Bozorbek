@@ -3,7 +3,6 @@ package com.example.bozorbek_vol2.ui.main.basket.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -72,10 +71,19 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener,val
 
             requestManager.load(item.main_image).transition(withCrossFade()).into(itemView.item_fruit_image_basket)
             val size_in_gramme = String.format("%.1f", (item.sum_of_size/1000)).replace(",", ".").toFloat()
-            itemView.item_mtv_weight.setText("${size_in_gramme} Кг")
+            val price = String.format("%,d",item.sum_price_gramme.toInt()).replace(",", ".")
+            if (item.in_gramme)
+            {
+                itemView.item_mtv_weight.setText("${size_in_gramme} Кг")
+            }
+            else if (item.in_piece)
+            {
+                itemView.item_mtv_weight.setText("${item.sum_of_size.toInt()} Шт")
+            }
             itemView.item_mtv_product_name.setText(item.name)
             itemView.item_tv_title_fruit_basket.setText(item.product_name)
-            itemView.item_price_basket.setText("${item.sum_price_gramme.toInt()} Сум")
+            itemView.item_price_basket.setText("${price} Сум")
+
 
         }
     }

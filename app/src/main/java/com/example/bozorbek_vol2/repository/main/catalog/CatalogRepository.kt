@@ -14,9 +14,9 @@ import com.example.bozorbek_vol2.model.main.catalog.parametrs.product_owner.Prod
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
 import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
-import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
-import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalog.CatalogResponse
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
@@ -34,11 +34,9 @@ import com.example.bozorbek_vol2.util.GenericApiResponse
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.Exception
 
 class CatalogRepository
 @Inject
@@ -364,6 +362,7 @@ constructor(
                         for (paket in parameters.values) {
                             paket_list.add(
                                 Paket(
+
                                     paket_id = parameters.id,
                                     paket_name = parameters.name,
                                     paket_value_id = paket.id,
@@ -546,7 +545,7 @@ constructor(
         }.asLiveData()
     }
 
-    fun addItemCatalogViewProduct(authToken: AuthToken,product_item_id:String, quantity:Int, unit:String, size:String):LiveData<DataState<CatalogViewState>>
+    fun addItemCatalogViewProduct(authToken: AuthToken,product_item_id:String, quantity:Int, unit:String, size:String,sortValue: String):LiveData<DataState<CatalogViewState>>
     {
         return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
             isNetworkRequest = true,
@@ -556,11 +555,44 @@ constructor(
         )
         {
             override suspend fun createCacheAndReturn() {
-                TODO("Not yet implemented")
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(
+                            dataState = DataState.data(
+                                data = catalogViewState,
+                                response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())
+                            )
+                        )
+                    })
+                }
             }
 
             override fun loadFromCache(): LiveData<CatalogViewState> {
-                return AbsentLiveData.create()
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySortValue(sortValue)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Void?) {
@@ -568,12 +600,7 @@ constructor(
             }
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
-                withContext(Main)
-                {
-                    onCompleteJob(
-                        dataState = DataState.data(data = CatalogViewState(message = response.body.message), response = Response(message = response.body.message, responseType = ResponseType.Toast()))
-                    )
-                }
+                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {

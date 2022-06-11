@@ -1,15 +1,11 @@
 package com.example.bozorbek_vol2.ui
 
-import android.os.Build
-import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
 import android.util.Log
-import android.view.View
-import android.view.WindowInsetsController
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.bozorbek_vol2.R
-import com.example.bozorbek_vol2.app.BaseApplication
 import com.example.bozorbek_vol2.session.SessionManager
-import com.example.bozorbek_vol2.ui.main.MainActivity
 import com.example.bozorbek_vol2.util.Constants
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -40,45 +36,67 @@ abstract class BaseActivity : DaggerAppCompatActivity(), OnDataStateChangeListen
     }
 
     private fun handleErrorResponse(response: Response) {
-        when(response.responseType)
-        {
-            is ResponseType.Toast ->{
+        when (response.responseType) {
+            is ResponseType.Toast -> {
                 response.message?.let { message ->
                     showToast(message)
                 }
             }
-            is ResponseType.Dialog ->{
+            is ResponseType.Dialog -> {
                 response.message?.let { message ->
                     showErrorDialog(message = message)
                 }
             }
-            is ResponseType.None ->{
+            is ResponseType.None -> {
                 Log.d(TAG, "handleErrorResponse: ")
             }
         }
     }
 
     private fun handleSuccessResponse(response: Response) {
-        when(response.responseType)
-        {
-            is ResponseType.Toast ->{
+        when (response.responseType) {
+            is ResponseType.Toast -> {
                 response.message?.let { message ->
                     showToast(message = message)
                 }
             }
-            is ResponseType.Dialog ->{
+            is ResponseType.Dialog -> {
                 response.message?.let { message ->
                     showSuccessDialog(message = message)
                 }
             }
-            is ResponseType.None ->{
+            is ResponseType.None -> {
                 Log.d(TAG, "handleSuccessResponse: ")
             }
         }
     }
 
-    abstract fun showProgressBar(isShowLoading:Boolean)
+    abstract fun showProgressBar(isShowLoading: Boolean)
 
+
+    override fun isStoragePermissionGranted(): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),Constants.PERMISSION_REQUEST_READ_STORAGE
+            )
+            return false
+        }
+        else{
+            return true
+        }
+
+    }
 
 
 }

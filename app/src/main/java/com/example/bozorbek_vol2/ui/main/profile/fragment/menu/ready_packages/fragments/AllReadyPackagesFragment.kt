@@ -1,17 +1,18 @@
 package com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.adapters.ProfileReadyPackagesParentAdapter
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.PackagesData
@@ -20,8 +21,10 @@ import com.example.bozorbek_vol2.ui.main.profile.state.ProfileStateEvent
 import kotlinx.android.synthetic.main.fragment_all_ready_packages.*
 
 
-class AllReadyPackagesFragment : BaseProfileFragment() {
+class AllReadyPackagesFragment : BaseProfileFragment(),
+    ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener {
 
+    private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +49,19 @@ class AllReadyPackagesFragment : BaseProfileFragment() {
     private fun observeData() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
+                onDataStateChangeListener.onDataStateChange(dataState)
                 dataState.data?.let { data ->
+                    data.response?.let { event ->
+                        event.peekContent()?.let { response ->
+                            response.message?.let { message ->
+                                if (message.equals("Пакет добавлен в корзину"))
+                                {
+                                    onDataStateChangeListener.getOnOrderItemCount(onDataStateChangeListener.getItemCount())
+                                }
+                            }
+                        }
+                    }
+
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { profileViewState ->
                             profileViewState.readyPackagesList?.let { list ->
@@ -121,12 +136,28 @@ class AllReadyPackagesFragment : BaseProfileFragment() {
             Log.d(TAG, "setListOfDataToUI: ${item}")
         }
 
-        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager)
+        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this)
         adapter.submitList(readyPackagesDataList)
         profile_all_packages_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
         profile_all_packages_rv.adapter = adapter
 
 
+    }
+
+    override fun addReadyPackageToBasket(position: Int, readyPackagesData: ReadyPackagesData) {
+        Toast.makeText(this.requireContext(), "${readyPackagesData.packageData.package_id}", Toast.LENGTH_LONG).show()
+        viewModel.setStateEvent(event = ProfileStateEvent.AddItemReadyPackagesToBasket(package_item_id = readyPackagesData.packageData.package_id.toString()))
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            onDataStateChangeListener = context as OnDataStateChangeListener
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
+        }
     }
 
 }

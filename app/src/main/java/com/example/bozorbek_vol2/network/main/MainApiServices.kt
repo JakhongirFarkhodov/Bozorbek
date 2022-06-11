@@ -6,15 +6,19 @@ import com.example.bozorbek_vol2.network.main.network_services.basket.request.Ap
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.BasketRemoveProductRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
-import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
-import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalog.CatalogResponse
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUpdatePasswordResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUploadImageResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface MainApiServices {
@@ -23,13 +27,21 @@ interface MainApiServices {
     @GET("/customer/get_info/")
     fun getProfileInfo(@Header("Authorization") token: String): LiveData<GenericApiResponse<ProfileResponse>>
 
+    @Multipart
+    @POST("/customer/upload_image/")
+    fun uploadUserImage(@Header("Authorization") token: String, @Part image: MultipartBody.Part?):LiveData<GenericApiResponse<ProfileUploadImageResponse>>
+
     //Profile ready package
     @GET("/readypackages/")
     fun getAllReadyPackages(@Header("Authorization") token: String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
 
+    @POST("/readypackages/add_to_cart/{id}/")
+    fun addItemReadyPackageToBasket(@Header("Authorization") token: String, @Path("id") ready_package_id:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesAddItemToBasketResponse>>
+
     //Update password
     @POST("/customer/update_password/")
     fun updateProfilePassword(@Header("Authorization") token: String, @Body profileUpdatePasswordRequest: ProfileUpdatePasswordRequest):LiveData<GenericApiResponse<ProfileUpdatePasswordResponse>>
+
 
     //Catalog
     @GET("/products/categories/")
@@ -53,6 +65,9 @@ interface MainApiServices {
     //Basket
     @GET("/orders/cart/")
     fun getBasketOrderList(@Header("Authorization") accessToken: String): LiveData<GenericApiResponse<BasketOrderResponse>>
+
+    @GET("/orders/order_list/")
+    fun getActiveOrHistoryOrder(@Header("Authorization") accessToken: String):LiveData<GenericApiResponse<List<ProfileActiveOrHistoryOrderResponse>>>
 
     @POST("/orders/remove_item/")
     fun removeBasketOrderProductById(@Header("Authorization") accessToken: String, @Body basketRemoveProductRequest: BasketRemoveProductRequest):LiveData<GenericApiResponse<BasketRemoveProductResponse>>

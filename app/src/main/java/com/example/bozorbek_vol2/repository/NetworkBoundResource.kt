@@ -11,7 +11,6 @@ import com.example.bozorbek_vol2.util.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import java.lang.Error
 
 abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> constructor(
     val isNetworkRequest:Boolean,
@@ -136,7 +135,7 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> 
         }
         else if (msg.equals(ErrorHandling.RESPONSE_UNAUTHORIZED_401))
         {
-            msg = "Пользыватель не найден. Пожлуйста убедитесь что вы ввели все корректно."
+            msg = "Пользыватель не найден. Пожалуйста убедитесь что вы ввели все корректно."
         }
         else if (msg.equals(ErrorHandling.RESPONSE_PHONE_NUMBER_EXISTS))
         {

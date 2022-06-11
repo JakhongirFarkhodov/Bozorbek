@@ -1,7 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.catalog.fragment
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.bozorbek_vol2.R
-import com.example.bozorbek_vol2.model.main.catalog.CatalogViewProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
-import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogStateEvent
 import kotlinx.android.synthetic.main.fragment_view_catalog_product.*
-import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class CatalogViewProductFragment : BaseCatalogFragment() {
@@ -44,6 +43,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
     private var price_in_pieace:Float = 0f
 
     private var product_item_id:String = ""
+    private var product_item_paket_id:String = ""
     private var quantity:Int = 0
     private var unit:String = ""
     private var size:String = ""
@@ -69,8 +69,8 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
         view_catalog_add.setOnClickListener {
             if (in_gramme) {
-                change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() + 0.1f).replace(",",".")
-                change_price_type = (price_in_gramme * change_count_type.toFloat()).toInt().toString()
+                change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() + 0.5f).replace(",",".")
+                change_price_type = String.format("%,d",(price_in_gramme * change_count_type.toFloat()).toInt()).replace(",", ".")
                 view_catalog_count.setText(change_count_type)
                 view_product_price.setText("${change_price_type} Сум")
 
@@ -79,7 +79,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             else if (in_pieace)
             {
                 change_count_type = (view_catalog_count.text.toString().toInt() + 1).toString()
-                change_price_type = (price_in_pieace * change_count_type.toInt()).toString()
+                change_price_type = String.format("%,d", price_in_pieace * change_count_type.toInt()).replace(",",".")
                 view_catalog_count.setText(change_count_type)
                 view_product_price.setText("${change_price_type} Сум")
                 quantity = change_count_type.toInt()
@@ -94,8 +94,8 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                     view_catalog_count.setText("0")
                 }
                 else{
-                    change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() - 0.1f).replace(",",".")
-                    change_price_type = (price_in_gramme * change_count_type.toFloat()).toInt().toString()
+                    change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() - 0.5f).replace(",",".")
+                    change_price_type = String.format("%,d",(price_in_gramme * change_count_type.toFloat()).toInt()).replace(",", ".")
                     view_catalog_count.setText(change_count_type)
                     view_product_price.setText("${change_price_type} Сум")
                 }
@@ -109,7 +109,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                 }
                 else{
                     change_count_type = (view_catalog_count.text.toString().toInt() - 1).toString()
-                    change_price_type = (price_in_pieace * change_count_type.toInt()).toString()
+                    change_price_type = String.format("%,d",price_in_pieace * change_count_type.toInt()).replace(",",".")
                     view_catalog_count.setText(change_count_type)
                     view_product_price.setText("${change_price_type} Сум")
                     quantity = change_count_type.toInt()
@@ -127,20 +127,32 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
                 Toast.makeText(this.requireContext(), "product_item_id:${product_item_id}\nquantity:${quantity}\nunit:${unit}\nsize:${size}", Toast.LENGTH_LONG).show()
 
+                GlobalScope.launch(Main) {
 
-                viewModel.setStateEvent(event = CatalogStateEvent.AddCatalogOrderItem(
-                    product_item_id = product_item_id,
-                    quantity = quantity,
-                    unit = unit,
-                    size = size
-                ))
-                itemCount++
-                onDataStateChangeListener.getOnOrderItemCount(itemCount)
+                    viewModel.setStateEvent(event = CatalogStateEvent.AddCatalogOrderItem(
+                        product_item_id = product_item_id,
+                        quantity = quantity,
+                        unit = unit,
+                        size = size, sortValue = args.productSlug
+                        ))
+                    itemCount++
+                    onDataStateChangeListener.getOnOrderItemCount(itemCount)
+
+                }
+
             }
         }
     }
 
     private fun observeData() {
+
+        viewModel.setStateEvent(
+            event = CatalogStateEvent.GetCatalogViewProductListOfData(
+                category_slug = args.categorySlug,
+                product_slug = args.productSlug
+            )
+        )
+
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if(dataState != null)
             {
@@ -190,19 +202,22 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         if (!parametersValue.items.isEmpty())
         {
             item_view_project_image.animation = AnimationUtils.loadAnimation(this.requireContext(),R.anim.fade_scale_animation)
-            product_item_id = parametersValue.items[0].id.toString()
+
             for (items in parametersValue.items)
             {
                 if (items.sort_value.equals(sort_list[sort_value_position]))
                 {
                     requestManager.load(items.main_image).transition(withCrossFade()).into(item_view_project_image)
                     view_product_title.setText(items.sort_value)
+
                     if (items.in_gramme && !items.in_piece)
                     {
-                        view_product_price.setText("${items.price_in_gramme.toInt()} Сум")
+                        view_product_price.setText("${String.format("%,d",items.price_in_gramme.toInt()).replace(",", ".")} Сум")
                         view_product_price_type.setText("(${items.price_in_gramme.toInt()} Сум - за 1 кг)")
                         view_catalog_count.setText("0.5")
                         change_count_type = "0.5"
+
+                        product_item_id = items.id.toString()
 
                         weight_list.add("Килограмм")
 
@@ -213,10 +228,12 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                     }
                     else if (items.in_piece && !items.in_gramme)
                     {
-                        view_product_price.setText("${items.price_in_piece.toInt()} Cум")
+                        view_product_price.setText("${String.format("%,d", items.price_in_piece.toInt()).replace(",", ".")} Cум")
                         view_product_price_type.setText("(${items.price_in_piece.toInt()} Сум - за 1 шт)")
                         view_catalog_count.setText("1")
                         change_count_type = "1"
+
+                        product_item_id = items.id.toString()
 
                         weight_list.add("Штука")
 
@@ -307,6 +324,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             else if (weight_list[position].equals("Штука"))
            {
                 unit = "PIECE"
+
            }
         }
 
@@ -324,20 +342,18 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                 size = "LARGE"
             }
         }
+
+        view_product_paket_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
+            Toast.makeText(this.requireContext(), "${paket_list[position]}", Toast.LENGTH_LONG).show()
+            for (paket in parametersValue.items)
+            {
+                if (paket.paket_value.equals(paket_list[position]))
+                {
+                    product_item_id = paket.id.toString()
+                }
+            }
+        }
     }
-
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.setStateEvent(
-            event = CatalogStateEvent.GetCatalogViewProductListOfData(
-                category_slug = args.categorySlug,
-                product_slug = args.productSlug
-            )
-        )
-    }
-
 
 
     override fun onAttach(context: Context) {

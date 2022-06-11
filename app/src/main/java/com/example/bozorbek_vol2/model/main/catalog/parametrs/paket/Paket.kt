@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "paket_table")
 data class Paket(
 
+
+
     @ColumnInfo(name = "paket_id")
     val paket_id:Int,
 

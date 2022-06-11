@@ -10,6 +10,8 @@ import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.*
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment
@@ -60,11 +62,18 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributesSearchHistoryFragment():SearchHistoryFragment
 
+
     @ContributesAndroidInjector
     abstract fun contributesNotificationFragment():NotificationFragment
 
     @ContributesAndroidInjector
     abstract fun contributesOrderHistoryFragment():OrderHistoryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesActiveOrderFragment() : ActiveOrderFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesHistoryOrderFragment() : HistoryOrderFragment
 
     @ContributesAndroidInjector
     abstract fun contributesCompanyInfoFragment():CompanyInfoFragment

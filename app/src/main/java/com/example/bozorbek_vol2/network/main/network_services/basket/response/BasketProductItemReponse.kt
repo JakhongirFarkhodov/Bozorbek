@@ -1,5 +1,6 @@
 package com.example.bozorbek_vol2.network.main.network_services.basket.response
 
+import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.items.features.CatalogViewProductsItemsFeaturesResponse
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -98,5 +99,35 @@ data class BasketProductItemReponse(
 
     @SerializedName("product_name")
     @Expose
-    val product_name:String
+    val product_name:String,
+
+    @SerializedName("large")
+    @Expose
+    val large:Boolean,
+
+    @SerializedName("large_percent")
+    @Expose
+    val large_percent:Float,
+
+    @SerializedName("middle")
+    @Expose
+    val middle:Boolean,
+
+    @SerializedName("middle_percent")
+    @Expose
+    val middle_percent:Float,
+
+    @SerializedName("small")
+    @Expose
+    val small:Boolean,
+
+    @SerializedName("small_percent")
+    @Expose
+    val small_percent:Float,
+
+    @SerializedName("features")
+    @Expose
+    val features:List<CatalogViewProductsItemsFeaturesResponse>
+
+
 )

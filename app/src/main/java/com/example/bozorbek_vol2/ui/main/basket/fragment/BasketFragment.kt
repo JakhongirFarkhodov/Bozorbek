@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.model.main.profile.Profile
@@ -22,8 +20,11 @@ import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.basket.adapter.BasketAdapter
 import com.example.bozorbek_vol2.ui.main.basket.state.BasketStateEvent
 import kotlinx.android.synthetic.main.fragment_basket.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickListener,
@@ -181,11 +182,16 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     }
 
     private fun setBasketOrderListToView(list: List<BasketOrderProduct>) {
-
+        var sum_of_price:Int = 0
+        for (price in list)
+        {
+            sum_of_price += price.sum_price_gramme.toInt()
+        }
         adapter = BasketAdapter(this, this, requestManager)
         adapter.submitList(list)
         basket_recyclerView.adapter = adapter
         basket_recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        basket_sum_product.setText("${String.format("%,d",sum_of_price).replace(",", ".")} Сум")
     }
 
     private fun setProfileDataToView(profile: Profile) {

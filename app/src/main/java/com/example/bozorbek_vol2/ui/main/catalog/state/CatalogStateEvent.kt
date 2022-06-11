@@ -1,7 +1,5 @@
 package com.example.bozorbek_vol2.ui.main.catalog.state
 
-import com.example.bozorbek_vol2.model.auth.AuthToken
-
 sealed class CatalogStateEvent {
 
     class GetCatalogListOfData : CatalogStateEvent()
@@ -12,7 +10,7 @@ sealed class CatalogStateEvent {
 
     data class GetCatalogViewProductBySortValue(val sort_value:String):CatalogStateEvent()
 
-    data class AddCatalogOrderItem(val product_item_id:String, val quantity:Int, val unit:String, val size:String):CatalogStateEvent()
+    data class AddCatalogOrderItem(val product_item_id:String, val quantity:Int, val unit:String, val size:String, val sortValue:String):CatalogStateEvent()
 
     class None : CatalogStateEvent()
 

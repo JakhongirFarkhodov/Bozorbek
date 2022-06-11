@@ -144,4 +144,14 @@
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment"
         android:label="fragment_recommended_ready_packages"
         tools:layout="@layout/fragment_recommended_ready_packages" />
+    <fragment
+        android:id="@+id/activeOrderFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment"
+        android:label="fragment_active_order"
+        tools:layout="@layout/fragment_active_order" />
+    <fragment
+        android:id="@+id/historyOrderFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment"
+        android:label="fragment_history_order"
+        tools:layout="@layout/fragment_history_order" />
 </navigation>

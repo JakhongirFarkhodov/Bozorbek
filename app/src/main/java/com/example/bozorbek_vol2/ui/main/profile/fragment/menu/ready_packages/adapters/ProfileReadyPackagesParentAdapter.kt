@@ -19,10 +19,10 @@ import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fr
 import kotlinx.android.synthetic.main.item_ready_package.view.*
 import kotlinx.android.synthetic.main.item_ready_packages_category.view.*
 
-class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ProfileReadyPackagesParentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_ready_package, parent, false), requestManager)
+        return ProfileReadyPackagesParentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_ready_package, parent, false),onAddReadyPackageToBasketListener, requestManager)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -67,7 +67,7 @@ class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager) : Re
         differConfig.submitList(newList)
     }
 
-    inner class ProfileReadyPackagesParentViewHolder(itemView: View, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
+    inner class ProfileReadyPackagesParentViewHolder(itemView: View, val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
     {
         fun bind(readyPackagesData: ReadyPackagesData)
         {
@@ -81,7 +81,15 @@ class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager) : Re
             itemView.item_category_rv.layoutManager = staggeredGridLayoutManager
             itemView.item_category_rv.adapter = adapter
 
+            itemView.item_ready_packages_basket_mbt.setOnClickListener {
+                onAddReadyPackageToBasketListener.addReadyPackageToBasket(absoluteAdapterPosition, readyPackagesData)
+            }
+
         }
+    }
+
+    interface OnAddReadyPackageToBasketListener{
+        fun addReadyPackageToBasket(position: Int, readyPackagesData: ReadyPackagesData)
     }
 
 }

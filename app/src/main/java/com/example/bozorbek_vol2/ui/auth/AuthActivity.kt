@@ -79,4 +79,8 @@ class AuthActivity : BaseActivity() {
     override fun getOnOrderItemCount(itemCount: Int) {
 //        TODO("Not yet implemented")
     }
+
+    override fun getItemCount(): Int {
+        return 0
+    }
 }

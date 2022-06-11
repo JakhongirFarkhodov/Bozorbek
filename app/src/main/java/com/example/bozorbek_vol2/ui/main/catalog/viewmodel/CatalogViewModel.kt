@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.bozorbek_vol2.model.main.catalog.Catalog
 import com.example.bozorbek_vol2.model.main.catalog.CatalogProduct
-import com.example.bozorbek_vol2.model.main.catalog.CatalogViewProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
 import com.example.bozorbek_vol2.repository.main.catalog.CatalogRepository
 import com.example.bozorbek_vol2.session.SessionManager
@@ -51,8 +50,8 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
                         product_item_id = stateEvent.product_item_id,
                         quantity = stateEvent.quantity,
                         unit = stateEvent.unit,
-                        size = stateEvent.size
-                    )
+                        size = stateEvent.size,
+                        sortValue = stateEvent.sortValue)
                 }?:AbsentLiveData.create()
             }
 

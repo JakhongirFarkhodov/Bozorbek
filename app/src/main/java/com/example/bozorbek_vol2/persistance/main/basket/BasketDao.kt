@@ -13,7 +13,7 @@ interface BasketDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertBasketOrderProduct(basketOrderProduct: BasketOrderProduct):Long
 
-    @Query("SELECT * FROM basket_order_product_table")
+    @Query("SELECT * FROM basket_order_product_table ORDER BY basket_id DESC")
     fun getListOfBasketOrderProduct(): LiveData<List<BasketOrderProduct>>?
 
     @Query("DELETE FROM basket_order_product_table")
