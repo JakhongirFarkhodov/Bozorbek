@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
@@ -22,9 +23,11 @@ import kotlinx.android.synthetic.main.fragment_all_ready_packages.*
 
 
 class AllReadyPackagesFragment : BaseProfileFragment(),
-    ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener {
+    ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener,
+    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
+    lateinit var set: HashSet<List<ProfileReadyPackageId>>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +41,13 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         observeData()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages())
+        viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages(""))
     }
 
     private fun observeData() {
@@ -54,9 +58,10 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
                             response.message?.let { message ->
-                                if (message.equals("Пакет добавлен в корзину"))
-                                {
-                                    onDataStateChangeListener.getOnOrderItemCount(onDataStateChangeListener.getItemCount())
+                                if (message.equals("Пакет добавлен в корзину")) {
+                                    onDataStateChangeListener.getOnOrderItemCount(
+                                        onDataStateChangeListener.getItemCount()
+                                    )
                                 }
                             }
                         }
@@ -79,6 +84,7 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                 Log.d(TAG, "allPackages viewState: ${list}")
                 setListOfDataToUI(list)
             }
+
         })
     }
 
@@ -105,10 +111,14 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
         Log.d(TAG, "readyPackagesData_size: ${readyPackagesData.distinct().toList()}")
 
-        for ((ready_index, ready_package_data_item) in readyPackagesData.distinct().toList().withIndex()) {
+        for ((ready_index, ready_package_data_item) in readyPackagesData.distinct().toList()
+            .withIndex()) {
             for ((category_index, category_item) in list.withIndex()) {
                 if (ready_package_data_item.package_id == category_item.id) {
-                    Log.d(TAG, "ready_index:${ready_index}, ready_package_data_item:${category_item}")
+                    Log.d(
+                        TAG,
+                        "ready_index:${ready_index}, ready_package_data_item:${category_item}"
+                    )
                     readyPackagesCategory.add(
                         CategoryData(
                             category_id = category_item.id,
@@ -131,33 +141,51 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
             readyPackagesCategory.clear()
         }
 
-        for (item in readyPackagesDataList)
-        {
+        for (item in readyPackagesDataList) {
             Log.d(TAG, "setListOfDataToUI: ${item}")
         }
 
-        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this)
+        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this, this)
         adapter.submitList(readyPackagesDataList)
-        profile_all_packages_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
+        profile_all_packages_rv.layoutManager =
+            LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
         profile_all_packages_rv.adapter = adapter
 
 
     }
 
     override fun addReadyPackageToBasket(position: Int, readyPackagesData: ReadyPackagesData) {
-        Toast.makeText(this.requireContext(), "${readyPackagesData.packageData.package_id}", Toast.LENGTH_LONG).show()
-        viewModel.setStateEvent(event = ProfileStateEvent.AddItemReadyPackagesToBasket(package_item_id = readyPackagesData.packageData.package_id.toString()))
+        Toast.makeText(
+            this.requireContext(),
+            "${readyPackagesData.packageData.package_id}",
+            Toast.LENGTH_LONG
+        ).show()
+        viewModel.setStateEvent(
+            event = ProfileStateEvent.AddItemReadyPackagesToBasket(
+                package_item_id = readyPackagesData.packageData.package_id.toString()
+            )
+        )
+    }
+
+    override fun onShowPackageItem(position: Int, readyPackagesData: ReadyPackagesData) {
+        viewModel.editor.putInt("id", readyPackagesData.packageData.package_id)
+        val dialog = PopUpListOfReadyPackagesProductsFragment()
+        dialog.show(requireActivity().supportFragmentManager, "AllReadyPackage")
+
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             onDataStateChangeListener = context as OnDataStateChangeListener
-        }
-        catch (e:Exception)
-        {
+        } catch (e: Exception) {
             Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
         }
     }
+
+    companion object{
+        fun newInstance() = AllReadyPackagesFragment()
+    }
+
 
 }

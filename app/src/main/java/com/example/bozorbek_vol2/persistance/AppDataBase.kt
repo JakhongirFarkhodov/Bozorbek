@@ -11,14 +11,14 @@ import com.example.bozorbek_vol2.model.main.catalog.CatalogViewProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.paket.Paket
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.product_owner.ProductOwner
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
-import com.example.bozorbek_vol2.model.main.profile.Profile
-import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
-import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.model.main.profile.*
+import com.example.bozorbek_vol2.model.main.search.SearchProduct
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
+import com.example.bozorbek_vol2.persistance.main.search.SearchDao
 
 @Database(
     entities = [AccountProperties::class,
@@ -32,7 +32,10 @@ import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
         BasketOrderProduct::class,
         Profile::class,
         ProfileReadyPackages::class,
-        ProfileActiveOrHistoryOrder::class], version = 1
+        ProfileActiveOrHistoryOrder::class,
+        SearchProduct::class,
+        ProfileNotification::class,
+        ProfileReadyPackageId::class], version = 1
 )
 abstract class AppDataBase : RoomDatabase() {
 
@@ -50,6 +53,9 @@ abstract class AppDataBase : RoomDatabase() {
 
     //Profile
     abstract fun getProfileDao(): ProfileDao
+
+    //Search
+    abstract fun getSearchDao(): SearchDao
 
     companion object {
         const val DATABASE_NAME = "app_db"

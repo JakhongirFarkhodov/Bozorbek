@@ -3,20 +3,25 @@ package com.example.bozorbek_vol2.ui.main.search.fragment
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.auth.AuthToken
+import com.example.bozorbek_vol2.model.main.search.SearchProduct
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
+import com.example.bozorbek_vol2.ui.main.search.adapter.SearchProductAdapter
 import com.example.bozorbek_vol2.ui.main.search.state.SearchStateEvent
+import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment : BaseSearchFragment() {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
+    lateinit var adapter:SearchProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +36,30 @@ class SearchFragment : BaseSearchFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
+        searchOnClick()
 
+    }
+
+    private fun searchOnClick() {
+
+        edT_search.setOnEditorActionListener { textView, actionId, keyEvent ->
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH)
+            {
+                viewModel.setStateEvent(SearchStateEvent.SearchProductEvent(edT_search.text.toString()))
+                search_rec_bg.visibility = View.GONE
+                search_overView.visibility = View.GONE
+                go_main_mtv.visibility = View.GONE
+                fb_go_next.visibility = View.GONE
+                search_rv.visibility = View.VISIBLE
+                search_rounded_corners.visibility = View.VISIBLE
+                val param = mcv_search.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,40,0,0)
+                mcv_search.layoutParams = param
+            }
+
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun onResume() {
@@ -51,6 +79,13 @@ class SearchFragment : BaseSearchFragment() {
                         searchViewState.checkPreviousAuthUser?.let { checkPreviousAuthUser ->
                             viewModel.setTokens(checkPreviousAuthUser)
                         }
+                        searchViewState.searchProductList?.let { list ->
+                            if (!list.isEmpty())
+                            {
+                                Log.d(TAG, "searchProductList dataState: ${list}")
+                                viewModel.setSearchProductList(list)
+                            }
+                        }
                     }
                 }
             }
@@ -69,8 +104,24 @@ class SearchFragment : BaseSearchFragment() {
                     }
                 }
             }
+
+            searchViewState.searchProductList?.let { list ->
+                if (!list.isEmpty())
+                {
+                    setSearchProductList(list)
+                    Log.d(TAG, "searchProductList viewState: ${list}")
+                }
+            }
         })
     }
+
+    private fun setSearchProductList(list: List<SearchProduct>) {
+        adapter = SearchProductAdapter(requestManager)
+        adapter.submitList(list)
+        search_rv.adapter = adapter
+        search_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

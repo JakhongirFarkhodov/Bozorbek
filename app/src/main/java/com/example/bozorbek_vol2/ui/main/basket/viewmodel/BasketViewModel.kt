@@ -65,7 +65,13 @@ class BasketViewModel
             }
 
             is BasketStateEvent.None ->{
-                return AbsentLiveData.create()
+                return object : LiveData<DataState<BasketViewState>>()
+                {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.data(null, null)
+                    }
+                }
             }
         }
     }
@@ -104,5 +110,21 @@ class BasketViewModel
         val update = getCurrentViewStateOrCreateNew()
         update.basketGetAddressOrderList.list = list
         _viewState.value = update
+    }
+
+    fun handlePendingData()
+    {
+        setStateEvent(BasketStateEvent.None())
+    }
+
+    fun cancelActiveJob()
+    {
+        handlePendingData()
+        basketRepository.cancelActiveJob()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJob()
     }
 }

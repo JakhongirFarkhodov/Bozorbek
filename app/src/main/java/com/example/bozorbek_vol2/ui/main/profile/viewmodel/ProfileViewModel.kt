@@ -1,9 +1,8 @@
 package com.example.bozorbek_vol2.ui.main.profile.viewmodel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
-import com.example.bozorbek_vol2.model.main.profile.Profile
-import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
-import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.model.main.profile.*
 import com.example.bozorbek_vol2.repository.main.profile.ProfileRepository
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.BaseViewModel
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 class ProfileViewModel
     @Inject
-    constructor(val sessionManager: SessionManager, val profileRepository: ProfileRepository)
+    constructor(val sessionManager: SessionManager, val profileRepository: ProfileRepository, val sharedPreferences: SharedPreferences, val editor: SharedPreferences.Editor)
     : BaseViewModel<ProfileStateEvent, ProfileViewState>() {
     override fun initNewViewState(): ProfileViewState {
         return ProfileViewState()
@@ -38,7 +37,7 @@ class ProfileViewModel
 
             is ProfileStateEvent.GetProfileReadyPackages ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    profileRepository.getAllReadyPackages(auth_token = authToken)
+                    profileRepository.getAllReadyPackages(auth_token = authToken, type = stateEvent.type)
                 }?:AbsentLiveData.create()
             }
 
@@ -56,7 +55,20 @@ class ProfileViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is ProfileStateEvent.SetComplaints ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.setComplaints(authToken, title = stateEvent.title, text = stateEvent.text)
+                }?:AbsentLiveData.create()
+            }
 
+            is ProfileStateEvent.SetReadyPackageId ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.getReadyPackageById(
+                        auth_token = authToken,
+                        id = stateEvent.id
+                    )
+                }?:AbsentLiveData.create()
+            }
 
             is ProfileStateEvent.AddItemReadyPackagesToBasket ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
@@ -70,8 +82,20 @@ class ProfileViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is ProfileStateEvent.SetNotificationEvent ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.getNotification(authToken)
+                }?:AbsentLiveData.create()
+            }
+
             is ProfileStateEvent.None ->{
-                return AbsentLiveData.create()
+                return object : LiveData<DataState<ProfileViewState>>()
+                {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.data(null, null)
+                    }
+                }
             }
         }
     }
@@ -101,5 +125,36 @@ class ProfileViewModel
         _viewState.value = update
     }
 
+    fun setNotificationList(list:List<ProfileNotification>)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        update.profileNotificationList = list
+        _viewState.value = update
+    }
+
+    fun setProfileReadyPackageIdList(list:List<ProfileReadyPackageId>)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        update.profileReadyPackageIdList = list
+        _viewState.value = update
+    }
+
+
+
+    fun handlingPendingData()
+    {
+        setStateEvent(ProfileStateEvent.None())
+    }
+
+    fun cancelActiveJob()
+    {
+        handlingPendingData()
+        profileRepository.cancelActiveJob()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJob()
+    }
 
 }

@@ -37,7 +37,13 @@ class AuthViewModel
                 return AbsentLiveData.create()
             }
             is AuthStateEvent.None ->{
-                return AbsentLiveData.create()
+                return object : LiveData<DataState<AuthViewState>>()
+                {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.data(null, null)
+                    }
+                }
             }
         }
     }
@@ -84,5 +90,21 @@ class AuthViewModel
         }
         update.loginValue = loginValue
         _viewState.value = update
+    }
+
+    fun handlePendingData()
+    {
+        setStateEvent(AuthStateEvent.None())
+    }
+
+    fun cancelActiveJob()
+    {
+        handlePendingData()
+        authRepository.cancelActiveJob()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJob()
     }
 }

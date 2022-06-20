@@ -45,11 +45,13 @@ class LoginFragment : BaseAuthFragment() {
     private fun observeData() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             onDataStateChangeListener.onDataStateChange(dataState)
-            dataState.data?.let { data ->
-                data.data?.let { event ->
-                    event.getContentIfNotHandled()?.let { authViewState ->
-                        authViewState.loginValue?.let { loginValue ->
-                            viewModel.setLoginValue(loginValue)
+            if (dataState != null) {
+                dataState.data?.let { data ->
+                    data.data?.let { event ->
+                        event.getContentIfNotHandled()?.let { authViewState ->
+                            authViewState.loginValue?.let { loginValue ->
+                                viewModel.setLoginValue(loginValue)
+                            }
                         }
                     }
                 }
@@ -57,16 +59,18 @@ class LoginFragment : BaseAuthFragment() {
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { authViewState ->
-            authViewState.loginValue?.let { loginValue ->
-                Log.d(TAG, "observeData: ${loginValue}")
-                loginValue.access_token?.let { access_token ->
-                    loginValue.refreshToken?.let { refresh_token ->
-                        loginValue.phone_number?.let { phone_number ->
-                            sessionManager.login(authToken = AuthToken(
-                                account_phone_number = phone_number,
-                                access_token = access_token,
-                                refresh_token = refresh_token
-                            ))
+            if (authViewState != null) {
+                authViewState.loginValue?.let { loginValue ->
+                    Log.d(TAG, "observeData: ${loginValue}")
+                    loginValue.access_token?.let { access_token ->
+                        loginValue.refreshToken?.let { refresh_token ->
+                            loginValue.phone_number?.let { phone_number ->
+                                sessionManager.login(authToken = AuthToken(
+                                    account_phone_number = phone_number,
+                                    access_token = access_token,
+                                    refresh_token = refresh_token
+                                ))
+                            }
                         }
                     }
                 }

@@ -79,7 +79,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             else if (in_pieace)
             {
                 change_count_type = (view_catalog_count.text.toString().toInt() + 1).toString()
-                change_price_type = String.format("%,d", price_in_pieace * change_count_type.toInt()).replace(",",".")
+                change_price_type = String.format("%,d", price_in_pieace.toInt() * change_count_type.toInt()).replace(",",".")
                 view_catalog_count.setText(change_count_type)
                 view_product_price.setText("${change_price_type} Сум")
                 quantity = change_count_type.toInt()
@@ -109,7 +109,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                 }
                 else{
                     change_count_type = (view_catalog_count.text.toString().toInt() - 1).toString()
-                    change_price_type = String.format("%,d",price_in_pieace * change_count_type.toInt()).replace(",",".")
+                    change_price_type = String.format("%,d",price_in_pieace.toInt() * change_count_type.toInt()).replace(",",".")
                     view_catalog_count.setText(change_count_type)
                     view_product_price.setText("${change_price_type} Сум")
                     quantity = change_count_type.toInt()

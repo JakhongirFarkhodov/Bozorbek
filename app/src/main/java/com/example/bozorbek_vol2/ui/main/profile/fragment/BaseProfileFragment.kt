@@ -30,6 +30,7 @@ abstract class BaseProfileFragment : DaggerFragment() {
     lateinit var requestManager: RequestManager
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,6 +39,13 @@ abstract class BaseProfileFragment : DaggerFragment() {
         }?:throw Exception("Invalid value")
 
         setAppBarConfiguration(R.id.profileFragment, activity as DaggerAppCompatActivity)
+
+        cancelActiveJob()
+    }
+
+    fun cancelActiveJob()
+    {
+        viewModel.cancelActiveJob()
     }
 
     private fun setAppBarConfiguration(fragment: Int, activity: DaggerAppCompatActivity) {

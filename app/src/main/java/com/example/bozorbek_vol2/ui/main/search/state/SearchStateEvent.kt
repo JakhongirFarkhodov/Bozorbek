@@ -4,6 +4,8 @@ sealed class SearchStateEvent{
 
     class CheckPreviousAuthUser : SearchStateEvent()
 
+    data class SearchProductEvent(val query:String):SearchStateEvent()
+
     class None : SearchStateEvent()
 
 }

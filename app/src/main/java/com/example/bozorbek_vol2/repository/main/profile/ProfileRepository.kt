@@ -5,18 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.switchMap
 import com.example.bozorbek_vol2.model.auth.AuthToken
-import com.example.bozorbek_vol2.model.main.profile.Profile
-import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
-import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.model.main.profile.*
 import com.example.bozorbek_vol2.network.main.MainApiServices
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileComplaintsRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUpdatePasswordResponse
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUploadImageResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
+import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.DataState
@@ -42,8 +41,8 @@ constructor(
     val sessionManager: SessionManager,
     val apiServices: MainApiServices,
     val profileDao: ProfileDao
-) {
-    private var repositoryJob: Job? = null
+) : JobManager("ProfileRepository") {
+
 
     var product_owner_value_id = 0
     var product_owner_value = ""
@@ -127,15 +126,14 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getProfileInfo", job)
             }
 
         }.asLiveData()
     }
 
 
-    fun getAllReadyPackages(auth_token: AuthToken): LiveData<DataState<ProfileViewState>> {
+    fun getAllReadyPackages(auth_token: AuthToken, type:String): LiveData<DataState<ProfileViewState>> {
         return object :
             NetworkBoundResource<ProfileAllReadyPackagesResponse, List<ProfileReadyPackages>, ProfileViewState>(
                 isNetworkRequest = true,
@@ -225,12 +223,11 @@ constructor(
             }
 
             override fun createCall(): LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>> {
-                return apiServices.getAllReadyPackages("Bearer ${auth_token.access_token}")
+                return apiServices.getAllReadyPackages("Bearer ${auth_token.access_token}", type = type)
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getAllReadyPackages", job)
             }
 
         }.asLiveData()
@@ -302,8 +299,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("updateProfilePassword", job)
             }
 
         }.asLiveData()
@@ -357,8 +353,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("addItemReadyPackageToBasket", job)
             }
 
         }.asLiveData()
@@ -409,8 +404,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("uploadProfileImage", job)
             }
 
         }.asLiveData()
@@ -592,14 +586,253 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getProfileActiveOrHistoryOrder", job)
             }
 
         }.asLiveData()
     }
 
 
+    fun setComplaints(auth_token: AuthToken, title:String, text:String):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<ProfileComplaintsResponse, Any, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Any?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ProfileComplaintsResponse>) {
+                withContext(Main)
+                {
+                    onCompleteJob(DataState.data(data = null, response = Response(message = "Ваша жалаба отправлено", responseType = ResponseType.Toast())))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<ProfileComplaintsResponse>> {
+                return apiServices.setComplaint(token = "Bearer ${auth_token.access_token}", profileComplaints = ProfileComplaintsRequest(
+                    title, text
+                ))
+            }
+
+            override fun setJob(job: Job) {
+                addJob("setComplaints", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getNotification(auth_token: AuthToken):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<List<ProfileNotificationResponse>, List<ProfileNotification>, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { profileViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = profileViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                return profileDao.getAllNotification()?.switchMap {list ->
+                    object : LiveData<ProfileViewState>()
+                    {
+                        override fun onActive() {
+                            super.onActive()
+                            value = ProfileViewState(profileNotificationList = list)
+                        }
+                    }
+                }?:AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: List<ProfileNotification>?) {
+                cacheObject?.let { list ->
+                    withContext(IO)
+                    {
+                        for (item in list)
+                        {
+                            try {
+                                launch {
+                                    Log.d(TAG, "updateCache: Inserting data ${item}")
+                                    profileDao.insertNotification(item)
+                                }.join()
+                            }
+                            catch (e:Exception)
+                            {
+                                Log.d(TAG, "updateCache: Error inserting data:${item}")
+                            }
+                        }
+                    }
+                }
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<List<ProfileNotificationResponse>>) {
+                val notification_list = ArrayList<ProfileNotification>()
+                for (item in response.body)
+                {
+                    notification_list.add(
+                        ProfileNotification(
+                        id = item.id,
+                        title = item.title,
+                        content = item.content,
+                        to_customer = item.to_customer,
+                        created_at = item.created_at,
+                        is_read = item.is_read
+                    )
+                    )
+                }
+
+                updateCache(notification_list)
+                createCacheAndReturn()
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<List<ProfileNotificationResponse>>> {
+                return apiServices.getNotifications(token = "Bearer ${auth_token.access_token}")
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getNotification", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getReadyPackageById(auth_token: AuthToken, id:Int):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<ReadyPackageIdResponse, List<ProfileReadyPackageId>,ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { profileViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = profileViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                return profileDao.getProfileReadyPackageId()?.switchMap { list ->
+                    object : LiveData<ProfileViewState>()
+                    {
+                        override fun onActive() {
+                            super.onActive()
+                            value = ProfileViewState(profileReadyPackageIdList = list)
+                        }
+                    }
+                }?:AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: List<ProfileReadyPackageId>?) {
+                cacheObject?.let { list ->
+                    withContext(IO)
+                    {
+                        profileDao.deleteAllProfileReadyPackageId()
+                        for (item in list)
+                        {
+                            try {
+                                Log.d(TAG, "updateCache: Inserting readyPackageId data:${item}")
+                                profileDao.insertProfileReadyPackageId(item)
+                            }
+                            catch (e:Exception)
+                            {
+                                Log.d(TAG, "updateCache Error inserting readyPackageId data: ${item}")
+                            }
+                        }
+                    }
+                }
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ReadyPackageIdResponse>) {
+                val list = ArrayList<ProfileReadyPackageId>()
+                for (item in response.body.items)
+                {
+
+                        list.add(
+                            ProfileReadyPackageId(
+                                id = item.product_item.id,
+                                name = item.product_item.name,
+                                form = item.product_item.form,
+                                color = item.product_item.color,
+                                aroma = item.product_item.aroma,
+                                taste = item.product_item.taste,
+                                organic = item.product_item.organic,
+                                origin = item.product_item.origin,
+                                piece_size = item.product_item.piece_size,
+                                in_piece = item.product_item.in_piece,
+                                price_in_piece = item.product_item.price_in_piece.toFloat(),
+                                discount_in_piece = item.product_item.discount_in_piece,
+                                in_gramme = item.product_item.in_gramme,
+                                price_in_gramme = item.product_item.price_in_gramme * 1000,
+                                discount_in_gramme = item.product_item.discount_in_gramme,
+                                size_gramme = item.product_item.size_gramme,
+                                size_diameter = item.product_item.size_diameter,
+                                expiration = item.product_item.expiration,
+                                certification = item.product_item.certification,
+                                condition = item.product_item.condition,
+                                storage_temp = item.product_item.storage_temp,
+                                description = item.product_item.description,
+                                main_image = Constants.BASE_URL + item.product_item.main_image,
+                                product_name = item.product_item.product_name,
+                                large = item.product_item.large,
+                                large_percent = item.product_item.large_percent,
+                                middle = item.product_item.middle,
+                                middle_percent = item.product_item.middle_percent,
+                                small = item.product_item.small,
+                                small_percent = item.product_item.small_percent,
+                                quantity = item.quantity,
+                                unit = item.unit,
+                                size = item.size,
+                                price = item.price
+                        )
+                        )
+
+                }
+
+                updateCache(list)
+                createCacheAndReturn()
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<ReadyPackageIdResponse>> {
+                return apiServices.getReadyPackageById(
+                    token = "Bearer ${auth_token.access_token}",
+                    ready_package_id = id
+                )
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getReadyPackageById", job)
+            }
+
+        }.asLiveData()
+    }
 
     private fun onErrorFields(
         error_message: String,

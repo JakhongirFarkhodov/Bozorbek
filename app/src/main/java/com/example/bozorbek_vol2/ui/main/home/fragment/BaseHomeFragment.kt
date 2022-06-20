@@ -26,4 +26,6 @@ abstract class BaseHomeFragment : DaggerFragment() {
             activity, findNavController(), appBarConfiguration
         )
     }
+
+
 }

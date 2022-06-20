@@ -5,9 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.bozorbek_vol2.model.main.profile.Profile
-import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
-import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.model.main.profile.*
 
 @Dao
 interface ProfileDao {
@@ -58,6 +56,22 @@ interface ProfileDao {
 
     @Query("DELETE FROM profile_active_or_history_order")
     fun deleteAllActiveOrHistoryOrderItem()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNotification(profileNotification: ProfileNotification):Long
+
+    @Query("SELECT * FROM notification_table")
+    fun getAllNotification():LiveData<List<ProfileNotification>>?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProfileReadyPackageId(profileReadyPackageId: ProfileReadyPackageId):Long
+
+    @Query("SELECT * FROM profile_ready_package_id")
+    fun getProfileReadyPackageId():LiveData<List<ProfileReadyPackageId>>?
+
+    @Query("DELETE FROM profile_ready_package_id")
+    suspend fun deleteAllProfileReadyPackageId():Int
+
 
 
 }

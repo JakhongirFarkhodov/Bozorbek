@@ -1,20 +1,27 @@
 package com.example.bozorbek_vol2.ui.main.profile.fragment.menu
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment
+import com.example.bozorbek_vol2.ui.main.profile.state.ProfileStateEvent
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_ready_packages.*
 
 
 class ReadyPackagesFragment : BaseProfileFragment() {
 
+
+    lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,12 +34,6 @@ class ReadyPackagesFragment : BaseProfileFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val navController = findNavController(this.requireActivity(), R.id.ready_package_nav_host_fragment)
-//
-//        val navOptions: NavOptions = NavOptions.Builder()
-//            .setLaunchSingleTop(true)
-//            .setPopUpTo(navController.graph.startDestinationId, false)
-//            .build()
 
 
         if (profile_order_history_tab_layout.selectedTabPosition == 0)
@@ -74,6 +75,54 @@ class ReadyPackagesFragment : BaseProfileFragment() {
             }
 
         })
+
+        observeData()
+    }
+
+
+
+    private fun observeData() {
+       val id =  viewModel.sharedPreferences.getInt("id", 0)
+        if (id != 0)
+        {
+            viewModel.setStateEvent(event = ProfileStateEvent.SetReadyPackageId(id))
+            viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+                onDataStateChangeListener.onDataStateChange(dataState)
+                dataState.data?.let { data ->
+                    data.data?.let { event ->
+                        event.getContentIfNotHandled()?.let { profileViewState ->
+                            profileViewState.profileReadyPackageIdList?.let { list ->
+                                if (!list.isEmpty())
+                                {
+                                    Log.d(TAG, "profileReadyPackageIdList dataState: ${list}")
+                                    viewModel.setProfileReadyPackageIdList(list)
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+
+            viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+                viewState.profileReadyPackageIdList?.let { list ->
+                    if (!list.isEmpty())
+                    {
+                        Log.d(TAG, "profileReadyPackageIdList viewState: ${list}")
+                    }
+                }
+            })
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            onDataStateChangeListener = context as OnDataStateChangeListener
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG, "onAttach: ${context} must implement onDataStateChangeListener")
+        }
     }
 
 }

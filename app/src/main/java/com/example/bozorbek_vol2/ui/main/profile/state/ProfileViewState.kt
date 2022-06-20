@@ -1,14 +1,14 @@
 package com.example.bozorbek_vol2.ui.main.profile.state
 
-import com.example.bozorbek_vol2.model.main.profile.Profile
-import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
-import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackages
+import com.example.bozorbek_vol2.model.main.profile.*
 
 data class ProfileViewState(
 
     var profile: Profile? = null,
     var readyPackagesList: List<ProfileReadyPackages>? = ArrayList(),
-    var profileActiveOrHistoryOrder:List<ProfileActiveOrHistoryOrder>? = ArrayList()
+    var profileActiveOrHistoryOrder:List<ProfileActiveOrHistoryOrder>? = ArrayList(),
+    var profileNotificationList:List<ProfileNotification>? = ArrayList(),
+    var profileReadyPackageIdList:List<ProfileReadyPackageId>? = ArrayList()
 
 )
 

@@ -16,13 +16,17 @@ import com.example.bozorbek_vol2.network.auth.network_services.response.SetPassw
 import com.example.bozorbek_vol2.network.auth.network_services.response.VerifySmsCodeResponse
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
+import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.DataState
 import com.example.bozorbek_vol2.ui.Response
 import com.example.bozorbek_vol2.ui.ResponseType
 import com.example.bozorbek_vol2.ui.auth.state.*
-import com.example.bozorbek_vol2.util.*
+import com.example.bozorbek_vol2.util.AbsentLiveData
+import com.example.bozorbek_vol2.util.ApiSuccessResponse
+import com.example.bozorbek_vol2.util.GenericApiResponse
+import com.example.bozorbek_vol2.util.PreferenceKeys
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
@@ -34,10 +38,9 @@ class AuthRepository @Inject constructor(
     val authTokenDao: AuthTokenDao,
     val sessionManager: SessionManager,
     val sharedPreferencesEditor: SharedPreferences.Editor
-) {
+) : JobManager("AuthRepository") {
 
-    private val TAG = Constants.LOG
-    private var repositoryJob:Job? = null
+
 
     fun registrationResponse(first_name:String, phone_number:String):LiveData<DataState<AuthViewState>>
     {
@@ -78,8 +81,7 @@ class AuthRepository @Inject constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("registrationResponse", job)
             }
 
         }.asLiveData()
@@ -128,8 +130,7 @@ class AuthRepository @Inject constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("verifySmsCodeResponse", job)
             }
 
         }.asLiveData()
@@ -179,8 +180,7 @@ class AuthRepository @Inject constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("setPasswordResponse", job)
             }
 
         }.asLiveData()
@@ -245,8 +245,7 @@ class AuthRepository @Inject constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("loginResponse", job)
             }
 
         }.asLiveData()

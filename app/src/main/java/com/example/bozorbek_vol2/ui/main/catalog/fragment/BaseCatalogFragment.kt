@@ -36,6 +36,12 @@ abstract class BaseCatalogFragment : DaggerFragment() {
         }?:throw Exception("Invalid value")
 
         setAppBarConfiguration(R.id.catalogFragment, activity as DaggerAppCompatActivity)
+        cancelActiveJob()
+    }
+
+    fun cancelActiveJob()
+    {
+        viewModel.cancelActiveJob()
     }
 
     private fun setAppBarConfiguration(fragment: Int, activity: DaggerAppCompatActivity) {

@@ -2,7 +2,6 @@ package com.example.bozorbek_vol2.ui.main
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -14,12 +13,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.ui.BaseActivity
-import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
+import com.example.bozorbek_vol2.ui.main.basket.fragment.BaseBasketFragment
+import com.example.bozorbek_vol2.ui.main.catalog.fragment.BaseCatalogFragment
 import com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogProductFragment
 import com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogViewProductFragment
+import com.example.bozorbek_vol2.ui.main.home.fragment.BaseHomeFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
+import com.example.bozorbek_vol2.ui.main.search.fragment.BaseSearchFragment
 import com.example.bozorbek_vol2.util.BottomNavController
 import com.example.bozorbek_vol2.util.BottomNavController.*
 import com.example.bozorbek_vol2.util.setUpWithNavigation
@@ -111,26 +114,32 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     override fun getItemId(itemId: Int): Int {
         return when (itemId) {
             R.id.nav_home -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_home_nav_graph
             }
 
             R.id.nav_catalog -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_catalog_nav_graph
             }
 
             R.id.nav_search -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.search_color))
                 R.navigation.main_search_nav_graph
             }
 
             R.id.nav_basket -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_basket_nav_graph
             }
 
             R.id.nav_profile -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_profile_nav_graph
             }
 
             else -> {
+                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_home_nav_graph
             }
         }
@@ -138,6 +147,39 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
     override fun onNavigationGraphChange() {
         expendAppBar()
+        cancelActiveJobs()
+    }
+
+    private fun cancelActiveJobs() {
+        val fragments = bottomNavController.fragmentManager.findFragmentById(bottomNavController.containerId)?.childFragmentManager?.fragments
+        if (fragments != null)
+        {
+            for (fragment in fragments)
+            {
+                when(fragment)
+                {
+                    is BaseHomeFragment ->{
+
+                    }
+                    is BaseCatalogFragment ->{
+                        fragment.cancelActiveJob()
+                    }
+
+                    is BaseSearchFragment ->{
+                        fragment.cancelActiveJob()
+                    }
+                    is BaseBasketFragment ->{
+                        fragment.cancelActiveJob()
+                    }
+                    is BaseProfileFragment ->{
+                        fragment.cancelActiveJob()
+                    }
+
+                }
+
+            }
+        }
+        showProgressBar(false)
     }
 
     override fun onNavigationItemReselected(navController: NavController, fragment: Fragment) {

@@ -10,13 +10,14 @@ import com.example.bozorbek_vol2.network.main.network_services.catalog.response.
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileComplaintsRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUpdatePasswordResponse
-import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileUploadImageResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -33,15 +34,24 @@ interface MainApiServices {
 
     //Profile ready package
     @GET("/readypackages/")
-    fun getAllReadyPackages(@Header("Authorization") token: String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
+    fun getAllReadyPackages(@Header("Authorization") token: String, @Header("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
+
+    @GET("/readypackages/{id}")
+    fun getReadyPackageById(@Header("Authorization") token: String, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<ReadyPackageIdResponse>>
 
     @POST("/readypackages/add_to_cart/{id}/")
     fun addItemReadyPackageToBasket(@Header("Authorization") token: String, @Path("id") ready_package_id:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesAddItemToBasketResponse>>
+
+    @GET("/notifications/")
+    fun getNotifications(@Header("Authorization") token: String):LiveData<GenericApiResponse<List<ProfileNotificationResponse>>>
 
     //Update password
     @POST("/customer/update_password/")
     fun updateProfilePassword(@Header("Authorization") token: String, @Body profileUpdatePasswordRequest: ProfileUpdatePasswordRequest):LiveData<GenericApiResponse<ProfileUpdatePasswordResponse>>
 
+    //Complaints
+    @POST("/reviews/post_review/")
+    fun setComplaint(@Header("Authorization") token: String, @Body profileComplaints: ProfileComplaintsRequest) : LiveData<GenericApiResponse<ProfileComplaintsResponse>>
 
     //Catalog
     @GET("/products/categories/")
@@ -81,4 +91,8 @@ interface MainApiServices {
     @POST("/orders/approve_order/")
     fun approveOrder(@Header("Authorization") accessToken: String, @Body
     approveOrderRequest: ApproveOrderRequest):LiveData<GenericApiResponse<ApproveOrderResponse>>
+
+    //Search
+    @GET("/search/product/{query}")
+    fun searchProduct(@Path("query") query:String):LiveData<GenericApiResponse<SearchProductResponse>>
 }

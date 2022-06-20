@@ -5,7 +5,7 @@ class Constants {
     companion object{
         const val LOG = "AppDebug"
 
-        const val BASE_URL = "https://bozorbek.uz:8000"
+        const val BASE_URL = "https://bazarbek.uz:8000"
 
         const val GALLERY_REQUEST_CODE:Int = 201
         const val PERMISSION_REQUEST_READ_STORAGE:Int = 301

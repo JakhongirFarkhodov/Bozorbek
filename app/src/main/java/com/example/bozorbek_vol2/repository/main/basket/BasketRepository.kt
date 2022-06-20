@@ -15,9 +15,9 @@ import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
+import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
 import com.example.bozorbek_vol2.session.SessionManager
-import com.example.bozorbek_vol2.ui.Data
 import com.example.bozorbek_vol2.ui.DataState
 import com.example.bozorbek_vol2.ui.Response
 import com.example.bozorbek_vol2.ui.ResponseType
@@ -42,9 +42,8 @@ constructor(
     val apiServices: MainApiServices,
     val basketDao: BasketDao,
     val profileDao: ProfileDao
-) {
+) : JobManager("BasketRepository") {
 
-    private var repositoryJob: Job? = null
 
     fun getProfileInfo(authToken: AuthToken): LiveData<DataState<BasketViewState>> {
         return object : NetworkBoundResource<ProfileResponse, Profile, BasketViewState>(
@@ -100,8 +99,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getProfileInfo", job)
             }
 
         }.asLiveData()
@@ -218,8 +216,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+               addJob("getBasketProductOrderList", job)
             }
 
         }.asLiveData()
@@ -273,8 +270,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("removeBasketProductById", job)
             }
 
         }.asLiveData()
@@ -324,8 +320,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("setOrderAddress", job)
             }
 
         }.asLiveData()
@@ -364,8 +359,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getAddressList", job)
             }
 
         }.asLiveData()
@@ -407,11 +401,11 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("approveBasketOrder", job)
             }
 
         }.asLiveData()
     }
+
 
 }

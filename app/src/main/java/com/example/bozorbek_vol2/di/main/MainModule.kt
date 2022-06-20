@@ -8,6 +8,7 @@ import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
+import com.example.bozorbek_vol2.persistance.main.search.SearchDao
 import com.example.bozorbek_vol2.repository.main.basket.BasketRepository
 import com.example.bozorbek_vol2.repository.main.catalog.CatalogRepository
 import com.example.bozorbek_vol2.repository.main.profile.ProfileRepository
@@ -46,14 +47,25 @@ class MainModule {
         sessionManager: SessionManager,
         accountPropertiesDao: AccountPropertiesDao,
         authTokenDao: AuthTokenDao,
-        sharedPreferences: SharedPreferences
+        sharedPreferences: SharedPreferences,
+        searchDao: SearchDao,
+        apiServices: MainApiServices
     ): SearchRepository {
         return SearchRepository(
             accountPropertiesDao,
             authTokenDao,
             sessionManager,
-            sharedPreferences
+            sharedPreferences,
+            apiServices,
+            searchDao
         )
+    }
+
+    @MainScope
+    @Provides
+    fun providesSearchDao(dataBase: AppDataBase):SearchDao
+    {
+        return dataBase.getSearchDao()
     }
 
     @MainScope

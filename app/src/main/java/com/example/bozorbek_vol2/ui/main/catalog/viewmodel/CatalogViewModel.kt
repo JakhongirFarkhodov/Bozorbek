@@ -56,7 +56,13 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
             }
 
             is None -> {
-                return AbsentLiveData.create()
+                return return object : LiveData<DataState<CatalogViewState>>()
+                {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.data(null, null)
+                    }
+                }
             }
         }
     }
@@ -92,6 +98,20 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
         _viewState.value = update
     }
 
+    fun handlePendingData()
+    {
+        setStateEvent(event = CatalogStateEvent.None())
+    }
 
+    fun cancelActiveJob()
+    {
+        handlePendingData()
+        catalogRepository.cancelActiveJob()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJob()
+    }
 
 }

@@ -37,6 +37,12 @@ abstract class BaseBasketFragment : DaggerFragment() {
 
         setAppBarConfiguration(R.id.basketFragment, activity as DaggerAppCompatActivity)
 
+        cancelActiveJob()
+    }
+
+    fun cancelActiveJob()
+    {
+        viewModel.cancelActiveJob()
     }
 
     private fun setAppBarConfiguration(fragment: Int, activity: DaggerAppCompatActivity) {

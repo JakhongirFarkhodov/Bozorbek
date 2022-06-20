@@ -19,6 +19,7 @@ import com.example.bozorbek_vol2.network.main.network_services.catalog.response.
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
+import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.DataState
@@ -44,8 +45,7 @@ constructor(
     val sessionManager: SessionManager,
     val catalogDao: CatalogDao,
     val apiServices: MainApiServices
-) {
-    private var repositoryJob: Job? = null
+) : JobManager("CatalogRepository") {
 
     var product_owner_value_id = 0
     var product_owner_value = ""
@@ -137,8 +137,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getCatalogList", job)
             }
 
         }.asLiveData()
@@ -224,8 +223,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getCatalogProduct", job)
             }
 
         }.asLiveData()
@@ -470,8 +468,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("getCatalogViewProduct", job)
             }
 
         }.asLiveData()
@@ -538,8 +535,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+               addJob("getSelectedCatalogViewProduct", job)
             }
 
         }.asLiveData()
@@ -614,8 +610,7 @@ constructor(
             }
 
             override fun setJob(job: Job) {
-                repositoryJob?.cancel()
-                repositoryJob = job
+                addJob("addItemCatalogViewProduct", job)
             }
 
         }.asLiveData()

@@ -1,14 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.profile.fragment.menu.ComplaintsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/complaints_mcv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_margin="@dimen/_15sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/complaints_edT"
+                    android:layout_height="match_parent"
+                    android:background="#E0F3FF"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollHorizontally="false"
+                    android:hint="Причина жалобы?"
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/complaints_staige_mcv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_270sdp"
+            android:layout_margin="@dimen/_12sdp"
+            app:cardBackgroundColor="#F1EDFC"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/complaints_mcv">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/complaints_stage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="Стадия жалобы"
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/rude_courier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Грубый курьер"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/complaints_stage" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/poor_quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="Приехало в плохом качестве"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintTop_toBottomOf="@id/rude_courier" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/products_spilled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="Продукты разлились"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/poor_quality" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/order_took_too_long"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="Заказ слишком долго собирался"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintTop_toBottomOf="@id/products_spilled" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/bad_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="Плохая доставка"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/order_took_too_long" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="Другое"
+                    android:textColor="@color/fruit_grey"
+                    android:textStyle="bold"
+                    android:alpha="0.8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/bad_delivery" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:id="@+id/setComplaint_btn"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/complaints_staige_mcv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Отправить"
+            android:textAllCaps="false"
+            android:paddingVertical="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_25sdp"
+            android:elevation="@dimen/_10sdp"
+            android:textSize="@dimen/_13sdp"
+            app:cornerRadius="@dimen/_7sdp"
+            android:backgroundTint="@color/fruit_light_green"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
