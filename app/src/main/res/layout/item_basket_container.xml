@@ -84,12 +84,14 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/item_mtv_product_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
             android:text="Симиренко"
+            android:textAlignment="textStart"
             android:textColor="@color/fruit_text_color"
             app:layout_constraintBottom_toBottomOf="@id/item_mtv_weight"
+            app:layout_constraintEnd_toStartOf="@+id/item_cancel_image_basket"
             app:layout_constraintStart_toEndOf="@id/item_imv_basket_dot"
             app:layout_constraintTop_toTopOf="@id/item_mtv_weight" />
 

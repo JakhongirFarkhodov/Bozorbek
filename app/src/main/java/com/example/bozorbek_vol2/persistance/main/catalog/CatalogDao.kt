@@ -75,4 +75,29 @@ interface CatalogDao {
     @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value")
     fun getCatalogViewProductBySortValue(sort_value:String):LiveData<List<CatalogViewProduct>>?
 
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value")
+    fun getCatalogViewProductBySortAndProductOwnerValue(sort_value: String, productOwner_value:String):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value")
+    fun getCatalogViewProductBySortAndProductOwnerAndPaketValue(sort_value: String, productOwner_value: String, paket_value:String):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value AND in_gramme ==:in_gramme")
+    fun getCatalogViewProductByGramme(sort_value: String, productOwner_value: String, paket_value:String, in_gramme:Boolean):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value AND in_piece ==:in_piece")
+    fun getCatalogViewProductByPiece(sort_value: String, productOwner_value: String, paket_value:String, in_piece:Boolean):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value AND in_piece ==:in_piece AND in_gramme ==:in_gramme AND large ==:large")
+    fun getCatalogViewProductBySizeLarge(sort_value: String, productOwner_value: String, paket_value:String, in_gramme: Boolean, in_piece:Boolean, large:Boolean):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value AND in_piece ==:in_piece AND in_gramme ==:in_gramme AND middle ==:middle")
+    fun getCatalogViewProductBySizeMiddle(sort_value: String, productOwner_value: String, paket_value:String, in_gramme: Boolean, in_piece:Boolean, middle:Boolean):LiveData<List<CatalogViewProduct>>?
+
+    @Query("SELECT * FROM catalog_view_product_table WHERE sort_value ==:sort_value AND product_owner_value ==:productOwner_value AND paket_value ==:paket_value AND in_piece ==:in_piece AND in_gramme ==:in_gramme AND small ==:small")
+    fun getCatalogViewProductBySizeSmall(sort_value: String, productOwner_value: String, paket_value:String, in_gramme: Boolean, in_piece:Boolean, small:Boolean):LiveData<List<CatalogViewProduct>>?
+
+
+
+
+
 }

@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.catalog.CatalogProduct
-import kotlinx.android.synthetic.main.fragment_view_catalog.view.*
-import kotlinx.android.synthetic.main.item_catalog.view.*
 import kotlinx.android.synthetic.main.item_catalog_product.view.*
 
 class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: OnCatalogProductItemClickListener, val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,7 +25,8 @@ class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: O
             is CatalogProductAdapter.CatalogProductViewHolder ->{
                 holder.bind(differConfig.currentList[position])
                 holder.itemView.catalog_product_constraint.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
-            }
+
+             }
         }
     }
 
@@ -84,8 +84,19 @@ class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: O
             }
 
             itemView.item_catalog_product_title.text = item.name
-            itemView.item_catalog_product_price.text = "${item.price} Сум"
-            requestManager.load(item.image).into(itemView.item_catalog_product_image)
+            if(item.unit.equals("GRAMME"))
+            {
+                val price = String.format("%,d", (item.price * 1000).toInt()).replace(",", ".")
+                itemView.item_catalog_product_price.text = "${price} Сум"
+                itemView.item_catalog_product_second_price.text = price
+            }
+            else{
+                val price = String.format("%,d", item.price.toInt()).replace(",", ".")
+                itemView.item_catalog_product_price.text = "${price} Сум"
+                itemView.item_catalog_product_second_price.text = price
+            }
+
+            requestManager.load(item.image).transition(withCrossFade()).into(itemView.item_catalog_product_image)
         }
     }
 

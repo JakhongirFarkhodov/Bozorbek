@@ -345,7 +345,7 @@ constructor(
                 var product_owner_list = ArrayList<ProductOwner>()
 
                 for (parameters in response.body.parameters) {
-                    if (parameters.id == 1) {
+                    if (parameters.name.equals("Сорт")) {
                         for (sort in parameters.values) {
                             sort_list.add(
                                 Sort(
@@ -356,7 +356,7 @@ constructor(
                                 )
                             )
                         }
-                    } else if (parameters.id == 2) {
+                    } else if (parameters.name.equals("Упаковка")) {
                         for (paket in parameters.values) {
                             paket_list.add(
                                 Paket(
@@ -368,7 +368,7 @@ constructor(
                                 )
                             )
                         }
-                    } else if (parameters.id == 3) {
+                    } else if (parameters.name.equals("Производитель")) {
                         for (product_owner in parameters.values) {
                             product_owner_list.add(
                                 ProductOwner(
@@ -386,17 +386,17 @@ constructor(
                 for (items in response.body.items) {
                     if (!items.features.isEmpty()) {
                         for (features in items.features) {
-                            if (features.parameter_id == 1) {
+                            if (features.parameter.equals("Сорт")) {
                                 sort_parameter_id = features.parameter_id
                                 sort_parameter = features.parameter
                                 sort_value_id = features.value_id
                                 sort_value = features.value
-                            } else if (features.parameter_id == 2) {
+                            } else if (features.parameter.equals("Упаковка")) {
                                 paket_parameter_id = features.parameter_id
                                 paket_parameter = features.parameter
                                 paket_value_id = features.value_id
                                 paket_value = features.value
-                            } else if (features.parameter_id == 3) {
+                            } else if (features.parameter.equals("Производитель")) {
                                 product_owner_parameter_id = features.parameter_id
                                 product_owner_parameter = features.parameter
                                 product_owner_value_id = features.value_id
@@ -431,11 +431,11 @@ constructor(
                                 main_image = Constants.BASE_URL + items.main_image,
                                 product_name = items.product_name,
                                 large = items.large,
-                                large_percent = items.large_percent,
+                                large_percent = items.large_percent/100,
                                 middle = items.middle,
-                                middle_percent = items.middle_percent,
+                                middle_percent = items.middle_percent/100,
                                 small = items.small,
-                                small_percent = items.small_percent,
+                                small_percent = items.small_percent/100,
                                 sort_parameter_id = sort_parameter_id,
                                 sort_parameter = sort_parameter,
                                 sort_value_id = sort_value_id,
@@ -536,6 +536,450 @@ constructor(
 
             override fun setJob(job: Job) {
                addJob("getSelectedCatalogViewProduct", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductBySortAndProductOwnerValue(sortValue: String, productOwner_value:String):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<Void, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        ){
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sortValue, productOwner_value)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+               addJob("getCatalogViewProductBySortAndProductOwnerValue", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductBySortAndProductOwnerAndPaketValue(sort_value: String, productOwner_value: String, paket_value:String):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        ){
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySortAndProductOwnerAndPaketValue(sort_value, productOwner_value, paket_value)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductBySortAndProductOwnerAndPaketValue", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductByGramme(sort_value: String, productOwner_value: String, paket_value:String, gramme:Boolean):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        ){
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductByGramme(sort_value, productOwner_value, paket_value, gramme)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductByGramme", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductByPiece(sort_value: String, productOwner_value: String, paket_value:String, piece:Boolean):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        ){
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductByPiece(sort_value, productOwner_value, paket_value, piece)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductByPiece", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductBySizeLarge(sort_value: String, productOwner_value: String, paket_value:String, in_gramme:Boolean, in_piece:Boolean, large:Boolean):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<Void, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, large)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductBySize", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductBySizeMiddle(sort_value: String, productOwner_value: String, paket_value:String, in_gramme:Boolean, in_piece:Boolean, middle:Boolean):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<Void, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, middle)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductBySizeMiddle", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getCatalogViewProductBySizeSmall(sort_value: String, productOwner_value: String, paket_value:String, in_gramme:Boolean, in_piece:Boolean, small:Boolean):LiveData<DataState<CatalogViewState>>
+    {
+        return object : NetworkBoundResource<Void, Void, CatalogViewState>(
+            isNetworkRequest = false,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { catalogViewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = catalogViewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<CatalogViewState> {
+                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, small)
+                                ?.switchMap { catalogViewProduct_list ->
+                                    object : LiveData<CatalogViewState>() {
+                                        override fun onActive() {
+                                            super.onActive()
+                                            value = CatalogViewState(
+                                                parametersValue = ParametersValue(
+                                                    sort = sort_list,
+                                                    paket = paket_list,
+                                                    productOwner = product_owner_list,
+                                                    items = catalogViewProduct_list
+                                                )
+                                            )
+                                        }
+                                    }
+                                } ?: AbsentLiveData.create()
+                        } ?: AbsentLiveData.create()
+                    } ?: AbsentLiveData.create()
+                } ?: AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return AbsentLiveData.create()
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getCatalogViewProductBySizeSmall", job)
             }
 
         }.asLiveData()

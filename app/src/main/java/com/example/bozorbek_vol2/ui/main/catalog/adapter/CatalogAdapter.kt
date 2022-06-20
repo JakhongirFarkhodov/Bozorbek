@@ -101,7 +101,7 @@ class CatalogAdapter constructor(val onCatalogItemClickListener: OnCatalogItemCl
 
             itemView.item_catalog_title.text = item.name
             val base_url = Constants.BASE_URL + item.get_image
-            requestManager.load(base_url).into(itemView.item_catalog_image)
+            requestManager.load(base_url).transition(withCrossFade()).into(itemView.item_catalog_image)
         }
     }
 

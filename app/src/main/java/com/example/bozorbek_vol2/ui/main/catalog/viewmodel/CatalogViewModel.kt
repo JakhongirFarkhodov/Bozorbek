@@ -43,6 +43,34 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
                 return catalogRepository.getSelectedCatalogViewProduct(sortValue = stateEvent.sort_value)
             }
 
+            is GetCatalogViewProductBySortAndProductOwnerValue ->{
+                return catalogRepository.getCatalogViewProductBySortAndProductOwnerValue(stateEvent.sort_value, stateEvent.productOwner_value)
+            }
+
+            is GetCatalogViewProductBySortAndProductOwnerAndPaketValue ->{
+                return catalogRepository.getCatalogViewProductBySortAndProductOwnerAndPaketValue(stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value)
+            }
+
+            is GetCatalogViewProductByGramme ->{
+                return catalogRepository.getCatalogViewProductByGramme(stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value, stateEvent.gramme)
+            }
+
+            is GetCatalogViewProductByPiece ->{
+                return catalogRepository.getCatalogViewProductByPiece(stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value, stateEvent.piece)
+            }
+
+            is GetCatalogViewProductBySizeLarge ->{
+                return catalogRepository.getCatalogViewProductBySizeLarge(
+                    stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value, stateEvent.gramme, stateEvent.piece, stateEvent.large)
+            }
+            is GetCatalogViewProductBySizeMiddle ->{
+                return catalogRepository.getCatalogViewProductBySizeMiddle(
+                    stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value, stateEvent.gramme, stateEvent.piece, stateEvent.middle)
+            }
+            is GetCatalogViewProductBySizeSmall ->{
+                return catalogRepository.getCatalogViewProductBySizeSmall(
+                    stateEvent.sort_value, stateEvent.productOwner_value, stateEvent.paket_value, stateEvent.gramme, stateEvent.piece, stateEvent.small)
+            }
             is AddCatalogOrderItem ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
                     catalogRepository.addItemCatalogViewProduct(
