@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.auth.AuthToken
@@ -18,7 +20,7 @@ import com.example.bozorbek_vol2.ui.main.search.state.SearchStateEvent
 import kotlinx.android.synthetic.main.fragment_search.*
 
 
-class SearchFragment : BaseSearchFragment() {
+class SearchFragment : BaseSearchFragment(), SearchProductAdapter.OnSearchItemClickListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
     lateinit var adapter:SearchProductAdapter
@@ -116,10 +118,24 @@ class SearchFragment : BaseSearchFragment() {
     }
 
     private fun setSearchProductList(list: List<SearchProduct>) {
-        adapter = SearchProductAdapter(requestManager)
+        adapter = SearchProductAdapter(requestManager, this)
         adapter.submitList(list)
         search_rv.adapter = adapter
         search_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    override fun onSearchItemClick(position: Int, searchProduct: SearchProduct) {
+        val text = searchProduct.absolute_url.split("/")
+        Log.d(TAG, "onSearchItemClick: ${text}")
+        val category_slug = text[1].replace(" ","")
+        val product_slug = text[2].replace(" ","")
+        val action = SearchFragmentDirections.actionSearchFragmentToSearchCatalogViewProductFragment(
+            categorySlug = category_slug,
+            productSlug = product_slug
+        )
+        findNavController().navigate(action)
+
+        Toast.makeText(this.requireContext(), "${category_slug}\n${product_slug}", Toast.LENGTH_LONG).show()
     }
 
 
@@ -132,5 +148,6 @@ class SearchFragment : BaseSearchFragment() {
             Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
         }
     }
+
 
 }

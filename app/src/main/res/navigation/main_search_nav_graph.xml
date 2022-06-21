@@ -9,5 +9,26 @@
         android:id="@+id/searchFragment"
         android:name="com.example.bozorbek_vol2.ui.main.search.fragment.SearchFragment"
         android:label="Поиск"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchCatalogViewProductFragment"
+            app:destination="@id/searchCatalogViewProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/searchCatalogViewProductFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.search.fragment.SearchCatalogViewProductFragment"
+        android:label="fragment_search_catalog_view_product"
+        tools:layout="@layout/fragment_search_catalog_view_product" >
+        <argument
+            android:name="category_slug"
+            app:argType="string" />
+        <argument
+            android:name="product_slug"
+            app:argType="string" />
+    </fragment>
 </navigation>

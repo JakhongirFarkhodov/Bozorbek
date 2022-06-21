@@ -15,6 +15,7 @@ import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fra
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment
+import com.example.bozorbek_vol2.ui.main.search.fragment.SearchCatalogViewProductFragment
 import com.example.bozorbek_vol2.ui.main.search.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -45,6 +46,9 @@ abstract class MainFragmentBuildersModule {
     //Search
     @ContributesAndroidInjector
     abstract fun contributesSearchFragment(): SearchFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesSearchCatalogViewProductFragment():SearchCatalogViewProductFragment
 
     //Basket
     @ContributesAndroidInjector

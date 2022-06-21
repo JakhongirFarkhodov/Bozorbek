@@ -990,49 +990,50 @@ constructor(
         return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, CatalogViewState>(
             isNetworkRequest = true,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = true,
+            shouldUseCacheObject = false,
             cancelJobIfNoInternet = true
         )
         {
             override suspend fun createCacheAndReturn() {
-                withContext(Main)
-                {
-                    val loadCache = loadFromCache()
-                    result.addSource(loadCache, Observer { catalogViewState ->
-                        result.removeSource(loadCache)
-                        onCompleteJob(
-                            dataState = DataState.data(
-                                data = catalogViewState,
-                                response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())
-                            )
-                        )
-                    })
-                }
+//                withContext(Main)
+//                {
+//                    val loadCache = loadFromCache()
+//                    result.addSource(loadCache, Observer { catalogViewState ->
+//                        result.removeSource(loadCache)
+//                        onCompleteJob(
+//                            dataState = DataState.data(
+//                                data = null,
+//                                response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())
+//                            )
+//                        )
+//                    })
+//                }
             }
 
             override fun loadFromCache(): LiveData<CatalogViewState> {
-                return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortValue(sortValue)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<CatalogViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = CatalogViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
-                        } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
-                } ?: AbsentLiveData.create()
+                return AbsentLiveData.create()
+//                return catalogDao.getAllSortData()?.switchMap { sort_list ->
+//                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
+//                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
+//                            catalogDao.getCatalogViewProductBySortValue(sortValue)
+//                                ?.switchMap { catalogViewProduct_list ->
+//                                    object : LiveData<CatalogViewState>() {
+//                                        override fun onActive() {
+//                                            super.onActive()
+//                                            value = CatalogViewState(
+//                                                parametersValue = ParametersValue(
+//                                                    sort = sort_list,
+//                                                    paket = paket_list,
+//                                                    productOwner = product_owner_list,
+//                                                    items = catalogViewProduct_list
+//                                                )
+//                                            )
+//                                        }
+//                                    }
+//                                } ?: AbsentLiveData.create()
+//                        } ?: AbsentLiveData.create()
+//                    } ?: AbsentLiveData.create()
+//                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Void?) {
@@ -1040,7 +1041,11 @@ constructor(
             }
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<CatalogAddOrderItemResponse>) {
-                createCacheAndReturn()
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())))
+                }
+//                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {

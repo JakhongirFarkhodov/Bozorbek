@@ -49,7 +49,8 @@ class MainModule {
         authTokenDao: AuthTokenDao,
         sharedPreferences: SharedPreferences,
         searchDao: SearchDao,
-        apiServices: MainApiServices
+        apiServices: MainApiServices,
+        catalogDao: CatalogDao
     ): SearchRepository {
         return SearchRepository(
             accountPropertiesDao,
@@ -57,7 +58,7 @@ class MainModule {
             sessionManager,
             sharedPreferences,
             apiServices,
-            searchDao
+            searchDao, catalogDao
         )
     }
 

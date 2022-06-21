@@ -12,10 +12,10 @@ import com.example.bozorbek_vol2.model.main.search.SearchProduct
 import com.example.bozorbek_vol2.util.Constants
 import kotlinx.android.synthetic.main.item_search_product.view.*
 
-class SearchProductAdapter(val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchProductAdapter(val requestManager: RequestManager, val onSearchItemClickListener: OnSearchItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_product, parent, false), requestManager)
+        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_product, parent, false), requestManager, onSearchItemClickListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -51,12 +51,19 @@ class SearchProductAdapter(val requestManager: RequestManager) : RecyclerView.Ad
         differConfig.submitList(newList)
     }
 
-    inner class SearchViewHolder(itemView:View, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView){
+    inner class SearchViewHolder(itemView:View, val requestManager: RequestManager, val onSearchItemClickListener: OnSearchItemClickListener) : RecyclerView.ViewHolder(itemView){
         fun bind(item:SearchProduct)
         {
+            itemView.setOnClickListener {
+                onSearchItemClickListener.onSearchItemClick(absoluteAdapterPosition, item)
+            }
             itemView.search_product_item_name_mtv.setText(item.name)
             requestManager.load(Constants.BASE_URL + item.absolute_url).into(itemView.search_product_item_imv)
         }
+    }
+
+    interface OnSearchItemClickListener{
+        fun onSearchItemClick(position: Int, searchProduct: SearchProduct)
     }
 
 }
