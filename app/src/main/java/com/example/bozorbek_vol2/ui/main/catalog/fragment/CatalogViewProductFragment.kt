@@ -337,7 +337,9 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                     }
 
                     view_product_overview.setText(items.description)
-
+                    in_small_selected = items.small
+                    in_middle_selected = items.middle
+                    in_large_selected = items.large
                 }
             }
         }
@@ -369,7 +371,9 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         else if (filter_selected == 4)
         {
             filer_other = 4
-            view_product_txIL_size.visibility = View.VISIBLE
+            if (in_small_selected || in_middle_selected || in_large_selected) {
+                view_product_txIL_size.visibility = View.VISIBLE
+            }
         }
         else if (filter_selected == 0)
         {
@@ -461,9 +465,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         }
 
         view_product_weight_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-
             observeWeightClickListener(position)
-
         }
 
 

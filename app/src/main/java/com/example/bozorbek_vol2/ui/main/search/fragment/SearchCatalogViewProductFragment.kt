@@ -340,6 +340,9 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
                     search_view_product_overview.setText(items.description)
 
                 }
+                in_small_selected = items.small
+                in_middle_selected = items.middle
+                in_large_selected = items.large
             }
         }
         else{
@@ -370,7 +373,9 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         else if (filter_selected == 4)
         {
             filer_other = 4
-            search_view_product_txIL_size.visibility = View.VISIBLE
+            if (in_small_selected || in_middle_selected || in_large_selected) {
+                search_view_product_txIL_size.visibility = View.VISIBLE
+            }
         }
         else if (filter_selected == 0)
         {
