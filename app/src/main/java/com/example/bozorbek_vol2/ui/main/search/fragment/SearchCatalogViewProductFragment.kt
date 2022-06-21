@@ -282,11 +282,9 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
                         weight_list.add("Килограмм")
 
-
-
                         in_gramme = true
                         in_pieace = false
-                        price_in_gramme = sum_of_price.toFloat() * 1000
+                        price_in_gramme = items.price_in_gramme
                         quantity = (change_count_type.toFloat() * 1000).toInt()
                     }
                     else if (items.in_piece && !items.in_gramme)
@@ -317,7 +315,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
                         in_gramme = false
                         in_pieace = true
-                        price_in_pieace = sum_of_price.toFloat() * 1000
+                        price_in_pieace = items.price_in_piece
                         quantity = (change_count_type.toFloat()).toInt()
                     }
                     else if (items.in_piece && items.in_gramme)
