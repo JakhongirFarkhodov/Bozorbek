@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "19eaf5fa2d318fedb06d1f9c8629f7eb",
+    "identityHash": "514b7905722b0b2fe2e77a2e76b944b3",
     "entities": [
       {
         "tableName": "account_properties",
@@ -556,8 +556,14 @@
       },
       {
         "tableName": "basket_order_product_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`basket_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `basket_product_item_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, `name` TEXT, `product_name` TEXT, `form` TEXT, `color` TEXT, `aroma` TEXT, `taste` TEXT, `organic` INTEGER NOT NULL, `origin` TEXT, `piece_size` TEXT, `in_piece` INTEGER NOT NULL, `price_in_piece` INTEGER NOT NULL, `discount_in_piece` REAL NOT NULL, `in_gramme` INTEGER NOT NULL, `price_in_gramme` REAL NOT NULL, `sum_price_gramme` REAL NOT NULL, `discount_in_gramme` REAL NOT NULL, `size_gramme` REAL NOT NULL, `sum_of_size` REAL NOT NULL, `size_diameter` INTEGER NOT NULL, `expiration` TEXT, `certification` TEXT, `condition` TEXT, `storage_temp` TEXT, `description` TEXT, `main_image` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`count_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `basket_id` INTEGER NOT NULL, `basket_product_item_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, `name` TEXT, `product_name` TEXT, `form` TEXT, `color` TEXT, `aroma` TEXT, `taste` TEXT, `organic` INTEGER NOT NULL, `origin` TEXT, `piece_size` TEXT, `in_piece` INTEGER NOT NULL, `price_in_piece` INTEGER NOT NULL, `discount_in_piece` REAL NOT NULL, `in_gramme` INTEGER NOT NULL, `price_in_gramme` REAL NOT NULL, `sum_price_gramme` REAL NOT NULL, `discount_in_gramme` REAL NOT NULL, `size_gramme` REAL NOT NULL, `sum_of_size` REAL NOT NULL, `size_diameter` INTEGER NOT NULL, `expiration` TEXT, `certification` TEXT, `condition` TEXT, `storage_temp` TEXT, `description` TEXT, `main_image` TEXT)",
         "fields": [
+          {
+            "fieldPath": "count_id",
+            "columnName": "count_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "basket_id",
             "columnName": "basket_id",
@@ -729,7 +735,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "basket_id"
+            "count_id"
           ],
           "autoGenerate": true
         },
@@ -1520,7 +1526,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '19eaf5fa2d318fedb06d1f9c8629f7eb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '514b7905722b0b2fe2e77a2e76b944b3')"
     ]
   }
 }

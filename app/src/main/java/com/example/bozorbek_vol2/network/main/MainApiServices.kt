@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.AddAddressOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.ApproveOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.BasketRemoveProductRequest
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.save_package.SaveReadyPackageRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalog.CatalogResponse
@@ -36,11 +37,16 @@ interface MainApiServices {
     @GET("/readypackages/")
     fun getAllReadyPackages(@Header("Authorization") token: String, @Header("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
 
+    @POST("/readypackages/")
+    fun setCreatedReadyPackage(@Header("Authorization") token: String, @Body saveReadyPackageRequest: SaveReadyPackageRequest):LiveData<GenericApiResponse<SaveReadyPackageResponse>>
+
     @GET("/readypackages/{id}")
     fun getReadyPackageById(@Header("Authorization") token: String, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<ReadyPackageIdResponse>>
 
     @POST("/readypackages/add_to_cart/{id}/")
     fun addItemReadyPackageToBasket(@Header("Authorization") token: String, @Path("id") ready_package_id:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesAddItemToBasketResponse>>
+
+
 
     @GET("/notifications/")
     fun getNotifications(@Header("Authorization") token: String):LiveData<GenericApiResponse<List<ProfileNotificationResponse>>>

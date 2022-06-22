@@ -64,6 +64,12 @@ class BasketViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is BasketStateEvent.SetCreatedReadyPackage ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    basketRepository.setCreatedReadyPackage(authToken, stateEvent.saveReadyPackageRequest)
+                }?:AbsentLiveData.create()
+            }
+
             is BasketStateEvent.None ->{
                 return object : LiveData<DataState<BasketViewState>>()
                 {

@@ -26,6 +26,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_all_ready_packages.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_basket.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_basket_map.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_basket_show_dilaog.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_catalog.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_company_info.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_complaints.xml" value="0.22826086956521738" />
@@ -56,6 +57,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_notification.xml" value="0.264" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_ready_package.xml" value="0.2" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_ready_packages_category.xml" value="0.25" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_save_created_package.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_search_product.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/menu/main_bottom_navigation_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/menu/main_bottom_sheet.xml" value="0.25416666666666665" />

@@ -16,7 +16,7 @@
             android:id="@+id/lottie_constraint_basket"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
             android:id="@+id/constraint_basket"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mcv_recyclerView_basket"
@@ -496,10 +496,29 @@
                         android:textAllCaps="false"
                         android:textSize="17sp"
                         app:cornerRadius="7dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/card_view_send_comment" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/basket_save_order_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="50dp"
+                        android:backgroundTint="@color/fruit_light_dark_blue"
+                        android:elevation="10dp"
+                        android:text="Сохранить заказ"
+                        android:textAllCaps="false"
+                        android:textSize="17sp"
+                        app:cornerRadius="7dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/basket_send_order_button" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

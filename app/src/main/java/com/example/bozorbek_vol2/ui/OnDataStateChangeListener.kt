@@ -1,5 +1,7 @@
 package com.example.bozorbek_vol2.ui
 
+import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+
 interface OnDataStateChangeListener {
 
     fun onDataStateChange(dataState: DataState<*>)
@@ -7,5 +9,11 @@ interface OnDataStateChangeListener {
     fun getOnOrderItemCount(itemCount:Int)
     fun getItemCount():Int
     fun isStoragePermissionGranted():Boolean
+
+    fun setListOfObjects(list: List<BasketOrderProduct>)
+    fun getListOfObjects():List<BasketOrderProduct>
+
+    fun setSaveButtonClick(click:Boolean)
+    fun isSaveButtonClick():Boolean
 
 }

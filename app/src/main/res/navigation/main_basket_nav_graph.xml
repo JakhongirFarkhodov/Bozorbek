@@ -29,6 +29,14 @@
             app:argType="string"
             android:defaultValue="69.279826"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_basketFragment_to_basketShowDialogFragment"
+            app:destination="@id/basketShowDialogFragment" />
+        <argument
+            android:name="title_of_created_package"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="NewPackage" />
 
     </fragment>
     <fragment
@@ -47,4 +55,13 @@
             app:popUpTo="@navigation/main_home_nav_graph"
             />
     </fragment>
+    <dialog
+        android:id="@+id/basketShowDialogFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.basket.fragment.BasketShowDialogFragment"
+        android:label="fragment_basket_show_dilaog"
+        tools:layout="@layout/fragment_basket_show_dilaog" >
+        <action
+            android:id="@+id/action_basketShowDialogFragment_to_basketFragment"
+            app:destination="@id/basketFragment" />
+    </dialog>
 </navigation>

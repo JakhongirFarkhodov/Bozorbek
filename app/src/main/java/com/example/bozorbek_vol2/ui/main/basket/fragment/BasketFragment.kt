@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.model.main.profile.Profile
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.save_package.SaveReadyPackageItemRequest
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.save_package.SaveReadyPackageRequest
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.basket.adapter.BasketAdapter
@@ -39,6 +41,8 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     private var orderId: Int = 0
     private var order_sum_price: Int = 0
     private lateinit var coroutineScope: CoroutineScope
+    private var basket_id:Int = 0
+    private var listOfReadyPackage:ArrayList<SaveReadyPackageItemRequest> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +52,31 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
         return inflater.inflate(R.layout.fragment_basket, container, false)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         onDataStateChangeListener.getOnOrderItemCount(0)
+
+
+        if (onDataStateChangeListener.isSaveButtonClick()) {
+            Toast.makeText(requireContext(), "Click", Toast.LENGTH_LONG).show()
+            GlobalScope.launch(Main) {
+                delay(2500)
+                viewModel.setStateEvent(BasketStateEvent.SetCreatedReadyPackage(saveReadyPackageRequest =
+                SaveReadyPackageRequest(
+                    name = args.titleOfCreatedPackage.toString(),
+                    visibility = true,
+                    author = "",
+                    items = listOfReadyPackage
+                )
+                ))
+            }
+        }
+        
+
+
 
         mb_basket_go_to_registration.setOnClickListener {
             Toast.makeText(requireContext(), "Click", Toast.LENGTH_LONG).show()
@@ -60,17 +85,22 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
         }
 
         btn_show_on_map.setOnClickListener {
+
             findNavController().navigate(R.id.action_basketFragment_to_basketMapFragment)
         }
 
         if (args.latitude != null && args.longitude != null) {
-            edText_adress_basket.setText("${args.latitude.toString().substring(0, 7)} : ${args.longitude.toString().substring(0, 7)}"
+            edText_adress_basket.setText(
+                "${args.latitude.toString().substring(0, 7)} : ${
+                    args.longitude.toString().substring(0, 7)
+                }"
             )
         }
 
         basket_send_order_button.setOnClickListener {
 
-            val fullAddress = "${edText_name_basket.text.toString()}\n${edText_phone_basket.text.toString()}"
+            val fullAddress =
+                "${edText_name_basket.text.toString()}\n${edText_phone_basket.text.toString()}"
             args.latitude?.let { latitude ->
                 args.longitude?.let { longitude ->
 //                    Toast.makeText(requireContext(), "fullAddress:${fullAddress}\nlatitude:${latitude}\nlongtitude:${longitude}",Toast.LENGTH_LONG).show()
@@ -83,6 +113,13 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                     )
                 }
             }
+        }
+
+
+
+        basket_save_order_button.setOnClickListener {
+
+            findNavController().navigate(R.id.action_basketFragment_to_basketShowDialogFragment)
         }
 
         checkAuthUser()
@@ -122,12 +159,10 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
                             response.message?.let { message ->
-                                if (message.equals("Remove successfully"))
-                                {
+                                if (message.equals("Remove successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
                                 }
-                                if (message.equals("Address added successfully"))
-                                {
+                                if (message.equals("Address added successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketAddressOrderList())
                                 }
                             }
@@ -172,9 +207,14 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             }
 
             basketViewState.basketGetAddressOrderList.list?.let { listAddress ->
-                if (!listAddress.isEmpty())
-                {
-                    viewModel.setStateEvent(event = BasketStateEvent.ApproveOrder(address_id = listAddress[0].id, name = edText_name_basket.text.toString(), phone_num = edText_phone_basket.text.toString()))
+                if (!listAddress.isEmpty()) {
+                    viewModel.setStateEvent(
+                        event = BasketStateEvent.ApproveOrder(
+                            address_id = listAddress[0].id,
+                            name = edText_name_basket.text.toString(),
+                            phone_num = edText_phone_basket.text.toString()
+                        )
+                    )
                 }
             }
         })
@@ -182,16 +222,27 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     }
 
     private fun setBasketOrderListToView(list: List<BasketOrderProduct>) {
-        var sum_of_price:Int = 0
-        for (price in list)
+        if (!list.isEmpty())
         {
+            for (item in list)
+            {
+                listOfReadyPackage.add(SaveReadyPackageItemRequest(
+                    product_item = item.id,
+                    unit = "GRAMME"
+                ))
+            }
+        }
+        onDataStateChangeListener.setListOfObjects(list)
+        var sum_of_price: Int = 0
+        for (price in list) {
             sum_of_price += price.sum_price_gramme.toInt()
         }
         adapter = BasketAdapter(this, this, requestManager)
         adapter.submitList(list)
         basket_recyclerView.adapter = adapter
-        basket_recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        basket_sum_product.setText("${String.format("%,d",sum_of_price).replace(",", ".")} Сум")
+        basket_recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        basket_sum_product.setText("${String.format("%,d", sum_of_price).replace(",", ".")} Сум")
     }
 
     private fun setProfileDataToView(profile: Profile) {
@@ -217,7 +268,6 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
         }
     }
-
 
 
 }

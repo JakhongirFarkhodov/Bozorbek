@@ -2,7 +2,6 @@ package com.example.bozorbek_vol2.ui.auth
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,10 +9,10 @@ import android.view.WindowInsetsController
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-import javax.inject.Inject
 
 class AuthActivity : BaseActivity() {
 
@@ -82,5 +81,21 @@ class AuthActivity : BaseActivity() {
 
     override fun getItemCount(): Int {
         return 0
+    }
+
+    override fun setListOfObjects(list: List<BasketOrderProduct>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getListOfObjects(): List<BasketOrderProduct> {
+        return ArrayList<BasketOrderProduct>()
+    }
+
+    override fun setSaveButtonClick(click: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun isSaveButtonClick(): Boolean {
+        return false
     }
 }

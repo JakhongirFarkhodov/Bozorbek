@@ -57,6 +57,7 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributesBasketMapFragment() : BasketMapFragment
 
+
     //Profile
     @ContributesAndroidInjector
     abstract fun contributesProfileFragment(): ProfileFragment

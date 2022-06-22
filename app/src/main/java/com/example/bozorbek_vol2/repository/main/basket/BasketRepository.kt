@@ -11,6 +11,7 @@ import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.AddAddressOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.ApproveOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.request.BasketRemoveProductRequest
+import com.example.bozorbek_vol2.network.main.network_services.basket.request.save_package.SaveReadyPackageRequest
 import com.example.bozorbek_vol2.network.main.network_services.basket.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ProfileResponse
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
@@ -171,11 +172,13 @@ constructor(
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<BasketOrderResponse>) {
                 val basketOrderList = ArrayList<BasketOrderProduct>()
                 var count = 0
+
                 for (item in response.body.items) {
                     count++
                     basketOrderList.add(
                         BasketOrderProduct(
-                            basket_id = count,
+                            count_id = count,
+                            basket_id = response.body.id,
                             id = item.product_item.id,
                             basket_product_item_id = item.id,
                             name = item.product_item.name,
@@ -407,5 +410,46 @@ constructor(
         }.asLiveData()
     }
 
+    fun setCreatedReadyPackage(authToken: AuthToken, saveReadyPackageRequest: SaveReadyPackageRequest):LiveData<DataState<BasketViewState>>
+    {
+        return object : NetworkBoundResource<SaveReadyPackageResponse, Void, BasketViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<BasketViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<SaveReadyPackageResponse>) {
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Пакет создан", responseType = ResponseType.Toast())))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<SaveReadyPackageResponse>> {
+                return apiServices.setCreatedReadyPackage(
+                    token = "Bearer ${authToken.access_token}",
+                    saveReadyPackageRequest = saveReadyPackageRequest
+                )
+            }
+
+            override fun setJob(job: Job) {
+                addJob("setCreatedReadyPackage", job)
+            }
+
+        }.asLiveData()
+    }
 
 }

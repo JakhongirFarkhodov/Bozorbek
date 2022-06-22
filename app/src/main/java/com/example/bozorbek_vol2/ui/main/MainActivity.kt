@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.basket.fragment.BaseBasketFragment
@@ -34,6 +35,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener, OnNavigationItemReselectedListener {
 
+    private var listOfBasketObjects:ArrayList<BasketOrderProduct> = ArrayList()
+    private var clickButton:Boolean = false
     private var count:Int = 0
     private lateinit var bottomNavigationView: BottomNavigationView
     private val bottomNavController: BottomNavController by lazy(LazyThreadSafetyMode.NONE)
@@ -254,4 +257,24 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     override fun getItemCount(): Int {
         return count
     }
+
+
+    override fun setListOfObjects(list: List<BasketOrderProduct>) {
+        listOfBasketObjects.clear()
+        listOfBasketObjects.addAll(list)
+    }
+
+    override fun getListOfObjects(): List<BasketOrderProduct> {
+        return listOfBasketObjects
+    }
+
+    override fun setSaveButtonClick(click: Boolean) {
+        clickButton = click
+    }
+
+    override fun isSaveButtonClick(): Boolean {
+        return clickButton
+    }
+
+
 }
