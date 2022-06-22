@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sort_table")
 data class Sort(
+
+
+
     @ColumnInfo(name = "sort_id")
     val sort_id: Int,
 

@@ -344,9 +344,12 @@ constructor(
                 var paket_list = ArrayList<Paket>()
                 var product_owner_list = ArrayList<ProductOwner>()
 
+                var count = 0
+
                 for (parameters in response.body.parameters) {
                     if (parameters.name.equals("Сорт")) {
                         for (sort in parameters.values) {
+                            count++
                             sort_list.add(
                                 Sort(
                                     sort_id = parameters.id,

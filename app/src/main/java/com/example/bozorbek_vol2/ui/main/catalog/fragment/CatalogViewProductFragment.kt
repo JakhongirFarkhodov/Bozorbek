@@ -407,7 +407,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             }
         }
 
-        sort_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, sort_list)
+        sort_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, sort_list.distinct().toList())
         paket_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, paket_list.distinct().toList())
         product_owner_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, product_owner_list.distinct().toList())
         weight_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, weight_list.distinct().toList())

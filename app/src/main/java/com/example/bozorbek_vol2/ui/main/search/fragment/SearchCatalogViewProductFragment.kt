@@ -221,6 +221,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
     private fun setParameterValueToSpinner(parametersValue: ParametersValue) {
 
         if (!parametersValue.sort.isEmpty()) {
+
             for (sort in parametersValue.sort)
             {
                 sort_list.add(sort.sort_value)
@@ -243,6 +244,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
         if (!parametersValue.items.isEmpty())
         {
+
             Log.d(TAG, "parametersValue.items is not empty: ")
             if (catalogImageHasBeenHandeld) {
                 search_item_view_project_image.animation = AnimationUtils.loadAnimation(this.requireContext(),R.anim.fade_scale_animation)
@@ -410,7 +412,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             }
         }
 
-        sort_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, sort_list)
+        sort_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, sort_list.distinct().toList())
         paket_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, paket_list.distinct().toList())
         product_owner_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, product_owner_list.distinct().toList())
         weight_adapter = ArrayAdapter(this.requireContext(), R.layout.item_drop_down, weight_list.distinct().toList())
