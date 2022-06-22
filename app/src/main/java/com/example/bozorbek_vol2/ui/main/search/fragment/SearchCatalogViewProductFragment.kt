@@ -28,11 +28,11 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
     private val args: SearchCatalogViewProductFragmentArgs by navArgs()
-    private lateinit var sort_adapter: ArrayAdapter<String>
-    private lateinit var paket_adapter: ArrayAdapter<String>
-    private lateinit var product_owner_adapter: ArrayAdapter<String>
-    private lateinit var weight_adapter: ArrayAdapter<String>
-    private lateinit var size_adapter: ArrayAdapter<String>
+    private lateinit var sort_adapter:ArrayAdapter<String>
+    private lateinit var paket_adapter:ArrayAdapter<String>
+    private lateinit var product_owner_adapter:ArrayAdapter<String>
+    private lateinit var weight_adapter:ArrayAdapter<String>
+    private lateinit var size_adapter:ArrayAdapter<String>
 
     private var sort_value_position:Int = 0
     private var product_owner_value_position:Int = 0
@@ -67,6 +67,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
     private var sum_of_price:String = ""
 
     private var catalogImageHasBeenHandeld:Boolean = true
+    private var catalogProductOwnerHasBeenHandled:Boolean = true
+    private var catalogPaketHasBeenHandled:Boolean = true
 
     val sort_list = ArrayList<String>()
     val paket_list = ArrayList<String>()
@@ -104,7 +106,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             }
             else if (in_pieace)
             {
-                change_count_type = (search_view_catalog_count.text.toString().toInt() + 1).toString()
+                change_count_type = (view_catalog_count.text.toString().toInt() + 1).toString()
                 change_price_type = String.format("%,d", price_in_pieace.toInt() * change_count_type.toInt()).replace(",",".")
                 search_view_catalog_count.setText(change_count_type)
                 search_view_product_price.setText("${change_price_type} Сум")
@@ -117,10 +119,10 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             {
                 if (change_count_type.equals("0.0"))
                 {
-                    view_catalog_count.setText("0")
+                    search_view_catalog_count.setText("0")
                 }
                 else{
-                    change_count_type = String.format("%.1f",search_view_catalog_count.text.toString().toFloat() - 0.5f).replace(",",".")
+                    change_count_type = String.format("%.1f",view_catalog_count.text.toString().toFloat() - 0.5f).replace(",",".")
                     change_price_type = String.format("%,d",(price_in_gramme * change_count_type.toFloat()).toInt()).replace(",", ".")
                     search_view_catalog_count.setText(change_count_type)
                     search_view_product_price.setText("${change_price_type} Сум")
@@ -131,10 +133,10 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             {
                 if (change_count_type.equals("0"))
                 {
-                    view_catalog_count.setText("0")
+                    search_view_catalog_count.setText("0")
                 }
                 else{
-                    change_count_type = (search_view_catalog_count.text.toString().toInt() - 1).toString()
+                    change_count_type = (view_catalog_count.text.toString().toInt() - 1).toString()
                     change_price_type = String.format("%,d",price_in_pieace.toInt() * change_count_type.toInt()).replace(",",".")
                     search_view_catalog_count.setText(change_count_type)
                     search_view_product_price.setText("${change_price_type} Сум")
@@ -170,8 +172,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         }
     }
 
-    private fun observeData()
-    {
+    private fun observeData() {
+
         viewModel.setStateEvent(
             event = SearchStateEvent.GetCatalogViewProductListOfData(
                 category_slug = args.categorySlug,
@@ -218,8 +220,6 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
     private fun setParameterValueToSpinner(parametersValue: ParametersValue) {
 
-
-
         if (!parametersValue.sort.isEmpty()) {
             for (sort in parametersValue.sort)
             {
@@ -227,19 +227,19 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             }
         }
 
-        if (!parametersValue.paket.isEmpty()) {
-            for (paket in parametersValue.paket)
-            {
-                paket_list.add(paket.paket_value)
-            }
-        }
+//        if (!parametersValue.paket.isEmpty()) {
+//            for (paket in parametersValue.paket)
+//            {
+//                paket_list.add(paket.paket_value)
+//            }
+//        }
 
-        if (!parametersValue.productOwner.isEmpty()) {
-            for (product_owner in parametersValue.productOwner)
-            {
-                product_owner_list.add(product_owner.product_owner_value)
-            }
-        }
+//        if (!parametersValue.productOwner.isEmpty()) {
+//            for (product_owner in parametersValue.productOwner)
+//            {
+//                product_owner_list.add(product_owner.product_owner_value)
+//            }
+//        }
 
         if (!parametersValue.items.isEmpty())
         {
@@ -248,11 +248,21 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
                 search_item_view_project_image.animation = AnimationUtils.loadAnimation(this.requireContext(),R.anim.fade_scale_animation)
                 catalogImageHasBeenHandeld = false
             }
-
+            if (catalogProductOwnerHasBeenHandled) {
+                product_owner_list.clear()
+            }
             for (items in parametersValue.items)
             {
                 if (!sort_list.isEmpty() && items.sort_value.equals(sort_list[sort_value_position]))
                 {
+                    Log.d(TAG, "setParameterValueToSpinner: ${items.product_owner_value}")
+
+                    if (catalogProductOwnerHasBeenHandled) {
+                        product_owner_list.add(items.product_owner_value)
+                    }
+
+                    paket_list.add(items.paket_value)
+
                     requestManager.load(items.main_image).transition(DrawableTransitionOptions.withCrossFade()).into(search_item_view_project_image)
                     search_view_product_title.setText(items.sort_value)
 
@@ -285,7 +295,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
                         in_gramme = true
                         in_pieace = false
                         price_in_gramme = items.price_in_gramme
-                        quantity = (change_count_type.toFloat() * 1000).toInt()
+                        quantity = (change_count_type.toFloat() * 1000f).toInt()
                     }
                     else if (items.in_piece && !items.in_gramme)
                     {
@@ -339,10 +349,13 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
                     search_view_product_overview.setText(items.description)
 
+                    in_small_selected = items.small
+                    in_middle_selected = items.middle
+                    in_large_selected = items.large
+
+
                 }
-                in_small_selected = items.small
-                in_middle_selected = items.middle
-                in_large_selected = items.large
+
             }
         }
         else{
@@ -356,6 +369,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             search_view_product_txIL_paket.visibility = View.GONE
             search_view_product_txIL_weight.visibility = View.GONE
             search_view_product_txIL_size.visibility = View.GONE
+            catalogProductOwnerHasBeenHandled = false
         }
         else if (filter_selected == 2)
         {
@@ -441,6 +455,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
         search_view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
             Toast.makeText(this.requireContext(), "${sort_list[position]}", Toast.LENGTH_LONG).show()
+            catalogProductOwnerHasBeenHandled = true
             viewModel.setStateEvent(event = SearchStateEvent.GetCatalogViewProductBySortValue(sort_value = sort_list[position]))
             sort_value_position = position
             filter_selected = 1
@@ -448,10 +463,12 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         }
 
         search_view_product_product_owner_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-            viewModel.setStateEvent(event = SearchStateEvent.GetCatalogViewProductBySortAndProductOwnerValue(sort_value = sort_list[position], productOwner_value = product_owner_list[position]))
+            Toast.makeText(this.requireContext(), "${product_owner_list[position]}", Toast.LENGTH_LONG).show()
+            viewModel.setStateEvent(event = SearchStateEvent.GetCatalogViewProductBySortAndProductOwnerValue(sort_value = sort_list[sort_value_position], productOwner_value = product_owner_list[position]))
             product_owner_value_position = position
             filter_selected = 2
-
+            catalogProductOwnerHasBeenHandled = false
+            paket_list.clear()
         }
 
         search_view_product_paket_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
@@ -467,9 +484,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         }
 
         search_view_product_weight_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-
             observeWeightClickListener(position)
-
         }
 
 
@@ -518,12 +533,14 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             size_value_position = position
 
         }
+
     }
 
     private fun observeWeightClickListener(position: Int) {
         if (weight_list[position].equals("Килограмм"))
         {
-            viewModel.setStateEvent(SearchStateEvent.GetCatalogViewProductByGramme(
+            viewModel.setStateEvent(
+                SearchStateEvent.GetCatalogViewProductByGramme(
                 sort_value = sort_list[sort_value_position],
                 productOwner_value = product_owner_list[product_owner_value_position],
                 paket_value = paket_list[paket_value_positiom],
@@ -535,7 +552,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         }
         else if (weight_list[position].equals("Штука"))
         {
-            viewModel.setStateEvent(SearchStateEvent.GetCatalogViewProductByPiece(
+            viewModel.setStateEvent(
+                SearchStateEvent.GetCatalogViewProductByPiece(
                 sort_value = sort_list[sort_value_position],
                 productOwner_value = product_owner_list[product_owner_value_position],
                 paket_value = paket_list[paket_value_positiom],
@@ -560,4 +578,5 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
         }
 
     }
+
 }

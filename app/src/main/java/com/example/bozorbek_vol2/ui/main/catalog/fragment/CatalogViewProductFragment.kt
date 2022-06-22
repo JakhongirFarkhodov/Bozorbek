@@ -66,6 +66,8 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
     private var sum_of_price:String = ""
 
     private var catalogImageHasBeenHandeld:Boolean = true
+    private var catalogProductOwnerHasBeenHandled:Boolean = true
+    private var catalogPaketHasBeenHandled:Boolean = true
 
     val sort_list = ArrayList<String>()
     val paket_list = ArrayList<String>()
@@ -215,8 +217,6 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
     private fun setParameterValueToSpinner(parametersValue: ParametersValue) {
 
-
-
         if (!parametersValue.sort.isEmpty()) {
             for (sort in parametersValue.sort)
             {
@@ -224,19 +224,19 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             }
         }
 
-        if (!parametersValue.paket.isEmpty()) {
-            for (paket in parametersValue.paket)
-            {
-                paket_list.add(paket.paket_value)
-            }
-        }
+//        if (!parametersValue.paket.isEmpty()) {
+//            for (paket in parametersValue.paket)
+//            {
+//                paket_list.add(paket.paket_value)
+//            }
+//        }
 
-        if (!parametersValue.productOwner.isEmpty()) {
-            for (product_owner in parametersValue.productOwner)
-            {
-                product_owner_list.add(product_owner.product_owner_value)
-            }
-        }
+//        if (!parametersValue.productOwner.isEmpty()) {
+//            for (product_owner in parametersValue.productOwner)
+//            {
+//                product_owner_list.add(product_owner.product_owner_value)
+//            }
+//        }
 
         if (!parametersValue.items.isEmpty())
         {
@@ -245,11 +245,21 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                 item_view_project_image.animation = AnimationUtils.loadAnimation(this.requireContext(),R.anim.fade_scale_animation)
                 catalogImageHasBeenHandeld = false
             }
-
+            if (catalogProductOwnerHasBeenHandled) {
+                product_owner_list.clear()
+            }
             for (items in parametersValue.items)
             {
                 if (!sort_list.isEmpty() && items.sort_value.equals(sort_list[sort_value_position]))
                 {
+                    Log.d(TAG, "setParameterValueToSpinner: ${items.product_owner_value}")
+
+                    if (catalogProductOwnerHasBeenHandled) {
+                        product_owner_list.add(items.product_owner_value)
+                    }
+
+                    paket_list.add(items.paket_value)
+
                     requestManager.load(items.main_image).transition(withCrossFade()).into(item_view_project_image)
                     view_product_title.setText(items.sort_value)
 
@@ -278,8 +288,6 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                         product_item_id = items.id.toString()
 
                         weight_list.add("Килограмм")
-
-
 
                         in_gramme = true
                         in_pieace = false
@@ -337,10 +345,14 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
                     }
 
                     view_product_overview.setText(items.description)
+
                     in_small_selected = items.small
                     in_middle_selected = items.middle
                     in_large_selected = items.large
+
+
                 }
+
             }
         }
         else{
@@ -354,6 +366,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             view_product_txIL_paket.visibility = View.GONE
             view_product_txIL_weight.visibility = View.GONE
             view_product_txIL_size.visibility = View.GONE
+            catalogProductOwnerHasBeenHandled = false
         }
         else if (filter_selected == 2)
         {
@@ -439,6 +452,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
         view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
             Toast.makeText(this.requireContext(), "${sort_list[position]}", Toast.LENGTH_LONG).show()
+            catalogProductOwnerHasBeenHandled = true
             viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogViewProductBySortValue(sort_value = sort_list[position]))
             sort_value_position = position
                 filter_selected = 1
@@ -446,10 +460,12 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         }
 
         view_product_product_owner_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-            viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogViewProductBySortAndProductOwnerValue(sort_value = sort_list[position], productOwner_value = product_owner_list[position]))
+            Toast.makeText(this.requireContext(), "${product_owner_list[position]}", Toast.LENGTH_LONG).show()
+            viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogViewProductBySortAndProductOwnerValue(sort_value = sort_list[sort_value_position], productOwner_value = product_owner_list[position]))
             product_owner_value_position = position
                 filter_selected = 2
-
+            catalogProductOwnerHasBeenHandled = false
+            paket_list.clear()
         }
 
         view_product_paket_autocomplete.setOnItemClickListener { adapterView, view, position, l ->

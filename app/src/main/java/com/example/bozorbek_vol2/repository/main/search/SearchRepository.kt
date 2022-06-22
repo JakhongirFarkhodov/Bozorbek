@@ -548,7 +548,7 @@ constructor(
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
                     catalogDao.getAllPaketData()?.switchMap { paket_list ->
                         catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sortValue, productOwner_value)
+                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sort_value = sortValue, productOwner_value =  productOwner_value)
                                 ?.switchMap { catalogViewProduct_list ->
                                     object : LiveData<SearchViewState>() {
                                         override fun onActive() {

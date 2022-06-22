@@ -543,6 +543,8 @@ constructor(
 
     fun getCatalogViewProductBySortAndProductOwnerValue(sortValue: String, productOwner_value:String):LiveData<DataState<CatalogViewState>>
     {
+        Log.d(TAG, "getCatalogViewProductBySortAndProductOwnerValue:${productOwner_value} ")
+
         return object : NetworkBoundResource<Void, Void, CatalogViewState>(
             isNetworkRequest = false,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
@@ -564,11 +566,12 @@ constructor(
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
                     catalogDao.getAllPaketData()?.switchMap { paket_list ->
                         catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sortValue, productOwner_value)
+                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sort_value = sortValue, productOwner_value = productOwner_value)
                                 ?.switchMap { catalogViewProduct_list ->
                                     object : LiveData<CatalogViewState>() {
                                         override fun onActive() {
                                             super.onActive()
+                                            Log.d(TAG, "onActive productOwner: ${catalogViewProduct_list}")
                                             value = CatalogViewState(
                                                 parametersValue = ParametersValue(
                                                     sort = sort_list,

@@ -28,6 +28,8 @@ import com.example.bozorbek_vol2.util.BottomNavController.*
 import com.example.bozorbek_vol2.util.setUpWithNavigation
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener, OnNavigationItemReselectedListener {
@@ -87,6 +89,12 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
         }
 
         bottomNavigationView.background = null
+
+        val radius = resources.getDimension(com.intuit.ssp.R.dimen._15ssp)
+        val bottomBarBackground = bottomAppBar.background as MaterialShapeDrawable
+        bottomBarBackground.shapeAppearanceModel = bottomBarBackground.shapeAppearanceModel.toBuilder().setTopRightCorner(
+            CornerFamily.ROUNDED, radius
+        ).setTopLeftCorner(CornerFamily.ROUNDED, radius).build()
     }
 
     private fun changeAppBar() {
@@ -114,32 +122,26 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     override fun getItemId(itemId: Int): Int {
         return when (itemId) {
             R.id.nav_home -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_home_nav_graph
             }
 
             R.id.nav_catalog -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_catalog_nav_graph
             }
 
             R.id.nav_search -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.search_color))
                 R.navigation.main_search_nav_graph
             }
 
             R.id.nav_basket -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_basket_nav_graph
             }
 
             R.id.nav_profile -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_profile_nav_graph
             }
 
             else -> {
-                tool_bar.setBackgroundColor(resources.getColor(R.color.white))
                 R.navigation.main_home_nav_graph
             }
         }
