@@ -28,6 +28,7 @@ abstract class BaseCatalogFragment : DaggerFragment() {
     @Inject
     lateinit var sessionManager: SessionManager
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

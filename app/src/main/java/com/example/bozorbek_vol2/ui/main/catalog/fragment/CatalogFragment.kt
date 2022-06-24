@@ -3,7 +3,6 @@ package com.example.bozorbek_vol2.ui.main.catalog.fragment
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,9 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
     private lateinit var catalogAdapter: CatalogAdapter
     private var countDataState = 0
     private var countViewState = 0
+    private var global_list: ArrayList<Catalog> = ArrayList()
+    private var isTrigger: Boolean = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +41,8 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
         super.onViewCreated(view, savedInstanceState)
 
 
-
         observeData()
     }
-
 
 
     private fun observeData() {
@@ -54,8 +54,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
                         catalogViewState.catalogList.let { catalogList ->
                             catalogList.list?.let { list ->
                                 Log.d(TAG, "catalog dataState: ${list}")
-                                if(dataState.loading.isLoading == false)
-                                {
+                                if (dataState.loading.isLoading == false) {
                                     viewModel.setCatalogList(list)
                                 }
                             }
@@ -76,6 +75,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
     }
 
     private fun setCatalogListToAdapter(list: List<Catalog>) {
+
         catalogAdapter = CatalogAdapter(this, requestManager)
         catalogAdapter.submitList(list)
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
@@ -87,8 +87,8 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
         super.onResume()
         Log.d(TAG, "onResume: Поиск каталога...")
         viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogListOfData())
-    }
 
+    }
 
 
     override fun onAttach(context: Context) {
@@ -101,7 +101,8 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
     }
 
     override fun onCatalogItemClickListener(item: Catalog, position: Int) {
-        val action = CatalogFragmentDirections.actionCatalogFragmentToCatalogProductFragment(slug = item.slug)
+        val action =
+            CatalogFragmentDirections.actionCatalogFragmentToCatalogProductFragment(slug = item.slug)
         findNavController().navigate(action)
         Toast.makeText(requireContext(), "${item.name}", Toast.LENGTH_LONG).show()
     }
@@ -109,7 +110,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
 
     override fun onDestroyView() {
         super.onDestroyView()
-        catalog_recyclerView.adapter = null
+        viewModel.trigger = false
     }
 
 }

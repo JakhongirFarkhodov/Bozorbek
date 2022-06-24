@@ -19,6 +19,9 @@ class CatalogViewModel
 @Inject
 constructor(val catalogRepository: CatalogRepository, val sessionManager: SessionManager)
     : BaseViewModel<CatalogStateEvent, CatalogViewState>() {
+
+    var trigger:Boolean = true
+
     override fun initNewViewState(): CatalogViewState {
         return CatalogViewState()
     }
@@ -97,6 +100,10 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
 
     fun setCatalogList(list: List<Catalog>) {
         val update = getCurrentViewStateOrCreateNew()
+        if (update.catalogList.equals(list))
+        {
+            return
+        }
         update.catalogList.list = list
         _viewState.value = update
     }

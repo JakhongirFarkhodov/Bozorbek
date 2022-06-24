@@ -2,7 +2,7 @@ package com.example.bozorbek_vol2.ui.main.catalog.state
 
 sealed class CatalogStateEvent {
 
-    class GetCatalogListOfData : CatalogStateEvent()
+    class GetCatalogListOfData() : CatalogStateEvent()
 
     data class GetCatalogProductListOfData(val slug: String) : CatalogStateEvent()
 

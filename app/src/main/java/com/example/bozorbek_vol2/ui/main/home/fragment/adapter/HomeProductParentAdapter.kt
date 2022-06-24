@@ -57,7 +57,7 @@ class HomeProductParentAdapter(val requestManager: RequestManager) : RecyclerVie
         fun bind(item:HomeProduct)
         {
             val adapter = HomeProductChildAdapter(requestManager)
-            adapter.submitList(item.productList)
+            adapter.submitList(item.productList.distinct().toList())
             itemView.item_child_rv.adapter = adapter
             itemView.item_child_rv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.item_parent_title.setText(item.title)

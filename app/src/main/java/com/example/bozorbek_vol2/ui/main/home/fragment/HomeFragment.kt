@@ -125,6 +125,7 @@ class HomeFragment : BaseHomeFragment() {
     }
 
     private fun setRandomProduct(list: List<HomeRandomProducts>) {
+        list_of_products.clear()
         list_of_products.add(
             HomeProduct(
                 "Вкусные продукты",
