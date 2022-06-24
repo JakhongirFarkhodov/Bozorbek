@@ -23,7 +23,8 @@ import kotlinx.android.synthetic.main.fragment_recommended_ready_packages.*
 
 class RecommendedReadyPackagesFragment : BaseProfileFragment(),
     ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener,
-    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener {
+    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener,
+    ProfileReadyPackagesParentAdapter.OnRemoveReadyPackageListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
@@ -65,7 +66,7 @@ class RecommendedReadyPackagesFragment : BaseProfileFragment(),
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { profileViewState ->
                             profileViewState.readyPackagesList?.let { list ->
-                                Log.d(TAG, "minePackages dataState: ${list}")
+                                Log.d(TAG, "recommendedPackages dataState: ${list}")
                                 viewModel.setProfileAllPackagesList(list)
                             }
                         }
@@ -136,7 +137,8 @@ class RecommendedReadyPackagesFragment : BaseProfileFragment(),
             Log.d(TAG, "setListOfDataToUI: ${item}")
         }
 
-        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this, this)
+        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager,
+            this, this, this)
         adapter.submitList(readyPackagesDataList)
         profile_recommended_packages_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
         profile_recommended_packages_rv.adapter = adapter
@@ -153,6 +155,10 @@ class RecommendedReadyPackagesFragment : BaseProfileFragment(),
 //        TODO("Not yet implemented")
     }
 
+    override fun onRemoveReadyPackage(position: Int, readyPackagesData: ReadyPackagesData) {
+        viewModel.setStateEvent(event = ProfileStateEvent.RemoveReadyPackageItem(readyPackagesData.packageData.package_id))
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -167,5 +173,7 @@ class RecommendedReadyPackagesFragment : BaseProfileFragment(),
     companion object{
         fun newInstance() = RecommendedReadyPackagesFragment()
     }
+
+
 
 }

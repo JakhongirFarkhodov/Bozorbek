@@ -9,10 +9,10 @@ import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.ReadyPackagesData
 import kotlinx.android.synthetic.main.item_ready_package.view.*
 
-class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener, val onShowReadyPackageItemListener: OnShowReadyPackageItemListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener, val onShowReadyPackageItemListener: OnShowReadyPackageItemListener, val onRemoveReadyPackageListener: OnRemoveReadyPackageListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ProfileReadyPackagesParentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_ready_package, parent, false), onShowReadyPackageItemListener, onAddReadyPackageToBasketListener, requestManager)
+        return ProfileReadyPackagesParentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_ready_package, parent, false), onShowReadyPackageItemListener, onAddReadyPackageToBasketListener, onRemoveReadyPackageListener, requestManager)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -57,7 +57,7 @@ class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val 
         differConfig.submitList(newList)
     }
 
-    inner class ProfileReadyPackagesParentViewHolder(itemView: View, val onShowReadyPackageItemListener: OnShowReadyPackageItemListener , val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
+    inner class ProfileReadyPackagesParentViewHolder(itemView: View, val onShowReadyPackageItemListener: OnShowReadyPackageItemListener , val onAddReadyPackageToBasketListener: OnAddReadyPackageToBasketListener, val onRemoveReadyPackageListener: OnRemoveReadyPackageListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
     {
         fun bind(readyPackagesData: ReadyPackagesData)
         {
@@ -79,6 +79,10 @@ class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val 
                 onShowReadyPackageItemListener.onShowPackageItem(absoluteAdapterPosition, readyPackagesData)
             }
 
+            itemView.item_ready_packages_delete_mbt.setOnClickListener {
+                onRemoveReadyPackageListener.onRemoveReadyPackage(absoluteAdapterPosition, readyPackagesData)
+            }
+
         }
     }
 
@@ -88,6 +92,10 @@ class ProfileReadyPackagesParentAdapter(val requestManager: RequestManager, val 
 
     interface OnShowReadyPackageItemListener{
         fun onShowPackageItem(position:Int, readyPackagesData: ReadyPackagesData)
+    }
+
+    interface OnRemoveReadyPackageListener{
+        fun onRemoveReadyPackage(position: Int, readyPackagesData: ReadyPackagesData)
     }
 
 

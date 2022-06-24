@@ -88,7 +88,14 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> 
             }
 
             is ApiErrorResponse ->{
-                onErrorReturn(error_message = response.error_message, shouldUseToast = false, shouldUseDialog = true)
+                if (response.error_message.equals(ErrorHandling.RESPONSE_UNEXPECTED_STATUS_LINE) || response.error_message.equals(ErrorHandling.RESPONSE_204))
+                {
+                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Успешно", responseType = ResponseType.Toast())))
+                }
+                else{
+                    onErrorReturn(error_message = response.error_message, shouldUseToast = false, shouldUseDialog = true)
+                }
+
             }
 
             is ApiEmptyResponse ->{
@@ -106,7 +113,12 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> 
         job.invokeOnCompletion(onCancelling = true, invokeImmediately = true, handler = object : CompletionHandler{
             override fun invoke(cause: Throwable?) {
                 cause?.let {
-                    onErrorReturn(error_message = it.message, shouldUseToast = false, shouldUseDialog = true)
+                    if (it.equals(ErrorHandling.RESPONSE_204) || it.equals(ErrorHandling.RESPONSE_UNEXPECTED_STATUS_LINE)) {
+                        onCompleteJob(dataState = DataState.data(data = null, response = Response(message = it.message, ResponseType.None())))
+                    }
+                    else{
+                        onErrorReturn(error_message = it.message, shouldUseToast = false, shouldUseDialog = true)
+                    }
                 }
             }
         })
@@ -157,6 +169,8 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> 
         {
             msg = "Аккаунт не найден."
         }
+
+
 
         Log.d(TAG, "onErrorReturn: ${msg}")
         if (shouldUseToast)

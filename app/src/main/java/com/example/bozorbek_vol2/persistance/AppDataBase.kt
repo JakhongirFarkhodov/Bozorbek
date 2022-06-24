@@ -11,12 +11,16 @@ import com.example.bozorbek_vol2.model.main.catalog.CatalogViewProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.paket.Paket
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.product_owner.ProductOwner
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.sort.Sort
+import com.example.bozorbek_vol2.model.main.home.HomeDiscountProducts
+import com.example.bozorbek_vol2.model.main.home.HomeRandomProducts
+import com.example.bozorbek_vol2.model.main.home.HomeSliderImage
 import com.example.bozorbek_vol2.model.main.profile.*
 import com.example.bozorbek_vol2.model.main.search.SearchProduct
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
+import com.example.bozorbek_vol2.persistance.main.home.HomeDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
 import com.example.bozorbek_vol2.persistance.main.search.SearchDao
 
@@ -35,7 +39,10 @@ import com.example.bozorbek_vol2.persistance.main.search.SearchDao
         ProfileActiveOrHistoryOrder::class,
         SearchProduct::class,
         ProfileNotification::class,
-        ProfileReadyPackageId::class], version = 1
+        ProfileReadyPackageId::class,
+        HomeSliderImage::class,
+        HomeRandomProducts::class,
+        HomeDiscountProducts::class], version = 1
 )
 abstract class AppDataBase : RoomDatabase() {
 
@@ -44,6 +51,9 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun getAuthTokenDao(): AuthTokenDao
 
     //Main
+
+    //Home
+    abstract fun getHomeDao(): HomeDao
 
     //Catalog
     abstract fun getCatalogDao(): CatalogDao

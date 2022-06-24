@@ -7,10 +7,12 @@ import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
 import com.example.bozorbek_vol2.persistance.main.basket.BasketDao
 import com.example.bozorbek_vol2.persistance.main.catalog.CatalogDao
+import com.example.bozorbek_vol2.persistance.main.home.HomeDao
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
 import com.example.bozorbek_vol2.persistance.main.search.SearchDao
 import com.example.bozorbek_vol2.repository.main.basket.BasketRepository
 import com.example.bozorbek_vol2.repository.main.catalog.CatalogRepository
+import com.example.bozorbek_vol2.repository.main.home.HomeRepository
 import com.example.bozorbek_vol2.repository.main.profile.ProfileRepository
 import com.example.bozorbek_vol2.repository.main.search.SearchRepository
 import com.example.bozorbek_vol2.session.SessionManager
@@ -25,6 +27,19 @@ class MainModule {
     @Provides
     fun providesMainApiServices(retrofit: Retrofit.Builder): MainApiServices {
         return retrofit.build().create(MainApiServices::class.java)
+    }
+
+    @MainScope
+    @Provides
+    fun providesHomeRepository(sessionManager: SessionManager, homeDao: HomeDao, apiServices: MainApiServices):HomeRepository{
+        return HomeRepository(sessionManager, homeDao, apiServices)
+    }
+
+    @MainScope
+    @Provides
+    fun providesHomeDao(dataBase: AppDataBase):HomeDao
+    {
+        return dataBase.getHomeDao()
     }
 
     @MainScope

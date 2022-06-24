@@ -88,6 +88,12 @@ class ProfileViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is ProfileStateEvent.RemoveReadyPackageItem ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.deleteReadyPackageById(authToken, stateEvent.id)
+                }?:AbsentLiveData.create()
+            }
+
             is ProfileStateEvent.None ->{
                 return object : LiveData<DataState<ProfileViewState>>()
                 {

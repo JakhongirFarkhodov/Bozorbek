@@ -3,8 +3,6 @@ package com.example.bozorbek_vol2.model.main.catalog
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "catalog_product_table")
 data class CatalogProduct(
@@ -20,7 +18,7 @@ data class CatalogProduct(
     var slug: String,
 
     @ColumnInfo(name = "category")
-    var category: Int,
+    var category: String,
 
     @ColumnInfo(name = "image")
     var image: String,

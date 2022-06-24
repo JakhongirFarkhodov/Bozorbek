@@ -20,4 +20,6 @@
     <color name="fruit_yellow_bg">#F6E27B</color>
     <color name="fruit_text_color">#42445A</color>
     <color name="search_color">#BEEBE0</color>
+
+    <color name="splash_green">#00CF53</color>
 </resources>

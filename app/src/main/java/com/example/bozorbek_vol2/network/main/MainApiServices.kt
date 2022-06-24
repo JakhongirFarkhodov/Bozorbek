@@ -11,6 +11,9 @@ import com.example.bozorbek_vol2.network.main.network_services.catalog.response.
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogProduct.CatalogProductsListResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
+import com.example.bozorbek_vol2.network.main.network_services.home.response.HomeDiscountProductsResponse
+import com.example.bozorbek_vol2.network.main.network_services.home.response.HomeRandomProductsResponse
+import com.example.bozorbek_vol2.network.main.network_services.home.response.HomeSliderImagesResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileComplaintsRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
@@ -25,6 +28,16 @@ import retrofit2.http.*
 
 interface MainApiServices {
 
+    //Home
+    @GET("/sliders/")
+    fun getSliderImages():LiveData<GenericApiResponse<HomeSliderImagesResponse>>
+
+    @GET("/products/random_products/")
+    fun getRandomProducts():LiveData<GenericApiResponse<List<HomeRandomProductsResponse>>>
+
+    @GET("/products/discount_products/")
+    fun getDiscountProducts():LiveData<GenericApiResponse<HomeDiscountProductsResponse>>
+
     //Profile
     @GET("/customer/get_info/")
     fun getProfileInfo(@Header("Authorization") token: String): LiveData<GenericApiResponse<ProfileResponse>>
@@ -35,7 +48,7 @@ interface MainApiServices {
 
     //Profile ready package
     @GET("/readypackages/")
-    fun getAllReadyPackages(@Header("Authorization") token: String, @Header("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
+    fun getAllReadyPackages(@Header("Authorization") token: String, @Query("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
 
     @POST("/readypackages/")
     fun setCreatedReadyPackage(@Header("Authorization") token: String, @Body saveReadyPackageRequest: SaveReadyPackageRequest):LiveData<GenericApiResponse<SaveReadyPackageResponse>>
@@ -46,6 +59,8 @@ interface MainApiServices {
     @POST("/readypackages/add_to_cart/{id}/")
     fun addItemReadyPackageToBasket(@Header("Authorization") token: String, @Path("id") ready_package_id:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesAddItemToBasketResponse>>
 
+    @HTTP(method = "DELETE", path = "/readypackages/{id}/", hasBody = false)
+    fun deleteReadyPackageById(@Header("Authorization") token: String, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<Void>>
 
 
     @GET("/notifications/")

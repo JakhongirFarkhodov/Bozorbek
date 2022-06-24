@@ -23,7 +23,8 @@ import kotlinx.android.synthetic.main.fragment_mine_ready_packages.*
 
 class MineReadyPackagesFragment : BaseProfileFragment(),
     ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener,
-    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener {
+    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener,
+    ProfileReadyPackagesParentAdapter.OnRemoveReadyPackageListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
@@ -50,6 +51,11 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
+                dataState.stateError?.let { event ->
+                    event.peekContent()?.response?.message?.let {
+                        Toast.makeText(requireContext(), "${it}", Toast.LENGTH_LONG).show()
+                    }
+                }
                 dataState.data?.let { data ->
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
@@ -65,8 +71,14 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { profileViewState ->
                             profileViewState.readyPackagesList?.let { list ->
-                                Log.d(TAG, "minePackages dataState: ${list}")
-                                viewModel.setProfileAllPackagesList(list)
+                                if (!list.isEmpty()) {
+                                    Log.d(TAG, "minePackages dataState: ${list}")
+                                    viewModel.setProfileAllPackagesList(list)
+                                    profile_mine_packages_rv.visibility = View.VISIBLE
+                                }
+                                else{
+                                    profile_mine_packages_rv.visibility = View.GONE
+                                }
                             }
                         }
                     }
@@ -76,8 +88,11 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { profileViewState ->
             profileViewState.readyPackagesList?.let { list ->
-                Log.d(TAG, "minePackages viewState: ${list}")
-                setListOfDataToUI(list)
+                if (!list.isEmpty()) {
+                    Log.d(TAG, "minePackages viewState: ${list}")
+                    setListOfDataToUI(list)
+
+                }
             }
         })
     }
@@ -136,7 +151,7 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
             Log.d(TAG, "setListOfDataToUI: ${item}")
         }
 
-        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this, this)
+        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this, this, this)
         adapter.submitList(readyPackagesDataList)
          profile_mine_packages_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
          profile_mine_packages_rv.adapter = adapter
@@ -153,6 +168,10 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
 //        TODO("Not yet implemented")
     }
 
+    override fun onRemoveReadyPackage(position: Int, readyPackagesData: ReadyPackagesData) {
+        viewModel.setStateEvent(event = ProfileStateEvent.RemoveReadyPackageItem(readyPackagesData.packageData.package_id))
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -167,5 +186,6 @@ class MineReadyPackagesFragment : BaseProfileFragment(),
     companion object{
         fun newInstance() = MineReadyPackagesFragment()
     }
+
 
 }

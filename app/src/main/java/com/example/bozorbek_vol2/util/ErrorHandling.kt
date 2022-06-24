@@ -19,6 +19,8 @@ class ErrorHandling {
             const val RESPONSE_UNAUTHORIZED_401 = "No active account found with the given credentials"
             const val RESPONSE_BAD_REQUEST_400 = "Bad Request"
             const val RESPONSE_NOT_FOUND_404 = "Not Found"
+            const val RESPONSE_UNEXPECTED_STATUS_LINE = "Unexpected status line: {\"detail\":\"Success\"}HTTP/1.1 200 OK)"
+            const val RESPONSE_204 = "HTTP 204 had non-zero Content-Length: 20"
 
             fun isNetworkError(msg: String): Boolean{
                 when{

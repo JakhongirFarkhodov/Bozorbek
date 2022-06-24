@@ -20,7 +20,7 @@ data class CatalogProductResponse (
 
     @SerializedName("category")
     @Expose
-    var category: Int,
+    var category: String,
 
     @SerializedName("image")
     @Expose

@@ -834,6 +834,48 @@ constructor(
         }.asLiveData()
     }
 
+    fun deleteReadyPackageById(auth_token: AuthToken, id: Int):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<Void, Void, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<Void>) {
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Пакет удален", responseType = ResponseType.Toast())))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<Void>> {
+                return apiServices.deleteReadyPackageById(
+                    token = "Bearer ${auth_token.access_token}",
+                    ready_package_id = id
+                )
+            }
+
+            override fun setJob(job: Job) {
+                addJob("deleteReadyPackageById", job)
+            }
+
+        }.asLiveData()
+    }
+
     private fun onErrorFields(
         error_message: String,
         responseType: ResponseType

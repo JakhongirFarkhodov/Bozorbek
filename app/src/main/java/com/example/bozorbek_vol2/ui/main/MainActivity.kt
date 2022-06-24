@@ -164,7 +164,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
                 when(fragment)
                 {
                     is BaseHomeFragment ->{
-
+                        fragment.cancelActiveJob()
                     }
                     is BaseCatalogFragment ->{
                         fragment.cancelActiveJob()

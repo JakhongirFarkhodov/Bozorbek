@@ -10,6 +10,7 @@ import com.example.bozorbek_vol2.di.main.MainScope
 import com.example.bozorbek_vol2.di.main.MainViewModelModule
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.MainActivity
+import com.example.bozorbek_vol2.ui.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -23,5 +24,8 @@ abstract class ActivityBuildersModule {
     @MainScope
     @ContributesAndroidInjector(modules = [MainFragmentBuildersModule::class, MainModule::class, MainViewModelModule::class])
     abstract fun contributesMainActivity():MainActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributesSplashActivity():SplashActivity
 
 }

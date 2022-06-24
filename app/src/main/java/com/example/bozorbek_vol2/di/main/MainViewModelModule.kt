@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.bozorbek_vol2.di.ViewModelKey
 import com.example.bozorbek_vol2.ui.main.basket.viewmodel.BasketViewModel
 import com.example.bozorbek_vol2.ui.main.catalog.viewmodel.CatalogViewModel
+import com.example.bozorbek_vol2.ui.main.home.viewmodel.HomeViewModel
 import com.example.bozorbek_vol2.ui.main.profile.viewmodel.ProfileViewModel
 import com.example.bozorbek_vol2.ui.main.search.viewmodel.SearchViewModel
 import dagger.Binds
@@ -12,6 +13,11 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class MainViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel::class)
+    abstract fun bindsHomeViewModel(homeViewModel: HomeViewModel):ViewModel
 
     @Binds
     @IntoMap

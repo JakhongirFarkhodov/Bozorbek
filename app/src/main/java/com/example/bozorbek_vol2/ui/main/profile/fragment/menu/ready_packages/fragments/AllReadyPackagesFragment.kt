@@ -24,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_all_ready_packages.*
 
 class AllReadyPackagesFragment : BaseProfileFragment(),
     ProfileReadyPackagesParentAdapter.OnAddReadyPackageToBasketListener,
-    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener {
+    ProfileReadyPackagesParentAdapter.OnShowReadyPackageItemListener,
+    ProfileReadyPackagesParentAdapter.OnRemoveReadyPackageListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
     lateinit var set: HashSet<List<ProfileReadyPackageId>>
@@ -145,7 +146,8 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
             Log.d(TAG, "setListOfDataToUI: ${item}")
         }
 
-        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager, this, this)
+        val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager,
+            this, this, this)
         adapter.submitList(readyPackagesDataList)
         profile_all_packages_rv.layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -174,6 +176,10 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
     }
 
+    override fun onRemoveReadyPackage(position: Int, readyPackagesData: ReadyPackagesData) {
+        viewModel.setStateEvent(event = ProfileStateEvent.RemoveReadyPackageItem(readyPackagesData.packageData.package_id))
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -186,6 +192,8 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
     companion object{
         fun newInstance() = AllReadyPackagesFragment()
     }
+
+
 
 
 }

@@ -28,6 +28,8 @@ sealed class ProfileStateEvent {
 
     data class SetComplaints(val title:String, val text:String) : ProfileStateEvent()
 
+    data class RemoveReadyPackageItem(val id:Int):ProfileStateEvent()
+
     class SetNotificationEvent : ProfileStateEvent()
 
     class None : ProfileStateEvent()
