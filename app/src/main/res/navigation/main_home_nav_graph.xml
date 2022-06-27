@@ -66,5 +66,11 @@
             app:popUpToInclusive="true"
             app:popUpTo="@navigation/main_home_nav_graph"
             />
+        <argument
+            android:name="category_slug"
+            app:argType="string" />
+        <argument
+            android:name="product_slug"
+            app:argType="string" />
     </fragment>
 </navigation>

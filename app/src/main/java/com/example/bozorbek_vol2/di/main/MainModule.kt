@@ -31,8 +31,8 @@ class MainModule {
 
     @MainScope
     @Provides
-    fun providesHomeRepository(sessionManager: SessionManager, homeDao: HomeDao, apiServices: MainApiServices):HomeRepository{
-        return HomeRepository(sessionManager, homeDao, apiServices)
+    fun providesHomeRepository(sessionManager: SessionManager, homeDao: HomeDao, apiServices: MainApiServices, catalogDao: CatalogDao):HomeRepository{
+        return HomeRepository(sessionManager, homeDao, apiServices, catalogDao)
     }
 
     @MainScope

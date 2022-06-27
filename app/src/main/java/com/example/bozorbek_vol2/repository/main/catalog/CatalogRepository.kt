@@ -183,12 +183,13 @@ constructor(
                 cacheObject?.let { list ->
                     withContext(IO)
                     {
+                        catalogDao.deleteAllItemCatalogProductTable()
                         for (catalogProduct in list) {
                             try {
                                 launch {
                                     Log.d(TAG, "updateCache: Inserting data:${catalogProduct}")
                                     catalogDao.insertCatalogProducts(catalogProduct)
-                                }
+                                }.join()
                             } catch (e: Exception) {
                                 Log.d(TAG, "updateCache: Error inserting data:${catalogProduct}")
                             }

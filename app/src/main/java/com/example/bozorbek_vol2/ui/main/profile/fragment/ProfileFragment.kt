@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -91,7 +91,8 @@ class ProfileFragment : BaseProfileFragment() {
                     val imageFile = File(getRealPathFromURI(uri1))
                     Log.d(TAG, "imageFile: ${imageFile}")
                     val requestBody = RequestBody.create(
-                        MediaType.parse(this.requireContext()?.contentResolver?.getType(uri1)),
+                        this.requireContext()?.contentResolver?.getType(uri1)
+                            ?.let { it.toMediaTypeOrNull() },
                         imageFile
                     )
 

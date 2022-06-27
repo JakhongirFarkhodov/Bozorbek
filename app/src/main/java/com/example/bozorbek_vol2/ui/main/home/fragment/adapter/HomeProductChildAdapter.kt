@@ -11,13 +11,14 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.home.HomeRandomProducts
+import com.example.bozorbek_vol2.ui.main.home.fragment.adapter.model.HomeProduct
 import com.example.bozorbek_vol2.util.Constants
 import kotlinx.android.synthetic.main.item_home_child_product.view.*
 
-class HomeProductChildAdapter(val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeProductChildAdapter(val requestManager: RequestManager, val parentPosition:Int, val parentItem:HomeProduct, val onParentItemClickListener: HomeProductParentAdapter.OnPrentItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return HomeProductChildViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_child_product, parent, false), requestManager)
+        return HomeProductChildViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_child_product, parent, false), requestManager, parentPosition, parentItem, onParentItemClickListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -59,7 +60,7 @@ class HomeProductChildAdapter(val requestManager: RequestManager) : RecyclerView
         differConfig.submitList(newList)
     }
 
-    inner class HomeProductChildViewHolder(itemView: View, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
+    inner class HomeProductChildViewHolder(itemView: View, val requestManager: RequestManager, val parentPosition: Int, val parentItem: HomeProduct, val onParentItemClickListener: HomeProductParentAdapter.OnPrentItemClickListener) : RecyclerView.ViewHolder(itemView)
     {
         fun bind(item: HomeRandomProducts)
         {
@@ -75,7 +76,13 @@ class HomeProductChildAdapter(val requestManager: RequestManager) : RecyclerView
                 itemView.item_home_product_price.setText("${String.format("%,d", (item.price)).replace(",", ".")}")
             }
 
+            itemView.home_product_constraint.setOnClickListener {
+                onParentItemClickListener.onItemClick(absoluteAdapterPosition, item, parentPosition, parentItem)
+            }
+
         }
     }
+
+
 
 }

@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -24,7 +26,7 @@ import com.example.bozorbek_vol2.ui.main.home.state.HomeStateEvent
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : BaseHomeFragment() {
+class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemClickListener {
 
     private lateinit var onDataStateChangeListener:OnDataStateChangeListener
     private lateinit var homeImageAdapter: SliderImageAdapter
@@ -158,7 +160,7 @@ class HomeFragment : BaseHomeFragment() {
         )
         )
 
-        parentAdapter = HomeProductParentAdapter(requestManager)
+        parentAdapter = HomeProductParentAdapter(requestManager, this)
         parentAdapter.submitList(list_of_products.distinct().toList())
         home_products_rv_parent.adapter = parentAdapter
         home_products_rv_parent.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -199,6 +201,21 @@ class HomeFragment : BaseHomeFragment() {
         {
             Log.d(TAG, "onAttach: ${context} mustImplement OnDataStateChangeListener")
         }
+    }
+
+    override fun onItemClick(
+        childPosition: Int,
+        childItem: HomeRandomProducts,
+        parentPosition: Int,
+        parentItem: HomeProduct
+    ) {
+        val text = childItem.get_absolute_url.split("/")
+        Log.d(TAG, "onItemClick: ${text}")
+        val category_slug = text[1].replace(" ","")
+        val product_slug = text[2].replace(" ","")
+        val action = HomeFragmentDirections.actionHomeFragmentToHomeViewProductFragment(category_slug, product_slug)
+        findNavController().navigate(action)
+        Toast.makeText(requireContext(), "childPosition:$childPosition,\nchildItem:${childItem.name},\nparentPosition:$parentPosition,\nparentItem:${parentItem.title}",Toast.LENGTH_LONG).show()
     }
 
 }

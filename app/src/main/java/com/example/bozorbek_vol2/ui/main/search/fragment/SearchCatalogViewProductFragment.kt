@@ -220,6 +220,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
     private fun setParameterValueToSpinner(parametersValue: ParametersValue) {
 
+        sort_list.clear()
+
         if (!parametersValue.sort.isEmpty()) {
 
             for (sort in parametersValue.sort)

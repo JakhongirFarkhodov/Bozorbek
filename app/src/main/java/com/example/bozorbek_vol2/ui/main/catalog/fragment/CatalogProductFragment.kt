@@ -3,7 +3,6 @@ package com.example.bozorbek_vol2.ui.main.catalog.fragment
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +58,7 @@ class CatalogProductFragment : BaseCatalogFragment(),
                         event.getContentIfNotHandled()?.let { catalogViewState ->
                             catalogViewState.catalogProductList.let { catalogProductList ->
                                 catalogProductList.list?.let { list ->
+                                    Log.d(TAG, "CatalogProduct dataState: ${catalogProductList}")
                                     viewModel.setCatalogProductListOfData(list)
                                 }
                             }
@@ -70,6 +70,7 @@ class CatalogProductFragment : BaseCatalogFragment(),
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { cataloViewState ->
             cataloViewState.catalogProductList.let { catalogProductList ->
+                Log.d(TAG, "CatalogProduct viewState: ${catalogProductList}")
                 catalogProductList.list?.let { list ->
                     setCatalogProductListToAdapter(list)
                 }
