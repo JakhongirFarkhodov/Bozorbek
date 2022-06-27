@@ -230,19 +230,6 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
             }
         }
 
-//        if (!parametersValue.paket.isEmpty()) {
-//            for (paket in parametersValue.paket)
-//            {
-//                paket_list.add(paket.paket_value)
-//            }
-//        }
-
-//        if (!parametersValue.productOwner.isEmpty()) {
-//            for (product_owner in parametersValue.productOwner)
-//            {
-//                product_owner_list.add(product_owner.product_owner_value)
-//            }
-//        }
 
         if (!parametersValue.items.isEmpty())
         {

@@ -67,7 +67,7 @@ class CreatePasswordFragment : BaseAuthFragment() {
                     if (useraname.equals(args.phoneNumber))
                     {
                         Toast.makeText(requireContext(), "Пользыватель зарегистрирован", Toast.LENGTH_LONG).show()
-                        findNavController().navigate(R.id.action_createPasswordFragment_to_loginFragment)
+                        findNavController().navigate(R.id.action_createPasswordFragment_to_successfullyRegisterFragment)
                     }
                 }
             }

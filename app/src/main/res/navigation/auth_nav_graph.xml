@@ -84,5 +84,27 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             />
+        <action
+            android:id="@+id/action_createPasswordFragment_to_successfullyRegisterFragment"
+            app:destination="@id/successfullyRegisterFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
+    <dialog
+        android:id="@+id/successfullyRegisterFragment"
+        android:name="com.example.bozorbek_vol2.ui.auth.fragments.SuccessfullyRegisterFragment"
+        android:label="fragment_successfully_register"
+        tools:layout="@layout/fragment_successfully_register" >
+        <action
+            android:id="@+id/action_successfullyRegisterFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </dialog>
 </navigation>

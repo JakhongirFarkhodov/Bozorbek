@@ -165,6 +165,10 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                                 if (message.equals("Address added successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketAddressOrderList())
                                 }
+                                if (message.equals("Пакет создан"))
+                                {
+                                    findNavController().navigate(R.id.action_basketFragment_to_basketSuccessfullySavedFragment)
+                                }
                             }
                         }
                     }

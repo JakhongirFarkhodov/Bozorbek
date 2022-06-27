@@ -37,6 +37,9 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="NewPackage" />
+        <action
+            android:id="@+id/action_basketFragment_to_basketSuccessfullySavedFragment"
+            app:destination="@id/basketSuccessfullySavedFragment" />
 
     </fragment>
     <fragment
@@ -64,4 +67,9 @@
             android:id="@+id/action_basketShowDialogFragment_to_basketFragment"
             app:destination="@id/basketFragment" />
     </dialog>
+    <dialog
+        android:id="@+id/basketSuccessfullySavedFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.basket.fragment.BasketSuccessfullySavedFragment"
+        android:label="fragment_basket_successfully_saved"
+        tools:layout="@layout/fragment_basket_successfully_saved" />
 </navigation>
