@@ -88,6 +88,12 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             />
+        <argument
+            android:name="image"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
     </dialog>
     <fragment
         android:id="@+id/searchHistoryFragment"

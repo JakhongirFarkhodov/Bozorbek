@@ -39,6 +39,8 @@ class ProfileFragment : BaseProfileFragment() {
     private var showMenu:Boolean = false
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
     private lateinit var uri_image:String
+    private lateinit var image_url:String
+    private lateinit var username:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -181,6 +183,9 @@ class ProfileFragment : BaseProfileFragment() {
         profile_user_title.setText(profile.first_name)
         profile_text_name.setText(profile.first_name)
         profile_text_phone.setText(profile.username)
+
+        image_url = Constants.BASE_URL + profile.get_image
+        username = profile.first_name
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -195,7 +200,8 @@ class ProfileFragment : BaseProfileFragment() {
         when(item.itemId)
         {
             R.id.menu ->{
-                findNavController().navigate(R.id.action_profileFragment_to_profileBottomSheetDialogFragment)
+                val action = ProfileFragmentDirections.actionProfileFragmentToProfileBottomSheetDialogFragment(image = image_url, username = username)
+                findNavController().navigate(action)
             }
 
             R.id.log_out ->{
