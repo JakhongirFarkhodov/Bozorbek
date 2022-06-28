@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
@@ -89,6 +90,14 @@ class AuthActivity : BaseActivity() {
 
     override fun getListOfObjects(): List<BasketOrderProduct> {
         return ArrayList<BasketOrderProduct>()
+    }
+
+    override fun setReadyPackageListOfItems(list: List<ProfileReadyPackageId>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getReadyPackageListOfItems(): List<ProfileReadyPackageId> {
+        return ArrayList<ProfileReadyPackageId>()
     }
 
     override fun setSaveButtonClick(click: Boolean) {

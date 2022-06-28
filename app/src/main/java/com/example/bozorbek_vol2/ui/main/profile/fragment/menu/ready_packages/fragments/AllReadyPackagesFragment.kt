@@ -78,6 +78,11 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                                         onDataStateChangeListener.getItemCount()
                                     )
                                 }
+                                if (message.equals("Продукты пакета получены"))
+                                {
+                                    val dialog = PopUpListOfReadyPackagesProductsFragment()
+                                    dialog.show(requireActivity().supportFragmentManager, "Fragment")
+                                }
 
                             }
                         }
@@ -88,6 +93,13 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                             profileViewState.readyPackagesList?.let { list ->
                                 Log.d(TAG, "allPackages dataState: ${list}")
                                 viewModel.setProfileAllPackagesList(list)
+                            }
+                            profileViewState.profileReadyPackageIdList?.let { list ->
+                                if (!list.isEmpty())
+                                {
+                                    Log.d(TAG, "product package id: ${list} ")
+                                    onDataStateChangeListener.setReadyPackageListOfItems(list)
+                                }
                             }
                         }
                     }
@@ -185,9 +197,10 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
     }
 
     override fun onShowPackageItem(position: Int, readyPackagesData: ReadyPackagesData) {
-        viewModel.editor.putInt("id", readyPackagesData.packageData.package_id)
-        val dialog = PopUpListOfReadyPackagesProductsFragment()
-        dialog.show(requireActivity().supportFragmentManager, "AllReadyPackage")
+        viewModel.setStateEvent(event = ProfileStateEvent.SetReadyPackageId(readyPackagesData.packageData.package_id))
+//        viewModel.editor.putInt("id", readyPackagesData.packageData.package_id)
+//        val dialog = PopUpListOfReadyPackagesProductsFragment()
+//        dialog.show(requireActivity().supportFragmentManager, "AllReadyPackage")
 
     }
 

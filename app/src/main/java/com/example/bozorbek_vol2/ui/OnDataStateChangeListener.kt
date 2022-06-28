@@ -1,6 +1,7 @@
 package com.example.bozorbek_vol2.ui
 
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 
 interface OnDataStateChangeListener {
 
@@ -12,6 +13,9 @@ interface OnDataStateChangeListener {
 
     fun setListOfObjects(list: List<BasketOrderProduct>)
     fun getListOfObjects():List<BasketOrderProduct>
+
+    fun setReadyPackageListOfItems(list: List<ProfileReadyPackageId>)
+    fun getReadyPackageListOfItems():List<ProfileReadyPackageId>
 
     fun setSaveButtonClick(click:Boolean)
     fun isSaveButtonClick():Boolean

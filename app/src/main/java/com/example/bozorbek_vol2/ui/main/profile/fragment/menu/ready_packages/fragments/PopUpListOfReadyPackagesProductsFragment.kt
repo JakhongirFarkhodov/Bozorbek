@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
@@ -45,13 +47,15 @@ class PopUpListOfReadyPackagesProductsFragment : DialogFragment() {
             dismiss()
         }
 
-//        setDataToUi(args.profileReadyPackageIdArrayList.list)
+        setDataToUi(onDataStateChangeListener.getReadyPackageListOfItems())
 
     }
 
     private fun setDataToUi(list: List<ProfileReadyPackageId>) {
 
-        adapter = ProfileReadyPackageIdAdapter()
+        val requestOptions = RequestOptions().placeholder(android.R.color.transparent).error(R.drawable.default_image)
+        val requestManager = Glide.with(requireActivity().application).setDefaultRequestOptions(requestOptions)
+        adapter = ProfileReadyPackageIdAdapter(requestManager)
         adapter.submitList(list)
         pop_up_rv.adapter = adapter
         pop_up_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)

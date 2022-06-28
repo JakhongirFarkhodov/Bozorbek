@@ -8,6 +8,7 @@ import android.view.WindowInsetsController
 import androidx.core.content.ContextCompat
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.main.MainActivity
 import kotlinx.coroutines.Dispatchers.Main
@@ -72,6 +73,14 @@ class SplashActivity : BaseActivity() {
 
     override fun getListOfObjects(): List<BasketOrderProduct> {
         return ArrayList<BasketOrderProduct>()
+    }
+
+    override fun setReadyPackageListOfItems(list: List<ProfileReadyPackageId>) {
+
+    }
+
+    override fun getReadyPackageListOfItems(): List<ProfileReadyPackageId> {
+        return ArrayList<ProfileReadyPackageId>()
     }
 
     override fun setSaveButtonClick(click: Boolean) {

@@ -226,6 +226,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     private fun setBasketOrderListToView(list: List<BasketOrderProduct>) {
         if (!list.isEmpty())
         {
+            listOfReadyPackage.clear()
             for (item in list)
             {
                 listOfReadyPackage.add(SaveReadyPackageItemRequest(

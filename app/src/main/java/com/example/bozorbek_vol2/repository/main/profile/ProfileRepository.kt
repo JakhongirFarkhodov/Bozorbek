@@ -147,6 +147,7 @@ constructor(
                     val loadCache = loadFromCache()
                     result.addSource(loadCache, Observer { profileViewState ->
                         result.removeSource(loadCache)
+                        Log.d(TAG, "createCacheAndReturn: ${profileViewState}")
                         onCompleteJob(
                             dataState = DataState.data(
                                 data = profileViewState,
@@ -159,7 +160,7 @@ constructor(
 
             override fun loadFromCache(): LiveData<ProfileViewState> {
                 return profileDao.getProfileReadyPackages()?.switchMap { list_package ->
-
+                
                     object : LiveData<ProfileViewState>() {
                         override fun onActive() {
                             super.onActive()
@@ -733,20 +734,22 @@ constructor(
                     val loadCache = loadFromCache()
                     result.addSource(loadCache, Observer { profileViewState ->
                         result.removeSource(loadCache)
-                        onCompleteJob(dataState = DataState.data(data = profileViewState, response = null))
+                        onCompleteJob(dataState = DataState.data(data = profileViewState, response = Response(message = "Продукты пакета получены", responseType = ResponseType.None())))
                     })
                 }
             }
 
             override fun loadFromCache(): LiveData<ProfileViewState> {
                 return profileDao.getProfileReadyPackageId()?.switchMap { list ->
-                    object : LiveData<ProfileViewState>()
-                    {
-                        override fun onActive() {
-                            super.onActive()
-                            value = ProfileViewState(profileReadyPackageIdList = list)
+                    profileDao.getProfileReadyPackages()?.switchMap {ready_package_list ->
+                        object : LiveData<ProfileViewState>()
+                        {
+                            override fun onActive() {
+                                super.onActive()
+                                value = ProfileViewState(profileReadyPackageIdList = list, readyPackagesList = ready_package_list)
+                            }
                         }
-                    }
+                    }?:AbsentLiveData.create()
                 }?:AbsentLiveData.create()
             }
 

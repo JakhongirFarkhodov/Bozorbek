@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.basket.fragment.BaseBasketFragment
@@ -36,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener, OnNavigationItemReselectedListener {
 
     private var listOfBasketObjects:ArrayList<BasketOrderProduct> = ArrayList()
+    private var listOfReadyPackageItemIdObjects:ArrayList<ProfileReadyPackageId> = ArrayList()
     private var clickButton:Boolean = false
     private var count:Int = 0
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -266,6 +268,15 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
     override fun getListOfObjects(): List<BasketOrderProduct> {
         return listOfBasketObjects
+    }
+
+    override fun setReadyPackageListOfItems(list: List<ProfileReadyPackageId>) {
+        listOfReadyPackageItemIdObjects.clear()
+        listOfReadyPackageItemIdObjects.addAll(list)
+    }
+
+    override fun getReadyPackageListOfItems(): List<ProfileReadyPackageId> {
+        return listOfReadyPackageItemIdObjects
     }
 
     override fun setSaveButtonClick(click: Boolean) {
