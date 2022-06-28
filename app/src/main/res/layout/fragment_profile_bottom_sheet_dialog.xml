@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.profile.fragment.ProfileBottomSheetDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <View
+        android:id="@+id/profile_view"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_3sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#42445A"
+        android:alpha="0.3"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_imv"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:src="@drawable/example_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:civ_border_width="@dimen/_1sdp"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profile_name_mtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_view"
+        android:text="Нина Азматова"
+        app:layout_constraintStart_toEndOf="@id/profile_imv"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@color/fruit_grey"
+        android:textStyle="bold"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_name_mtv"
+        android:text="Покупатель № 15"
+        app:layout_constraintStart_toEndOf="@id/profile_imv"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:textColor="@color/fruit_grey"
+        android:alpha="0.5"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_imv"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_search_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_search"
+            app:iconSize="15dp"
+            app:tint="@android:color/white"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_search_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_search_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_search_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="История поиска"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_search_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_search_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_search"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_notification_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_notifications"
+            app:iconSize="24dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_notification_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_notification_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_notification_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Уведомления"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_notification_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_notification_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_order_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_notification"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_order_history_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_search_order"
+            app:iconSize="24dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_order_history_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_order_history_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_order_history_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="История закза"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_order_history_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_order_history_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_company_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_order_history"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_search_company_info_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_company_info"
+            app:iconSize="24dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_search_company_info_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_search_company_info_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_search_company_info_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Информация о компании"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_search_company_info_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_search_company_info_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_company_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_settings_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_settings"
+            app:iconSize="24dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_settings_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_settings_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_settings_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Настройки безопасности"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_settings_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_settings_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_reviews_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_call"
+            app:iconSize="20dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_reviews_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_reviews_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_reviews_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Жалобы"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_reviews_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_reviews_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_ready_package"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_reviews"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_ready_package_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_ready_package"
+            app:iconSize="24dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_ready_package_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_ready_package_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_ready_package_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Готовые корзины"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_ready_package_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_ready_package_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_auto_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_ready_package"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_auto_order_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/auto_order"
+            app:iconSize="20dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_auto_order_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_auto_order_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_auto_order_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Авто заказ"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_auto_order_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_auto_order_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_constratin_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_auto_order"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_exit_mbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/auto_order"
+            app:iconSize="20dp"
+            app:iconPadding="0dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="8.5dp"
+            android:paddingVertical="0dp"
+            android:backgroundTint="@color/fruit_light_dark_blue"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/profile_exit_mbtn"
+            app:layout_constraintStart_toEndOf="@id/profile_exit_mbtn"
+            app:layout_constraintBottom_toBottomOf="@id/profile_exit_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:text="Выйти из профиля"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/profile_exit_mbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_exit_mbtn"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:src="@drawable/ic_arrow"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:textColor="#708088"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

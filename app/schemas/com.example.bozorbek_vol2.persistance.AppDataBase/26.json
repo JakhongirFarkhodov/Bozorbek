@@ -1,0 +1,864 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 26,
+    "identityHash": "5fb88fcbe77a76233be1a17f9544a769",
+    "entities": [
+      {
+        "tableName": "account_properties",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`phone_number` TEXT NOT NULL, `username` TEXT NOT NULL, PRIMARY KEY(`phone_number`))",
+        "fields": [
+          {
+            "fieldPath": "phone_number",
+            "columnName": "phone_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "phone_number"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "auth_token",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`account_phone_number` TEXT NOT NULL, `access_token` TEXT, `refresh` TEXT, PRIMARY KEY(`account_phone_number`), FOREIGN KEY(`account_phone_number`) REFERENCES `account_properties`(`phone_number`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "account_phone_number",
+            "columnName": "account_phone_number",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "access_token",
+            "columnName": "access_token",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "refresh_token",
+            "columnName": "refresh",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "account_phone_number"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "account_properties",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "account_phone_number"
+            ],
+            "referencedColumns": [
+              "phone_number"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "catalog_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `get_absolute_url` TEXT NOT NULL, `get_image` TEXT NOT NULL, `slug` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_absolute_url",
+            "columnName": "get_absolute_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_image",
+            "columnName": "get_image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "catalog_product_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `get_absolute_url` TEXT NOT NULL, `slug` TEXT NOT NULL, `category` INTEGER NOT NULL, `image` TEXT NOT NULL, `price` REAL NOT NULL, `discount` REAL NOT NULL, `unit` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "getAbsoluteUrl",
+            "columnName": "get_absolute_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discount",
+            "columnName": "discount",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "catalog_view_product_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `form` TEXT NOT NULL, `color` TEXT NOT NULL, `aroma` TEXT NOT NULL, `taste` TEXT NOT NULL, `organic` INTEGER NOT NULL, `origin` TEXT NOT NULL, `piece_size` TEXT NOT NULL, `in_piece` INTEGER NOT NULL, `price_in_piece` REAL NOT NULL, `discount_in_piece` REAL NOT NULL, `in_gramme` INTEGER NOT NULL, `price_in_gramme` REAL NOT NULL, `discount_in_gramme` REAL NOT NULL, `size_gramme` INTEGER NOT NULL, `size_diameter` INTEGER NOT NULL, `expiration` TEXT NOT NULL, `certification` TEXT NOT NULL, `condition` TEXT NOT NULL, `storage_temp` TEXT NOT NULL, `description` TEXT NOT NULL, `main_image` TEXT NOT NULL, `product_name` TEXT NOT NULL, `large` INTEGER NOT NULL, `large_percent` REAL NOT NULL, `middle` INTEGER NOT NULL, `middle_percent` REAL NOT NULL, `small` INTEGER NOT NULL, `small_percent` REAL NOT NULL, `sort_value_id` INTEGER NOT NULL, `sort_value` TEXT NOT NULL, `sort_parameter` TEXT NOT NULL, `sort_parameter_id` INTEGER NOT NULL, `product_owner_value_id` INTEGER NOT NULL, `product_owner_value` TEXT NOT NULL, `product_owner_parameter` TEXT NOT NULL, `product_owner_parameter_id` INTEGER NOT NULL, `paket_value_id` INTEGER NOT NULL, `paket_value` TEXT NOT NULL, `paket_parameter` TEXT NOT NULL, `paket_parameter_id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "form",
+            "columnName": "form",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aroma",
+            "columnName": "aroma",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "taste",
+            "columnName": "taste",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "organic",
+            "columnName": "organic",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origin",
+            "columnName": "origin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "piece_size",
+            "columnName": "piece_size",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "in_piece",
+            "columnName": "in_piece",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price_in_piece",
+            "columnName": "price_in_piece",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discount_in_piece",
+            "columnName": "discount_in_piece",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "in_gramme",
+            "columnName": "in_gramme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price_in_gramme",
+            "columnName": "price_in_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discount_in_gramme",
+            "columnName": "discount_in_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size_gramme",
+            "columnName": "size_gramme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size_diameter",
+            "columnName": "size_diameter",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiration",
+            "columnName": "expiration",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "certification",
+            "columnName": "certification",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "condition",
+            "columnName": "condition",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "storage_temp",
+            "columnName": "storage_temp",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "main_image",
+            "columnName": "main_image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_name",
+            "columnName": "product_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "large",
+            "columnName": "large",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "large_percent",
+            "columnName": "large_percent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "middle",
+            "columnName": "middle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "middle_percent",
+            "columnName": "middle_percent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "small",
+            "columnName": "small",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "small_percent",
+            "columnName": "small_percent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_value_id",
+            "columnName": "sort_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_value",
+            "columnName": "sort_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_parameter",
+            "columnName": "sort_parameter",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_parameter_id",
+            "columnName": "sort_parameter_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_value_id",
+            "columnName": "product_owner_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_value",
+            "columnName": "product_owner_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_parameter",
+            "columnName": "product_owner_parameter",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_parameter_id",
+            "columnName": "product_owner_parameter_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_value_id",
+            "columnName": "paket_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_value",
+            "columnName": "paket_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_parameter",
+            "columnName": "paket_parameter",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_parameter_id",
+            "columnName": "paket_parameter_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "sort_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sort_id` INTEGER NOT NULL, `sort_name` TEXT NOT NULL, `sort_value` TEXT NOT NULL, `sort_value_id` INTEGER NOT NULL, PRIMARY KEY(`sort_value_id`))",
+        "fields": [
+          {
+            "fieldPath": "sort_id",
+            "columnName": "sort_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_name",
+            "columnName": "sort_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_value",
+            "columnName": "sort_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sort_value_id",
+            "columnName": "sort_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sort_value_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "product_owner_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`product_owner_id` INTEGER NOT NULL, `product_owner_name` TEXT NOT NULL, `product_owner_value` TEXT NOT NULL, `product_owner_value_id` INTEGER NOT NULL, PRIMARY KEY(`product_owner_value_id`))",
+        "fields": [
+          {
+            "fieldPath": "product_owner_id",
+            "columnName": "product_owner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_name",
+            "columnName": "product_owner_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_value",
+            "columnName": "product_owner_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_owner_value_id",
+            "columnName": "product_owner_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "product_owner_value_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "paket_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`paket_id` INTEGER NOT NULL, `paket_name` TEXT NOT NULL, `paket_value` TEXT NOT NULL, `parameter_value_id` INTEGER NOT NULL, PRIMARY KEY(`parameter_value_id`))",
+        "fields": [
+          {
+            "fieldPath": "paket_id",
+            "columnName": "paket_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_name",
+            "columnName": "paket_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_value",
+            "columnName": "paket_value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paket_value_id",
+            "columnName": "parameter_value_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "parameter_value_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "basket_order_product_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`basket_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `basket_product_item_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, `name` TEXT, `product_name` TEXT, `form` TEXT, `color` TEXT, `aroma` TEXT, `taste` TEXT, `organic` INTEGER NOT NULL, `origin` TEXT, `piece_size` TEXT, `in_piece` INTEGER NOT NULL, `price_in_piece` INTEGER NOT NULL, `discount_in_piece` REAL NOT NULL, `in_gramme` INTEGER NOT NULL, `price_in_gramme` REAL NOT NULL, `sum_price_gramme` REAL NOT NULL, `discount_in_gramme` REAL NOT NULL, `size_gramme` REAL NOT NULL, `sum_of_size` REAL NOT NULL, `size_diameter` INTEGER NOT NULL, `expiration` TEXT, `certification` TEXT, `condition` TEXT, `storage_temp` TEXT, `description` TEXT, `main_image` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "basket_id",
+            "columnName": "basket_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "basket_product_item_id",
+            "columnName": "basket_product_item_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "product_name",
+            "columnName": "product_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "from",
+            "columnName": "form",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "aroma",
+            "columnName": "aroma",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taste",
+            "columnName": "taste",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "organic",
+            "columnName": "organic",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origin",
+            "columnName": "origin",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "piece_size",
+            "columnName": "piece_size",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "in_piece",
+            "columnName": "in_piece",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price_in_piece",
+            "columnName": "price_in_piece",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discount_in_piece",
+            "columnName": "discount_in_piece",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "in_gramme",
+            "columnName": "in_gramme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price_in_gramme",
+            "columnName": "price_in_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sum_price_gramme",
+            "columnName": "sum_price_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discount_in_gramme",
+            "columnName": "discount_in_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size_gramme",
+            "columnName": "size_gramme",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sum_of_size",
+            "columnName": "sum_of_size",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size_diameter",
+            "columnName": "size_diameter",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiration",
+            "columnName": "expiration",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "certification",
+            "columnName": "certification",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "condition",
+            "columnName": "condition",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "storage_temp",
+            "columnName": "storage_temp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "main_image",
+            "columnName": "main_image",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "basket_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "profile_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `customer_phone` INTEGER NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `get_image` TEXT NOT NULL, PRIMARY KEY(`username`))",
+        "fields": [
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customer_phone",
+            "columnName": "customer_phone",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "first_name",
+            "columnName": "first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_name",
+            "columnName": "last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_image",
+            "columnName": "get_image",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "username"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "profile_ready_packages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `package_name` TEXT NOT NULL, `author` INTEGER NOT NULL, `visibility` INTEGER NOT NULL, `total_cost` INTEGER NOT NULL, `items_count` INTEGER NOT NULL, `category_name` TEXT NOT NULL, `get_absolute_url` TEXT NOT NULL, `get_image` TEXT NOT NULL, `slug` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "package_name",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visibility",
+            "columnName": "visibility",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "total_cost",
+            "columnName": "total_cost",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "items_count",
+            "columnName": "items_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category_name",
+            "columnName": "category_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_absolute_url",
+            "columnName": "get_absolute_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_image",
+            "columnName": "get_image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5fb88fcbe77a76233be1a17f9544a769')"
+    ]
+  }
+}
