@@ -90,7 +90,8 @@ abstract class NetworkBoundResource<ResponseObject, CacheObject, ViewStateType> 
             is ApiErrorResponse ->{
                 if (response.error_message.equals(ErrorHandling.RESPONSE_UNEXPECTED_STATUS_LINE) || response.error_message.equals(ErrorHandling.RESPONSE_204))
                 {
-                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Успешно", responseType = ResponseType.Toast())))
+                    onErrorReturn(error_message = "Успешно", shouldUseToast = true, shouldUseDialog = false)
+//                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Успешно", responseType = ResponseType.Toast())))
                 }
                 else{
                     onErrorReturn(error_message = response.error_message, shouldUseToast = false, shouldUseDialog = true)

@@ -140,16 +140,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     }
 
     private fun observeData() {
-
-        GlobalScope.launch(Main) {
-            launch {
-                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
-            }.join()
-            launch {
-                delay(2000)
-                viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
-            }.join()
-        }
+        viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
 
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
@@ -159,6 +150,12 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
                             response.message?.let { message ->
+
+                                if (message.equals("Profile successfully"))
+                                {
+                                    viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
+                                }
+
                                 if (message.equals("Remove successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
                                 }
@@ -168,6 +165,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                                 if (message.equals("Пакет создан"))
                                 {
                                     findNavController().navigate(R.id.action_basketFragment_to_basketSuccessfullySavedFragment)
+                                    onDataStateChangeListener.setSaveButtonClick(false)
                                 }
                             }
                         }

@@ -10,10 +10,6 @@ sealed class GenericApiResponse<T> {
 
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             Log.d(TAG, "error create: ${error.message}")
-            if (error.equals(ErrorHandling.RESPONSE_204) || error.equals(ErrorHandling.RESPONSE_UNEXPECTED_STATUS_LINE))
-            {
-
-            }
             return ApiErrorResponse(error_message = error.message ?: "Unknown error")
         }
 

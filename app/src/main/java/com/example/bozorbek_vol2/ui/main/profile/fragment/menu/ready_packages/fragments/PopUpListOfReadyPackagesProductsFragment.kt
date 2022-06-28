@@ -1,5 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
+import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.adapters.ProfileReadyPackageIdAdapter
 import com.example.bozorbek_vol2.util.Constants
 import kotlinx.android.synthetic.main.fragment_pop_up_list_of_ready_packages_products.*
@@ -18,6 +20,7 @@ class PopUpListOfReadyPackagesProductsFragment : DialogFragment() {
 
     private val TAG = Constants.LOG
     private lateinit var adapter:ProfileReadyPackageIdAdapter
+    private lateinit var onDataStateChangeListener: OnDataStateChangeListener
 
 
     override fun onCreateView(
@@ -36,15 +39,7 @@ class PopUpListOfReadyPackagesProductsFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState != null)
-        {
-            val bundle = this.arguments
-            if (bundle != null) {
-                val list:ArrayList<ProfileReadyPackageId> = bundle.getParcelableArrayList("id")!!
-                Log.d(TAG, "popUpList: ${list}")
-                setDataToUi(list)
-            }
-        }
+
 
         pop_cancel.setOnClickListener {
             dismiss()
@@ -62,5 +57,17 @@ class PopUpListOfReadyPackagesProductsFragment : DialogFragment() {
         pop_up_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            onDataStateChangeListener = context as OnDataStateChangeListener
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG, "onAttach: ${context} must implement OnDataStateChangeListener")
+        }
+
+    }
 
 }

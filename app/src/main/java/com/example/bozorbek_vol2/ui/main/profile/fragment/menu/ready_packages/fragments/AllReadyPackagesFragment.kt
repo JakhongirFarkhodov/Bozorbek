@@ -55,6 +55,20 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
+
+                dataState.stateError?.let { event ->
+                    event.peekContent()?.let { stateError ->
+                        stateError.response?.let { response ->
+                            response.message?.let { message ->
+                                if (message.equals("Успешно"))
+                                {
+                                    viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages(""))
+                                }
+                            }
+                        }
+                    }
+                }
+
                 dataState.data?.let { data ->
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
@@ -64,6 +78,7 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                                         onDataStateChangeListener.getItemCount()
                                     )
                                 }
+
                             }
                         }
                     }

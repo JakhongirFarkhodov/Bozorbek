@@ -56,7 +56,7 @@ constructor(
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
                 {
-                    onCompleteJob(DataState.data(data = null, response = null))
+                    onCompleteJob(DataState.data(data = null, response = Response(message = "Profile successfully", responseType = ResponseType.None())))
                 }
             }
 
