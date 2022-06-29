@@ -15,12 +15,14 @@ import com.example.bozorbek_vol2.network.main.network_services.home.response.Hom
 import com.example.bozorbek_vol2.network.main.network_services.home.response.HomeRandomProductsResponse
 import com.example.bozorbek_vol2.network.main.network_services.home.response.HomeSliderImagesResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileComplaintsRequest
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileSetReadyPackageAutoOrderResponse
 import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
 import okhttp3.MultipartBody
@@ -62,7 +64,10 @@ interface MainApiServices {
     @HTTP(method = "DELETE", path = "/readypackages/{id}/", hasBody = false)
     fun deleteReadyPackageById(@Header("Authorization") token: String, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<Void>>
 
+    @POST("/orders/auto-order/")
+    fun setReadyPackageAutoOrder(@Header("Authorization") token: String, @Body profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder):LiveData<GenericApiResponse<ProfileSetReadyPackageAutoOrderResponse>>
 
+    //Notification
     @GET("/notifications/")
     fun getNotifications(@Header("Authorization") token: String):LiveData<GenericApiResponse<List<ProfileNotificationResponse>>>
 

@@ -129,11 +129,7 @@
         android:id="@+id/readyPackagesFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ReadyPackagesFragment"
         android:label="fragment_ready_packages"
-        tools:layout="@layout/fragment_ready_packages" >
-        <action
-            android:id="@+id/action_readyPackagesFragment_to_popUpListOfReadyPackagesProductsFragment"
-            app:destination="@id/popUpListOfReadyPackagesProductsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_ready_packages" />
     <fragment
         android:id="@+id/autoOrderFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.AutoOrderFragment"
@@ -173,4 +169,18 @@
             android:name="ProfileReadyPackageIdsArray"
             app:argType="com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId[]" />
     </dialog>
+    <dialog
+        android:id="@+id/popUpOfAuthOrderFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpOfAuthOrderFragment"
+        android:label="fragment_pop_up_of_auth_order"
+        tools:layout="@layout/fragment_pop_up_of_auth_order" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </dialog>
+    <dialog
+        android:id="@+id/popUpSuccessfullySavedReadyPackageInAutoOrderFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpSuccessfullySavedReadyPackageInAutoOrderFragment"
+        android:label="fragment_pop_up_successfully_saved_ready_package_in_auto_order"
+        tools:layout="@layout/fragment_pop_up_successfully_saved_ready_package_in_auto_order" />
 </navigation>

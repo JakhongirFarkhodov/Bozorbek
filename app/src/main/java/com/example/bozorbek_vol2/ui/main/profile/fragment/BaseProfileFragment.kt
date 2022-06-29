@@ -54,4 +54,5 @@ abstract class BaseProfileFragment : DaggerFragment() {
             activity, findNavController(), appBarConfiguration
         )
     }
+
 }

@@ -11,8 +11,10 @@ import androidx.lifecycle.Observer
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.main.MainActivity
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
 import kotlinx.android.synthetic.main.activity_auth.*
 
 class AuthActivity : BaseActivity() {
@@ -98,6 +100,38 @@ class AuthActivity : BaseActivity() {
 
     override fun getReadyPackageListOfItems(): List<ProfileReadyPackageId> {
         return ArrayList<ProfileReadyPackageId>()
+    }
+
+    override fun setCategoryReadyPackage(list: List<CategoryData>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCategoryReadyPackage(): List<CategoryData> {
+        return ArrayList<CategoryData>()
+    }
+
+    override fun setCategoryReadyPackageId(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCategoryReadyPackageId(): Int {
+       return 0
+    }
+
+    override fun setProfileReadyPackageAutoOrderParameters(profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getProfileReadyPackageAutoOrderParameters(): ProfileReadyPackageAutoOrder {
+       return ProfileReadyPackageAutoOrder(0,0,0)
+    }
+
+    override fun setTriggerProfileReadyPackageAutoOrderParameters(trigger: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getTriggerProfileReadyPackageAutoOrderParameters(): Boolean {
+        return false
     }
 
     override fun setSaveButtonClick(click: Boolean) {

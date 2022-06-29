@@ -8,12 +8,14 @@ import com.example.bozorbek_vol2.model.auth.AuthToken
 import com.example.bozorbek_vol2.model.main.profile.*
 import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileComplaintsRequest
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileSetReadyPackageAutoOrderResponse
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
 import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
@@ -832,6 +834,48 @@ constructor(
 
             override fun setJob(job: Job) {
                 addJob("getReadyPackageById", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun setReadyPackageToAutoOrder(auth_token: AuthToken, profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<ProfileSetReadyPackageAutoOrderResponse, Void, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                return AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ProfileSetReadyPackageAutoOrderResponse>) {
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Пакет добавлен в автозаказ", responseType = ResponseType.Toast())))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<ProfileSetReadyPackageAutoOrderResponse>> {
+                return apiServices.setReadyPackageAutoOrder(
+                    token = "Bearer ${auth_token.access_token}",
+                    profileReadyPackageAutoOrder = profileReadyPackageAutoOrder
+                )
+            }
+
+            override fun setJob(job: Job) {
+                addJob("setReadyPackageToAutoOrder",job)
             }
 
         }.asLiveData()

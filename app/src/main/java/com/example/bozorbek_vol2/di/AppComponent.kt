@@ -21,6 +21,7 @@ interface AppComponent : AndroidInjector<BaseApplication> {
     val sessionManager: SessionManager
 
 
+
     @Component.Builder
     interface Builder {
 

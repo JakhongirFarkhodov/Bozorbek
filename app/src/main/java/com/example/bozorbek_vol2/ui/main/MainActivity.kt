@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.ui.BaseActivity
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.basket.fragment.BaseBasketFragment
@@ -24,6 +25,7 @@ import com.example.bozorbek_vol2.ui.main.home.fragment.BaseHomeFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
 import com.example.bozorbek_vol2.ui.main.search.fragment.BaseSearchFragment
 import com.example.bozorbek_vol2.util.BottomNavController
 import com.example.bozorbek_vol2.util.BottomNavController.*
@@ -34,12 +36,18 @@ import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener, OnNavigationItemReselectedListener {
+class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener,
+    OnNavigationItemReselectedListener {
 
-    private var listOfBasketObjects:ArrayList<BasketOrderProduct> = ArrayList()
-    private var listOfReadyPackageItemIdObjects:ArrayList<ProfileReadyPackageId> = ArrayList()
-    private var clickButton:Boolean = false
-    private var count:Int = 0
+    private var listOfBasketObjects: ArrayList<BasketOrderProduct> = ArrayList()
+    private var listOfReadyPackageItemIdObjects: ArrayList<ProfileReadyPackageId> = ArrayList()
+    private var listOfReadyPackageCategoryObjects: ArrayList<CategoryData> = ArrayList()
+    private var categoryReadyPackageId: Int = 0
+    private lateinit var profileReadyPackageAutoOrderItem: ProfileReadyPackageAutoOrder
+
+    private var triggerProfileReadyPackageAutoOrderParameters:Boolean = false
+    private var clickButton: Boolean = false
+    private var count: Int = 0
     private lateinit var bottomNavigationView: BottomNavigationView
     private val bottomNavController: BottomNavController by lazy(LazyThreadSafetyMode.NONE)
     {
@@ -67,8 +75,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     private fun checkAuthUser() {
         sessionManager.cachedAuthToken.observe(this, Observer { authToken ->
             Log.d(TAG, "MainActivity authToken: ${authToken}")
-            if (authToken == null || authToken.access_token == null || authToken.refresh_token == null)
-            {
+            if (authToken == null || authToken.access_token == null || authToken.refresh_token == null) {
                 navToAuthActivity()
             }
         })
@@ -97,9 +104,10 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
         val radius = resources.getDimension(com.intuit.ssp.R.dimen._15ssp)
         val bottomBarBackground = bottomAppBar.background as MaterialShapeDrawable
-        bottomBarBackground.shapeAppearanceModel = bottomBarBackground.shapeAppearanceModel.toBuilder().setTopRightCorner(
-            CornerFamily.ROUNDED, radius
-        ).setTopLeftCorner(CornerFamily.ROUNDED, radius).build()
+        bottomBarBackground.shapeAppearanceModel =
+            bottomBarBackground.shapeAppearanceModel.toBuilder().setTopRightCorner(
+                CornerFamily.ROUNDED, radius
+            ).setTopLeftCorner(CornerFamily.ROUNDED, radius).build()
     }
 
     private fun changeAppBar() {
@@ -110,16 +118,18 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.setSystemBarsAppearance(
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
 
             window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         } else {
             @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            } else {
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
+            window.decorView.systemUiVisibility =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                } else {
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
             window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         }
     }
@@ -158,27 +168,25 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     }
 
     private fun cancelActiveJobs() {
-        val fragments = bottomNavController.fragmentManager.findFragmentById(bottomNavController.containerId)?.childFragmentManager?.fragments
-        if (fragments != null)
-        {
-            for (fragment in fragments)
-            {
-                when(fragment)
-                {
-                    is BaseHomeFragment ->{
+        val fragments =
+            bottomNavController.fragmentManager.findFragmentById(bottomNavController.containerId)?.childFragmentManager?.fragments
+        if (fragments != null) {
+            for (fragment in fragments) {
+                when (fragment) {
+                    is BaseHomeFragment -> {
                         fragment.cancelActiveJob()
                     }
-                    is BaseCatalogFragment ->{
+                    is BaseCatalogFragment -> {
                         fragment.cancelActiveJob()
                     }
 
-                    is BaseSearchFragment ->{
+                    is BaseSearchFragment -> {
                         fragment.cancelActiveJob()
                     }
-                    is BaseBasketFragment ->{
+                    is BaseBasketFragment -> {
                         fragment.cancelActiveJob()
                     }
-                    is BaseProfileFragment ->{
+                    is BaseProfileFragment -> {
                         fragment.cancelActiveJob()
                     }
 
@@ -223,11 +231,9 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
 
     override fun showProgressBar(isShowLoading: Boolean) {
-        if (isShowLoading)
-        {
+        if (isShowLoading) {
             main_progress_bar.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             main_progress_bar.visibility = View.GONE
         }
     }
@@ -245,9 +251,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
                 number = count
                 isVisible = true
             }
-        }
-        else
-        {
+        } else {
             bottomNavigationView.getBadge(R.id.nav_basket)?.apply {
                 number = 0
             }
@@ -277,6 +281,38 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
     override fun getReadyPackageListOfItems(): List<ProfileReadyPackageId> {
         return listOfReadyPackageItemIdObjects
+    }
+
+    override fun setCategoryReadyPackage(list: List<CategoryData>) {
+        listOfReadyPackageCategoryObjects.addAll(list)
+    }
+
+    override fun getCategoryReadyPackage(): List<CategoryData> {
+        return listOfReadyPackageCategoryObjects
+    }
+
+    override fun setCategoryReadyPackageId(id: Int) {
+        categoryReadyPackageId = id
+    }
+
+    override fun getCategoryReadyPackageId(): Int {
+        return categoryReadyPackageId
+    }
+
+    override fun setProfileReadyPackageAutoOrderParameters(profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder) {
+        profileReadyPackageAutoOrderItem = profileReadyPackageAutoOrder
+    }
+
+    override fun getProfileReadyPackageAutoOrderParameters(): ProfileReadyPackageAutoOrder {
+        return profileReadyPackageAutoOrderItem
+    }
+
+    override fun setTriggerProfileReadyPackageAutoOrderParameters(trigger: Boolean) {
+        triggerProfileReadyPackageAutoOrderParameters = trigger
+    }
+
+    override fun getTriggerProfileReadyPackageAutoOrderParameters(): Boolean {
+        return triggerProfileReadyPackageAutoOrderParameters
     }
 
     override fun setSaveButtonClick(click: Boolean) {

@@ -28,6 +28,10 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
     ProfileReadyPackagesParentAdapter.OnRemoveReadyPackageListener {
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
+    private val readyPackagesData = ArrayList<PackagesData>()
+    private val readyPackagesCategory = ArrayList<CategoryData>()
+    private val readyPackagesDataList = ArrayList<ReadyPackagesData>()
+
     lateinit var set: HashSet<List<ProfileReadyPackageId>>
 
     override fun onCreateView(
@@ -48,10 +52,22 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
     override fun onResume() {
         super.onResume()
-        viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages(""))
+//        if (onDataStateChangeListener.getTriggerProfileReadyPackageAutoOrderParameters()) {
+//            Log.d(TAG, "getTriggerProfileReadyPackageAutoOrderParameters:true ")
+//            viewModel.setStateEvent(event = ProfileStateEvent.SetReadyPackageToAutoOrder(
+//                profileReadyPackageAutoOrder = onDataStateChangeListener.getProfileReadyPackageAutoOrderParameters()
+//            ))
+//            onDataStateChangeListener.setTriggerProfileReadyPackageAutoOrderParameters(false)
+//
+//        }
+//        else{
+            viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages(""))
+//        }
     }
 
     private fun observeData() {
+
+        Log.d(TAG, "AllReadyPackagesFragment viewModel: ${viewModel.hashCode()}")
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
@@ -82,6 +98,8 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
                                 {
                                     val dialog = PopUpListOfReadyPackagesProductsFragment()
                                     dialog.show(requireActivity().supportFragmentManager, "Fragment")
+
+
                                 }
 
                             }
@@ -118,9 +136,7 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
     private fun setListOfDataToUI(list: List<ProfileReadyPackages>) {
 
-        val readyPackagesData = ArrayList<PackagesData>()
-        val readyPackagesCategory = ArrayList<CategoryData>()
-        val readyPackagesDataList = ArrayList<ReadyPackagesData>()
+
 
         for (package_item in list) {
             readyPackagesData.add(
@@ -198,6 +214,8 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
     override fun onShowPackageItem(position: Int, readyPackagesData: ReadyPackagesData) {
         viewModel.setStateEvent(event = ProfileStateEvent.SetReadyPackageId(readyPackagesData.packageData.package_id))
+        onDataStateChangeListener.setCategoryReadyPackage(readyPackagesDataList[position].categoryData)
+        onDataStateChangeListener.setCategoryReadyPackageId(readyPackagesData.packageData.package_id)
 //        viewModel.editor.putInt("id", readyPackagesData.packageData.package_id)
 //        val dialog = PopUpListOfReadyPackagesProductsFragment()
 //        dialog.show(requireActivity().supportFragmentManager, "AllReadyPackage")

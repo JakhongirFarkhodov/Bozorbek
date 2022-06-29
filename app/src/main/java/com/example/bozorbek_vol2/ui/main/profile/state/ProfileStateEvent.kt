@@ -1,5 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.profile.state
 
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import okhttp3.MultipartBody
 
 sealed class ProfileStateEvent {
@@ -25,6 +26,8 @@ sealed class ProfileStateEvent {
     data class UpdateProfilePassword(val old_password:String, val new_password:String, val confirm_new_password:String) : ProfileStateEvent()
 
     data class SetReadyPackageId(val id:Int):ProfileStateEvent()
+
+    data class SetReadyPackageToAutoOrder(val profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder): ProfileStateEvent()
 
     data class SetComplaints(val title:String, val text:String) : ProfileStateEvent()
 

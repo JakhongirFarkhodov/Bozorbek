@@ -2,6 +2,8 @@ package com.example.bozorbek_vol2.ui
 
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
+import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
 
 interface OnDataStateChangeListener {
 
@@ -16,6 +18,15 @@ interface OnDataStateChangeListener {
 
     fun setReadyPackageListOfItems(list: List<ProfileReadyPackageId>)
     fun getReadyPackageListOfItems():List<ProfileReadyPackageId>
+
+    fun setCategoryReadyPackage(list: List<CategoryData>)
+    fun getCategoryReadyPackage():List<CategoryData>
+    fun setCategoryReadyPackageId(id:Int)
+    fun getCategoryReadyPackageId():Int
+    fun setProfileReadyPackageAutoOrderParameters(profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder)
+    fun getProfileReadyPackageAutoOrderParameters():ProfileReadyPackageAutoOrder
+    fun setTriggerProfileReadyPackageAutoOrderParameters(trigger:Boolean)
+    fun getTriggerProfileReadyPackageAutoOrderParameters():Boolean
 
     fun setSaveButtonClick(click:Boolean)
     fun isSaveButtonClick():Boolean

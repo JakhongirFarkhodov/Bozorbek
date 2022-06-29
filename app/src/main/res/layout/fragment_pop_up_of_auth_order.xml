@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@drawable/background_overview"
+    android:backgroundTint="@color/white"
+    tools:context=".ui.main.profile.fragment.menu.ready_packages.fragments.PopUpOfAuthOrderFragment">
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/item_auto_order_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Корзина для плова"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/_10sdp"
+        />
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/_280sdp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_auto_order_title"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEF3F9">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/week_frequency_auto_order"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/background_rounded_corners"
+                android:elevation="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@id/week_auto_order"
+                app:boxStrokeWidth="0dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/week_frequency_autocomplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:padding="0dp"
+                    android:text="За 1 неделю"
+                    android:textSize="@dimen/_10ssp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/week_auto_order"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background_rounded_corners"
+                android:elevation="@dimen/_10sdp"
+                app:boxStrokeWidth="0dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/week_frequency_auto_order"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/week_autocomplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:padding="0dp"
+                    android:text="Понедельник"
+                    android:textSize="@dimen/_10ssp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/item_auto_order_category_rv"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/week_frequency_auto_order" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_ready_packages_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Всего"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_auto_order_category_rv" />
+
+            <ImageView
+                android:id="@+id/dot_imv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:src="@drawable/ic_dot"
+                app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_all"
+                app:layout_constraintStart_toEndOf="@id/item_ready_packages_all"
+                app:layout_constraintTop_toTopOf="@id/item_ready_packages_all" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_ready_packages_all_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="14 продуктов"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/dot_imv"
+                app:layout_constraintTop_toBottomOf="@id/item_auto_order_category_rv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_ready_packages_all_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Общая сумма"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_ready_packages_all" />
+
+            <ImageView
+                android:id="@+id/dot_sum_imv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:src="@drawable/ic_dot"
+                app:layout_constraintBottom_toBottomOf="@id/item_ready_packages_all_sum"
+                app:layout_constraintStart_toEndOf="@id/item_ready_packages_all_sum"
+                app:layout_constraintTop_toTopOf="@id/item_ready_packages_all_sum" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/item_ready_packages_all_count_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="150.000 Сум"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/dot_sum_imv"
+                app:layout_constraintStart_toEndOf="@id/dot_sum_imv"
+                app:layout_constraintTop_toTopOf="@id/dot_sum_imv" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/item_auto_order_ready_package_mbt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:elevation="@dimen/_15sdp"
+                android:paddingHorizontal="@dimen/_50sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="Сохранить"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_15sdp"
+                app:cornerRadius="@dimen/_8sdp"
+                android:backgroundTint="@color/fruit_light_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_ready_packages_all_count_sum" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,6 +41,12 @@ class ProfileViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is ProfileStateEvent.SetReadyPackageToAutoOrder ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.setReadyPackageToAutoOrder(auth_token = authToken, stateEvent.profileReadyPackageAutoOrder)
+                }?:AbsentLiveData.create()
+            }
+
             is ProfileStateEvent.GetAllActiveOrHistoryOrder ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
                     profileRepository.getProfileActiveOrHistoryOrder(authToken,
