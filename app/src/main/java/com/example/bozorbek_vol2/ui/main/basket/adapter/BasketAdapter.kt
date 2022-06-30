@@ -3,6 +3,7 @@ package com.example.bozorbek_vol2.ui.main.basket.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class BasketAdapter(val onBasketItemClickListener: OnBasketItemClickListener,val
         {
             is BasketViewHolder ->{
                 holder.bind(diffConfig.currentList[position])
-//                holder.itemView.basket_container.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
+                holder.itemView.basket_container.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
             }
         }
     }

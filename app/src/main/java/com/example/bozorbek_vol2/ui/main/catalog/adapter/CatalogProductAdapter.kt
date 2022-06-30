@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.item_catalog_product.view.*
 
 class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: OnCatalogProductItemClickListener, val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+//    private lateinit var lightVibrantSwatch: Palette.Swatch
+//    private var count:Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CatalogProductViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_catalog_product, parent, false), onCatalogProductItemClickListener, requestManager)
@@ -97,8 +99,22 @@ class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: O
             }
 
             requestManager.load(item.image).transition(withCrossFade()).into(itemView.item_catalog_product_image)
+
+//            val bitmap = (itemView.item_catalog_product_image as BitmapDrawable).bitmap
+//            Palette.from(bitmap).generate(object : Palette.PaletteAsyncListener{
+//                override fun onGenerated(p0: Palette?) {
+//                    lightVibrantSwatch = p0?.lightVibrantSwatch!!
+//                }
+//            })
+//
+//            if (lightVibrantSwatch != null) {
+//                itemView.item_product_cardView.setCardBackgroundColor(lightVibrantSwatch.rgb)
+//            }
+
         }
     }
+
+
 
     interface OnCatalogProductItemClickListener{
         fun onCatalogProductItemClick(position:Int, item:CatalogProduct)

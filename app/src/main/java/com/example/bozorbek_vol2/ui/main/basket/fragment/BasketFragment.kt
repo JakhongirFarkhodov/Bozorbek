@@ -126,6 +126,12 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
+        basket_recyclerView.visibility = View.INVISIBLE
+    }
+
     private fun checkAuthUser() {
         val checkAuthUser = sessionManager.cachedAuthToken.value
 
@@ -140,7 +146,6 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
     }
 
     private fun observeData() {
-        viewModel.setStateEvent(event = BasketStateEvent.GetBasketProfileInfo())
 
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
@@ -242,6 +247,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
         }
         adapter = BasketAdapter(this, this, requestManager)
         adapter.submitList(list)
+        basket_recyclerView.visibility = View.VISIBLE
         basket_recyclerView.adapter = adapter
         basket_recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

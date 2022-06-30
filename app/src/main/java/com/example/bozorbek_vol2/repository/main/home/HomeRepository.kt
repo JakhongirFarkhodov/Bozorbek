@@ -72,7 +72,7 @@ constructor(
                 isNetworkRequest = true,
                 isNetworkAvailable = sessionManager.isInternetAvailable(),
                 shouldUseCacheObject = false,
-                cancelJobIfNoInternet = false
+                cancelJobIfNoInternet = true
             ) {
             override suspend fun createCacheAndReturn() {
               withContext(Main)
@@ -151,7 +151,7 @@ constructor(
             isNetworkRequest = true,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
             shouldUseCacheObject = false,
-            cancelJobIfNoInternet = false
+            cancelJobIfNoInternet = true
         )
         {
             override suspend fun createCacheAndReturn() {

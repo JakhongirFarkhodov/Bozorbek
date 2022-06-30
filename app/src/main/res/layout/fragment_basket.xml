@@ -86,6 +86,7 @@
                     android:background="@color/fruit_light_blue"
                     android:elevation="10dp"
                     android:paddingStart="5dp"
+                    android:layoutAnimation="@anim/layout_scale_animation"
                     android:paddingEnd="5dp"
                     tools:listitem="@layout/item_basket_container" />
 

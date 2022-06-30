@@ -96,6 +96,7 @@ constructor(
             }
 
             override fun createCall(): LiveData<GenericApiResponse<ProfileResponse>> {
+
                 return apiServices.getProfileInfo(token = "Bearer ${authToken.access_token}")
             }
 
@@ -111,7 +112,7 @@ constructor(
             NetworkBoundResource<BasketOrderResponse, List<BasketOrderProduct>, BasketViewState>(
                 isNetworkRequest = true,
                 isNetworkAvailable = sessionManager.isInternetAvailable(),
-                shouldUseCacheObject = true,
+                shouldUseCacheObject = false,
                 cancelJobIfNoInternet = true
             ) {
             override suspend fun createCacheAndReturn() {
@@ -210,8 +211,16 @@ constructor(
                     )
                 }
 
-                updateCache(basketOrderList)
-                createCacheAndReturn()
+//                updateCache(basketOrderList)
+//                createCacheAndReturn()
+                val profile = profileDao.getProfileData()?.value
+                withContext(Main)
+                {
+                    onCompleteJob(dataState = DataState.data(data = BasketViewState(
+                        basketOrderProductList = BasketOrderProductList(basketOrderList),
+                        profile = profile
+                    ),response = null))
+                }
             }
 
             override fun createCall(): LiveData<GenericApiResponse<BasketOrderResponse>> {

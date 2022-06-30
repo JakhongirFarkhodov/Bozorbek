@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.item_home_parent_product.view.*
 class HomeProductParentAdapter(val requestManager: RequestManager, val onParentItemClickListener: OnPrentItemClickListener) : RecyclerView.Adapter<HomeProductParentAdapter.HomeProductParentViewHolder>() {
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeProductParentViewHolder {
         return HomeProductParentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_parent_product, parent, false), requestManager, onParentItemClickListener)
     }
@@ -25,6 +26,7 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
         {
             is HomeProductParentViewHolder ->{
                 holder.bind(differConfig.currentList[position])
+                holder.itemView.item_child_rv.visibility = View.VISIBLE
             }
         }
     }
@@ -60,7 +62,6 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
             itemView.item_child_rv.visibility = View.INVISIBLE
             val adapter = HomeProductChildAdapter(requestManager,absoluteAdapterPosition, item,onParentItemClickListener)
             adapter.submitList(item.productList.distinct().toList())
-            itemView.item_child_rv.visibility = View.VISIBLE
             itemView.item_child_rv.adapter = adapter
             itemView.item_child_rv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.item_parent_title.setText(item.title)
