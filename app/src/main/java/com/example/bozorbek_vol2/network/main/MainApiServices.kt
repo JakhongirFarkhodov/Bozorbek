@@ -19,6 +19,7 @@ import com.example.bozorbek_vol2.network.main.network_services.profile.request.P
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.auto_order.ProfileAutoOrderResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
@@ -66,6 +67,9 @@ interface MainApiServices {
 
     @POST("/orders/auto-order/")
     fun setReadyPackageAutoOrder(@Header("Authorization") token: String, @Body profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder):LiveData<GenericApiResponse<ProfileSetReadyPackageAutoOrderResponse>>
+
+    @GET("/orders/auto-order/")
+    fun getAutoOrderItem(@Header("Authorization") token: String):LiveData<GenericApiResponse<ProfileAutoOrderResponse>>
 
     //Notification
     @GET("/notifications/")

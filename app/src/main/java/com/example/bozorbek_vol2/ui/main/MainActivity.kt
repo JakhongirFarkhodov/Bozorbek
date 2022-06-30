@@ -284,6 +284,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
     }
 
     override fun setCategoryReadyPackage(list: List<CategoryData>) {
+        listOfReadyPackageCategoryObjects.clear()
         listOfReadyPackageCategoryObjects.addAll(list)
     }
 
@@ -323,5 +324,10 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
         return clickButton
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        editor.putInt("catalogPosition",0).apply()
+        editor.putInt("catalogProductPosition",0).apply()
+    }
 
 }

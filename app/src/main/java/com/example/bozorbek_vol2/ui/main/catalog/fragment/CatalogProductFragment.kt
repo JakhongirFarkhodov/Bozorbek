@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.catalog.CatalogProduct
@@ -27,6 +28,7 @@ class CatalogProductFragment : BaseCatalogFragment(),
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
     private lateinit var catalogProductAdapter: CatalogProductAdapter
+    private var lastPosition:Int = 0
 
 
 
@@ -47,6 +49,7 @@ class CatalogProductFragment : BaseCatalogFragment(),
     override fun onResume() {
         super.onResume()
         viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogProductListOfData(slug = args.slug))
+        catalog_product_recyclerView.visibility = View.INVISIBLE
     }
 
     private fun observeData() {
@@ -79,10 +82,20 @@ class CatalogProductFragment : BaseCatalogFragment(),
     }
 
     private fun setCatalogProductListToAdapter(list: List<CatalogProduct>) {
+        catalog_product_recyclerView.visibility = View.VISIBLE
         catalogProductAdapter = CatalogProductAdapter(this, requestManager)
         catalogProductAdapter.submitList(list)
+        lastPosition = sharedPreferences.getInt("catalogProductPosition",0)
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         catalog_product_recyclerView.layoutManager = staggeredGridLayoutManager
+        catalog_product_recyclerView.scrollToPosition(lastPosition)
+        catalog_product_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val layoutManager = recyclerView.layoutManager as StaggeredGridLayoutManager
+                lastPosition = layoutManager.findFirstVisibleItemPositions(null)[0]
+            }
+        })
         catalog_product_recyclerView.adapter = catalogProductAdapter
 
     }
@@ -106,6 +119,6 @@ class CatalogProductFragment : BaseCatalogFragment(),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        catalog_product_recyclerView.adapter = null
+        editor.putInt("catalogProductPosition", lastPosition).apply()
     }
 }

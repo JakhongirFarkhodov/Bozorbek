@@ -51,6 +51,7 @@ class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemCli
         super.onResume()
         Log.d(TAG, "onResume: GetHomeSliderImage() triggered")
         viewModel.setStateEvent(event = HomeStateEvent.GetHomeSliderImage())
+
     }
 
     private fun observeData() {
@@ -162,6 +163,7 @@ class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemCli
 
         parentAdapter = HomeProductParentAdapter(requestManager, this)
         parentAdapter.submitList(list_of_products.distinct().toList())
+
         home_products_rv_parent.adapter = parentAdapter
         home_products_rv_parent.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 

@@ -35,6 +35,8 @@ sealed class ProfileStateEvent {
 
     class SetNotificationEvent : ProfileStateEvent()
 
+    class GetProfileAutoOrderList : ProfileStateEvent()
+
     class None : ProfileStateEvent()
 
 }

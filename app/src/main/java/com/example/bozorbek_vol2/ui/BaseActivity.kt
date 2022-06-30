@@ -1,6 +1,7 @@
 package com.example.bozorbek_vol2.ui
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -16,6 +17,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), OnDataStateChangeListen
 
     @Inject
     lateinit var sessionManager: SessionManager
+
+    @Inject
+    lateinit var editor: SharedPreferences.Editor
 
     override fun onDataStateChange(dataState: DataState<*>) {
         showProgressBar(isShowLoading = dataState.loading.isLoading)

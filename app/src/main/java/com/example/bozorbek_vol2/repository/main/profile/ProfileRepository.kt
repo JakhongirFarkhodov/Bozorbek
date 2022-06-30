@@ -12,6 +12,7 @@ import com.example.bozorbek_vol2.network.main.network_services.profile.request.P
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileUpdatePasswordRequest
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.*
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.active_order.ProfileActiveOrHistoryOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.profile.response.auto_order.ProfileAutoOrderResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_package_id.ReadyPackageIdResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
@@ -918,6 +919,105 @@ constructor(
 
             override fun setJob(job: Job) {
                 addJob("deleteReadyPackageById", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getAutoOrderItem(auth_token: AuthToken):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<ProfileAutoOrderResponse, List<ProfileAutoOrder>, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = true,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                withContext(Main)
+                {
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer { viewState ->
+                        result.removeSource(loadCache)
+                        onCompleteJob(dataState = DataState.data(data = viewState, response = null))
+                    })
+                }
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                return profileDao.getAllAutoOrder()?.switchMap { list ->
+                    object : LiveData<ProfileViewState>()
+                    {
+                        override fun onActive() {
+                            super.onActive()
+                            value = ProfileViewState(profileAutoOrderList = list)
+                        }
+                    }
+                }?:AbsentLiveData.create()
+            }
+
+            override suspend fun updateCache(cacheObject: List<ProfileAutoOrder>?) {
+                cacheObject?.let { list ->
+                    withContext(IO)
+                    {
+                        profileDao.deleteAllProfileAutoOrder()
+                        for (item in list)
+                        {
+                            try {
+                                launch {
+                                    Log.d(TAG, "updateCache: Inserting data:${item}")
+                                    profileDao.insertingAutoOrderItem(item)
+                                }.join()
+                            }
+                            catch (e:Exception)
+                            {
+                                Log.d(TAG, "updateCache: Error inserting data:${item}")
+                            }
+                        }
+                    }
+                }
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ProfileAutoOrderResponse>) {
+                val list = ArrayList<ProfileAutoOrder>()
+                var count = 0
+                for ((item_index, item) in response.body.results.withIndex())
+                {
+                    for ((category_index, category) in response.body.results[item_index].package_item.categories.withIndex())
+                    {
+                        count++
+                        list.add(ProfileAutoOrder(
+                            package_id = count,
+                            id = item.id,
+                            package_name = item.package_item.name,
+                            author = item.author,
+                            visibility = item.package_item.visibility,
+                            total_cost = item.package_item.total_cost,
+                            items_count = item.package_item.items_count,
+                            category_name = category.name,
+                            get_absolute_url = category.get_absolute_url,
+                            get_image = category.get_image,
+                            slug = category.slug,
+                            week_frequency = item.week_frequency,
+                            week_day = item.week_day,
+                            created_date = item.created_date
+                        ))
+                    }
+                }
+
+                updateCache(list)
+                createCacheAndReturn()
+            }
+
+
+            override fun createCall(): LiveData<GenericApiResponse<ProfileAutoOrderResponse>> {
+                return apiServices.getAutoOrderItem(
+                    token = "Bearer ${auth_token.access_token}"
+                )
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getAutoOrderItem", job)
             }
 
         }.asLiveData()

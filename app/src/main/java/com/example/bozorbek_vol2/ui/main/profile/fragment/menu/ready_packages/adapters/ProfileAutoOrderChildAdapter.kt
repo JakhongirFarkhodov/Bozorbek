@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.bozorbek_vol2.R
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryAutoOrderData
+import com.example.bozorbek_vol2.util.Constants
 import kotlinx.android.synthetic.main.item_ready_packages_category.view.*
 
-class ProfileReadyPackagesChildAdapter(val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ProfileAutoOrderChildAdapter(val requestManager: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -33,13 +33,13 @@ class ProfileReadyPackagesChildAdapter(val requestManager: RequestManager) : Rec
         return differConfig.currentList.size
     }
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CategoryData>()
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CategoryAutoOrderData>()
     {
-        override fun areItemsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
+        override fun areItemsTheSame(oldItem: CategoryAutoOrderData, newItem: CategoryAutoOrderData): Boolean {
             return oldItem.category_id == newItem.category_id
         }
 
-        override fun areContentsTheSame(oldItem: CategoryData, newItem: CategoryData): Boolean {
+        override fun areContentsTheSame(oldItem: CategoryAutoOrderData, newItem: CategoryAutoOrderData): Boolean {
             return oldItem == newItem
         }
 
@@ -48,7 +48,7 @@ class ProfileReadyPackagesChildAdapter(val requestManager: RequestManager) : Rec
 
     val differConfig = AsyncListDiffer(this,DIFF_CALLBACK)
 
-    fun submitList(list:List<CategoryData>)
+    fun submitList(list:List<CategoryAutoOrderData>)
     {
         val newList = list.toMutableList()
         differConfig.submitList(newList)
@@ -56,9 +56,9 @@ class ProfileReadyPackagesChildAdapter(val requestManager: RequestManager) : Rec
 
     inner class ProfileReadyPackagesChildViewHolder(itemView:View, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
     {
-        fun bind(categoryData: CategoryData)
+        fun bind(categoryData: CategoryAutoOrderData)
         {
-            requestManager.load(categoryData.get_image).transition(withCrossFade()).into(itemView.item_ready_packages_category_imv)
+            requestManager.load(Constants.BASE_URL + categoryData.get_image).into(itemView.item_ready_packages_category_imv)
             itemView.item_ready_packages_category_title.setText(categoryData.category_name)
         }
     }

@@ -57,8 +57,10 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
          {
         fun bind(item:HomeProduct)
         {
+            itemView.item_child_rv.visibility = View.INVISIBLE
             val adapter = HomeProductChildAdapter(requestManager,absoluteAdapterPosition, item,onParentItemClickListener)
             adapter.submitList(item.productList.distinct().toList())
+            itemView.item_child_rv.visibility = View.VISIBLE
             itemView.item_child_rv.adapter = adapter
             itemView.item_child_rv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.item_parent_title.setText(item.title)

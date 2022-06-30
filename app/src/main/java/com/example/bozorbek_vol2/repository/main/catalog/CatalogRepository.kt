@@ -67,7 +67,7 @@ constructor(
             NetworkBoundResource<List<CatalogResponse>, List<Catalog>, CatalogViewState>(
                 isNetworkRequest = true,
                 isNetworkAvailable = sessionManager.isInternetAvailable(),
-                shouldUseCacheObject = true,
+                shouldUseCacheObject = false,
                 cancelJobIfNoInternet = true
             ) {
             override suspend fun createCacheAndReturn() {
@@ -128,8 +128,10 @@ constructor(
                         )
                     )
                 }
-                updateCache(cacheObject = list)
-                createCacheAndReturn()
+
+                onCompleteJob(dataState = DataState.data(data = CatalogViewState(catalogList = CatalogList(list)),response = null))
+//                updateCache(cacheObject = list)
+//                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<List<CatalogResponse>>> {
@@ -148,8 +150,8 @@ constructor(
             NetworkBoundResource<CatalogProductsListResponse, List<CatalogProduct>, CatalogViewState>(
                 isNetworkRequest = true,
                 isNetworkAvailable = sessionManager.isInternetAvailable(),
-                shouldUseCacheObject = true,
-                cancelJobIfNoInternet = true
+                shouldUseCacheObject = false,
+                cancelJobIfNoInternet = false
             ) {
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
@@ -215,8 +217,10 @@ constructor(
                     )
                 }
 
-                updateCache(cacheObject = list)
-                createCacheAndReturn()
+                onCompleteJob(dataState = DataState.data(data = CatalogViewState(catalogProductList = CatalogProductList(list)),response = null))
+
+//                updateCache(cacheObject = list)
+//                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<CatalogProductsListResponse>> {

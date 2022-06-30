@@ -73,23 +73,10 @@ class CatalogAdapter constructor(val onCatalogItemClickListener: OnCatalogItemCl
     {
         val newList = list.toMutableList()
         differConfig.submitList(newList)
+
     }
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    fun clear()
-//    {
-//        val size = differConfig.currentList.size
-//        if (size > 0)
-//        {
-//            for (item in differConfig.currentList)
-//            {
-//                differConfig.currentList.remove(item)
-//            }
-//
-//            notifyItemRangeRemoved(0,size)
-//        }
-//
-//    }
+
 
     inner class CatalogViewHolder(itemView:View, val onCatalogItemClickListener: OnCatalogItemClickListener, val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView)
     {

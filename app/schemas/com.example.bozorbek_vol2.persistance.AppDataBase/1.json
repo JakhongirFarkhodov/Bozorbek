@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3fc9208bd3057373d68120b9b24f6f07",
+    "identityHash": "b43d592dfa43217562e56defc6c9043f",
     "entities": [
       {
         "tableName": "account_properties",
@@ -1523,6 +1523,104 @@
         "foreignKeys": []
       },
       {
+        "tableName": "profile_auto_order_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `package_name` TEXT NOT NULL, `author` INTEGER NOT NULL, `visibility` INTEGER NOT NULL, `total_cost` INTEGER NOT NULL, `items_count` INTEGER NOT NULL, `category_name` TEXT NOT NULL, `get_absolute_url` TEXT NOT NULL, `get_image` TEXT NOT NULL, `slug` TEXT NOT NULL, `week_frequency` INTEGER NOT NULL, `week_day` INTEGER NOT NULL, `created_date` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "package_id",
+            "columnName": "package_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "package_name",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visibility",
+            "columnName": "visibility",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "total_cost",
+            "columnName": "total_cost",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "items_count",
+            "columnName": "items_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category_name",
+            "columnName": "category_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_absolute_url",
+            "columnName": "get_absolute_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "get_image",
+            "columnName": "get_image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week_frequency",
+            "columnName": "week_frequency",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week_day",
+            "columnName": "week_day",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_date",
+            "columnName": "created_date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "package_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "slider_image_table",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `image` TEXT NOT NULL, `text` TEXT NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
@@ -1682,7 +1780,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3fc9208bd3057373d68120b9b24f6f07')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b43d592dfa43217562e56defc6c9043f')"
     ]
   }
 }

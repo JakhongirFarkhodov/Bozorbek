@@ -8,7 +8,8 @@ data class ProfileViewState(
     var readyPackagesList: List<ProfileReadyPackages>? = ArrayList(),
     var profileActiveOrHistoryOrder:List<ProfileActiveOrHistoryOrder>? = ArrayList(),
     var profileNotificationList:List<ProfileNotification>? = ArrayList(),
-    var profileReadyPackageIdList:List<ProfileReadyPackageId>? = ArrayList()
+    var profileReadyPackageIdList:List<ProfileReadyPackageId>? = ArrayList(),
+    var profileAutoOrderList:List<ProfileAutoOrder>? = ArrayList()
 
 )
 

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.catalog.Catalog
@@ -27,6 +28,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
     private var countViewState = 0
     private var global_list: ArrayList<Catalog> = ArrayList()
     private var isTrigger: Boolean = true
+    private var lastPosition:Int = 0
 
 
     override fun onCreateView(
@@ -76,18 +78,30 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
 
     private fun setCatalogListToAdapter(list: List<Catalog>) {
 
+        catalog_recyclerView.visibility = View.VISIBLE
         catalogAdapter = CatalogAdapter(this, requestManager)
         catalogAdapter.submitList(list)
+        lastPosition = sharedPreferences.getInt("catalogPosition",0)
+
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         catalog_recyclerView.layoutManager = staggeredGridLayoutManager
+        catalog_recyclerView.scrollToPosition(lastPosition)
+        catalog_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val layoutManager = recyclerView.layoutManager as StaggeredGridLayoutManager
+                lastPosition = layoutManager.findFirstVisibleItemPositions(null)[0]
+            }
+        })
         catalog_recyclerView.adapter = catalogAdapter
+
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: Поиск каталога...")
         viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogListOfData())
-
+        catalog_recyclerView.visibility = View.INVISIBLE
     }
 
 
@@ -110,7 +124,8 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.trigger = false
+        editor.putInt("catalogPosition",lastPosition).apply()
+        editor.putInt("catalogProductPosition",0).apply()
     }
 
 }

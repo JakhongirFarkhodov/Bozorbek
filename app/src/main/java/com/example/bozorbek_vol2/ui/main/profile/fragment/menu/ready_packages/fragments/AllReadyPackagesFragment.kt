@@ -191,7 +191,7 @@ class AllReadyPackagesFragment : BaseProfileFragment(),
 
         val adapter = ProfileReadyPackagesParentAdapter(requestManager = requestManager,
             this, this, this)
-        adapter.submitList(readyPackagesDataList)
+        adapter.submitList(readyPackagesDataList.distinct().toList())
         profile_all_packages_rv.layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
         profile_all_packages_rv.adapter = adapter

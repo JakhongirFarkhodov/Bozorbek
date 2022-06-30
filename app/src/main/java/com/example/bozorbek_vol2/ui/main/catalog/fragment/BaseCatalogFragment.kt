@@ -1,5 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.catalog.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,10 @@ abstract class BaseCatalogFragment : DaggerFragment() {
 
     @Inject
     lateinit var sessionManager: SessionManager
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+    @Inject
+    lateinit var editor: SharedPreferences.Editor
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

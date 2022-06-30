@@ -40,6 +40,7 @@ import com.example.bozorbek_vol2.persistance.main.search.SearchDao
         SearchProduct::class,
         ProfileNotification::class,
         ProfileReadyPackageId::class,
+        ProfileAutoOrder::class,
         HomeSliderImage::class,
         HomeRandomProducts::class,
         HomeDiscountProducts::class], version = 1

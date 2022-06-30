@@ -72,6 +72,14 @@ interface ProfileDao {
     @Query("DELETE FROM profile_ready_package_id")
     suspend fun deleteAllProfileReadyPackageId():Int
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertingAutoOrderItem(autoOrder: ProfileAutoOrder):Long
+
+    @Query("SELECT * FROM profile_auto_order_table")
+    fun getAllAutoOrder():LiveData<List<ProfileAutoOrder>>?
+
+    @Query("DELETE FROM profile_auto_order_table")
+    suspend fun deleteAllProfileAutoOrder():Int
 
 
 }

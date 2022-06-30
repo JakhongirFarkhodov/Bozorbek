@@ -100,6 +100,12 @@ class ProfileViewModel
                 }?:AbsentLiveData.create()
             }
 
+            is ProfileStateEvent.GetProfileAutoOrderList ->{
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.getAutoOrderItem(authToken)
+                }?:AbsentLiveData.create()
+            }
+
             is ProfileStateEvent.None ->{
                 return object : LiveData<DataState<ProfileViewState>>()
                 {
@@ -151,6 +157,12 @@ class ProfileViewModel
         _viewState.value = update
     }
 
+    fun setAutoOrderList(list:List<ProfileAutoOrder>)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        update.profileAutoOrderList = list
+        _viewState.value = update
+    }
 
 
     fun handlingPendingData()

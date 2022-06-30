@@ -10,6 +10,10 @@ class Constants {
         const val GALLERY_REQUEST_CODE:Int = 201
         const val PERMISSION_REQUEST_READ_STORAGE:Int = 301
         const val CROP_IMAGE_INTENT_CODE:Int = 401
+
+        const val  HEADER_CACHE_CONTROL:String = "Cache-Control"
+        const val HEADER_PRAGMA:String = "Pragma"
+        const val cacheSize:Long = 5 * 1024 * 1024
     }
 
 }
