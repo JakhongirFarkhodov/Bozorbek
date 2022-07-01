@@ -53,6 +53,7 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
     {
         val newList = list.toMutableList()
         differConfig.submitList(newList)
+
     }
 
     inner class HomeProductParentViewHolder(itemView:View, val requestManager: RequestManager, val onParentItemClickListener: OnPrentItemClickListener) : RecyclerView.ViewHolder(itemView)
@@ -60,12 +61,12 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
         fun bind(item:HomeProduct)
         {
             itemView.item_child_rv.visibility = View.INVISIBLE
+
             val adapter = HomeProductChildAdapter(requestManager,absoluteAdapterPosition, item,onParentItemClickListener)
             adapter.submitList(item.productList.distinct().toList())
             itemView.item_child_rv.adapter = adapter
             itemView.item_child_rv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.item_parent_title.setText(item.title)
-
 
         }
 
@@ -74,4 +75,6 @@ class HomeProductParentAdapter(val requestManager: RequestManager, val onParentI
     interface OnPrentItemClickListener{
         fun onItemClick(childPosition:Int, childItem:HomeRandomProducts, parentPosition:Int, parentItem: HomeProduct)
     }
+
+
 }

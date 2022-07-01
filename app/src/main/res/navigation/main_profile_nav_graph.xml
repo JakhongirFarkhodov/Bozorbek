@@ -136,21 +136,6 @@
         android:label="fragment_auto_order"
         tools:layout="@layout/fragment_auto_order" />
     <fragment
-        android:id="@+id/allReadyPackagesFragment"
-        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.AllReadyPackagesFragment"
-        android:label="fragment_all_ready_packages"
-        tools:layout="@layout/fragment_all_ready_packages" />
-    <fragment
-        android:id="@+id/mineReadyPackagesFragment"
-        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.MineReadyPackagesFragment"
-        android:label="fragment_mine_ready_packages"
-        tools:layout="@layout/fragment_mine_ready_packages" />
-    <fragment
-        android:id="@+id/recommendedReadyPackagesFragment"
-        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.RecommendedReadyPackagesFragment"
-        android:label="fragment_recommended_ready_packages"
-        tools:layout="@layout/fragment_recommended_ready_packages" />
-    <fragment
         android:id="@+id/activeOrderFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment"
         android:label="fragment_active_order"

@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_overview"
     tools:context=".ui.main.basket.fragment.BasketShowDialogFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -59,8 +60,8 @@
         android:id="@+id/items_save_create_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:backgroundTint="#33D980"
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingVertical="@dimen/_6sdp"
@@ -69,6 +70,7 @@
         android:textSize="@dimen/_12sdp"
         app:cornerRadius="@dimen/_7sdp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_save_mcv_recyclerView_basket" />
 
     <com.google.android.material.button.MaterialButton
@@ -78,14 +80,15 @@
         app:layout_constraintTop_toBottomOf="@id/item_save_mcv_recyclerView_basket"
         app:layout_constraintStart_toStartOf="parent"
         android:text="Отменить"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:textAllCaps="false"
         android:textSize="@dimen/_12sdp"
         android:backgroundTint="@android:color/holo_red_dark"
         app:cornerRadius="@dimen/_7sdp"
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingVertical="@dimen/_6sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

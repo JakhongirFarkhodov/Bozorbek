@@ -3,7 +3,6 @@ package com.example.bozorbek_vol2.ui.main.home.fragment.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +25,7 @@ class HomeProductChildAdapter(val requestManager: RequestManager, val parentPosi
         {
             is HomeProductChildViewHolder ->{
                 holder.bind(differConfig.currentList[position])
-                holder.itemView.home_product_constraint.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
+//                holder.itemView.home_product_constraint.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_scale_animation)
             }
         }
     }

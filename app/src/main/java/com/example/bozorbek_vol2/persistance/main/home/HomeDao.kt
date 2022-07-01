@@ -16,13 +16,13 @@ interface HomeDao {
     suspend fun insertSliderImage(sliderImage: HomeSliderImage):Long
 
     @Query("SELECT * FROM slider_image_table")
-    fun getAllSliderImages():LiveData<List<HomeSliderImage>>?
+    fun getAllSliderImages():List<HomeSliderImage>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRandomProduct(homeRandomProducts: HomeRandomProducts):Long
 
     @Query("SELECT * FROM home_random_products")
-    fun getAllRandomProducts():LiveData<List<HomeRandomProducts>>?
+    fun getAllRandomProducts():List<HomeRandomProducts>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDiscountProduct(homeDiscountProducts: HomeDiscountProducts):Long

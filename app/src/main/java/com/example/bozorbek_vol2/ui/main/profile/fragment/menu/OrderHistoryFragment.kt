@@ -6,18 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
+import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.profile.fragment.BaseProfileFragment
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.adapter.OrderHistoryAdapter
+import com.example.bozorbek_vol2.ui.main.profile.state.ProfileStateEvent
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_order_history.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class OrderHistoryFragment : BaseProfileFragment() {
 
     lateinit var onDataStateChangeListener: OnDataStateChangeListener
+    lateinit var adapter: OrderHistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +39,18 @@ class OrderHistoryFragment : BaseProfileFragment() {
 
         if (profile_order_history_all_tab_layout.selectedTabPosition == 0)
         {
-            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.order_history_nav_host_fragment, ActiveOrderFragment()).commit()
+            GlobalScope.launch(Dispatchers.Main) {
+                viewModel.setStateEvent(event = ProfileStateEvent.GetAllActiveOrHistoryOrder(
+                    UNAPPROVED = "UNAPPROVED",
+                    APPROVED = "APPROVED",
+                    COLLECTING = "COLLECTING",
+                    COLLECTED = "COLLECTED",
+                    DELIVERING = "DELIVERING",
+                    DELIVERED = null,
+                    CANCELLED = null
+                ))
+
+            }
         }
 
         profile_order_history_all_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
@@ -41,16 +59,47 @@ class OrderHistoryFragment : BaseProfileFragment() {
                     when(tab.position)
                     {
                         0 ->{
-                            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.order_history_nav_host_fragment, ActiveOrderFragment()).commit()
+                            GlobalScope.launch(Dispatchers.Main) {
+                                viewModel.setStateEvent(event = ProfileStateEvent.GetAllActiveOrHistoryOrder(
+                                    UNAPPROVED = "UNAPPROVED",
+                                    APPROVED = "APPROVED",
+                                    COLLECTING = "COLLECTING",
+                                    COLLECTED = "COLLECTED",
+                                    DELIVERING = "DELIVERING",
+                                    DELIVERED = null,
+                                    CANCELLED = null
+                                ))
+
+                            }
 
                         }
                         1->{
-                            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.order_history_nav_host_fragment, HistoryOrderFragment()).commit()
+                            GlobalScope.launch(Dispatchers.Main) {
+                                viewModel.setStateEvent(event = ProfileStateEvent.GetAllActiveOrHistoryOrder(
+                                    UNAPPROVED = null,
+                                    APPROVED = null,
+                                    COLLECTING = null,
+                                    COLLECTED = null,
+                                    DELIVERING = null,
+                                    DELIVERED = "DELIVERED",
+                                    CANCELLED = "CANCELLED"
+                                ))
+
+                            }
                         }
                         else ->{
-                            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.order_history_nav_host_fragment, ActiveOrderFragment()).commit()
+                            GlobalScope.launch(Dispatchers.Main) {
+                                viewModel.setStateEvent(event = ProfileStateEvent.GetAllActiveOrHistoryOrder(
+                                    UNAPPROVED = "UNAPPROVED",
+                                    APPROVED = "APPROVED",
+                                    COLLECTING = "COLLECTING",
+                                    COLLECTED = "COLLECTED",
+                                    DELIVERING = "DELIVERING",
+                                    DELIVERED = null,
+                                    CANCELLED = null
+                                ))
 
-
+                            }
                         }
                     }
                 }
@@ -65,9 +114,53 @@ class OrderHistoryFragment : BaseProfileFragment() {
             }
         })
 
+        observeData()
     }
 
 
+    private fun observeData() {
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            onDataStateChangeListener.onDataStateChange(dataState)
+            dataState.data?.let { data ->
+                data.data?.let { event ->
+                    event.getContentIfNotHandled()?.let { profileViewState ->
+                        profileViewState.profileActiveOrHistoryOrder?.let { list ->
+                            Log.d(TAG, "profileActiveOrder: ${list}")
+                            if (!list.isEmpty()) {
+                                Log.d(TAG, "profileActiveOrder dataState: ${list}")
+                                order_history_rv.visibility = View.VISIBLE
+                                viewModel.setProfileAllActiveOrHistoryOrder(list)
+                            }
+                            else{
+                                order_history_rv.visibility = View.INVISIBLE
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        )
+
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+            if (viewState != null) {
+                viewState.profileActiveOrHistoryOrder?.let { list ->
+                    if (!list.isEmpty())
+                    {
+                        Log.d(TAG, "profileActiveOrder viewState: ${list}")
+                        setListToUi(list)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setListToUi(list: List<ProfileActiveOrHistoryOrder>) {
+        Log.d(TAG, "setListToUi: ${list}")
+        adapter = OrderHistoryAdapter()
+        adapter.submitList(list.distinct().toList())
+        order_history_rv.adapter = adapter
+        order_history_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
 
 
     override fun onAttach(context: Context) {

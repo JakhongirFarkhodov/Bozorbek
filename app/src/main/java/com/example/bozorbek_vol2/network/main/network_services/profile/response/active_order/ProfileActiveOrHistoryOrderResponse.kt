@@ -12,7 +12,7 @@ data class ProfileActiveOrHistoryOrderResponse(
 
     @SerializedName("address")
     @Expose
-    val address:String,
+    val address:Int,
 
     @SerializedName("created_at")
     @Expose

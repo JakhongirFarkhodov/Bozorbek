@@ -31,21 +31,10 @@ interface ProfileDao {
     @Query("SELECT * FROM profile_active_or_history_order")
     fun getAllActiveOrHistoryOrderItem():LiveData<List<ProfileActiveOrHistoryOrder>>?
 
-    @Query("""
-        SELECT * FROM profile_active_or_history_order 
-        WHERE status LIKE '%' || :DELIVERED || '%' OR '%' || :CANCELLED || '%'
-    """)
+    @Query("SELECT * FROM profile_active_or_history_order WHERE status ==:DELIVERED OR status ==:CANCELLED")
     fun getHistoryOrderData(DELIVERED:String, CANCELLED:String):LiveData<List<ProfileActiveOrHistoryOrder>>?
 
-    @Query("""
-        SELECT * FROM profile_active_or_history_order
-        WHERE status LIKE 
-        '%' || :UNAPPROVED || '%' OR
-        '%' || :APPROVED || '%' OR
-        '%' || :COLLECTING || '%' OR
-        '%' || :COLLECTED || '%' OR
-        '%' || :DELIVERING || '%'
-    """)
+    @Query("SELECT * FROM profile_active_or_history_order WHERE status ==:UNAPPROVED OR status ==:APPROVED OR status ==:COLLECTING OR status ==:COLLECTED OR status ==:DELIVERING")
     fun getActiveOrderData(
         UNAPPROVED:String,
         APPROVED:String,

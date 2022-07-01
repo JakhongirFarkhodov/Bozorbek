@@ -38,13 +38,13 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/order_history_nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_history_rv"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:defaultNavHost="true"
+        app:layout_constraintTop_toBottomOf="@id/profile_order_history_all_tab_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_order_history_all_tab_layout" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

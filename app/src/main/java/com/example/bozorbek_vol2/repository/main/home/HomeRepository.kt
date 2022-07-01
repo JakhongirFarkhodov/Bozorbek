@@ -232,7 +232,7 @@ constructor(
         return object : NetworkBoundResource<HomeDiscountProductsResponse, List<HomeDiscountProducts>, HomeViewState>(
             isNetworkRequest = true,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = true,
+            shouldUseCacheObject = false,
             cancelJobIfNoInternet = true
         )
         {
@@ -248,21 +248,22 @@ constructor(
             }
 
             override fun loadFromCache(): LiveData<HomeViewState> {
-                return homeDao.getAllSliderImages()?.switchMap { list_images ->
-                    homeDao.getAllRandomProducts()?.switchMap { list_random_products ->
-                        homeDao.getAllDiscountProducts()?.switchMap { list_discount_products ->
-                            object : LiveData<HomeViewState>()
-                            {
-                                override fun onActive() {
-                                    super.onActive()
-                                    value = HomeViewState(
-                                        listOfSliderImage = list_images, listOfRandomProducts = list_random_products, listOfDiscountProducts = list_discount_products
-                                    )
-                                }
-                            }
-                        }?:AbsentLiveData.create()
-                    }?:AbsentLiveData.create()
-                }?:AbsentLiveData.create()
+                return AbsentLiveData.create()
+//                return homeDao.getAllSliderImages()?.switchMap { list_images ->
+//                    homeDao.getAllRandomProducts()?.switchMap { list_random_products ->
+//                        homeDao.getAllDiscountProducts()?.switchMap { list_discount_products ->
+//                            object : LiveData<HomeViewState>()
+//                            {
+//                                override fun onActive() {
+//                                    super.onActive()
+//                                    value = HomeViewState(
+//                                        listOfSliderImage = list_images, listOfRandomProducts = list_random_products, listOfDiscountProducts = list_discount_products
+//                                    )
+//                                }
+//                            }
+//                        }?:AbsentLiveData.create()
+//                    }?:AbsentLiveData.create()
+//                }?:AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: List<HomeDiscountProducts>?) {
@@ -288,6 +289,14 @@ constructor(
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<HomeDiscountProductsResponse>) {
                 val list = ArrayList<HomeDiscountProducts>()
+                val list_random = homeDao.getAllRandomProducts()?.let {
+                    it
+                }
+                val list_slider = homeDao.getAllSliderImages()?.let {
+                    it
+                }
+
+
                 for (item in response.body.list)
                 {
                     list.add(
@@ -303,8 +312,18 @@ constructor(
                     )
                     )
                 }
-                updateCache(list)
-                createCacheAndReturn()
+
+                withContext(Main)
+                {
+                    Log.d(TAG, "handleSuccessResponse: list_slider:${list_slider}\nlist_random:${list_random}\nlist_discount:${list}")
+                    onCompleteJob(dataState = DataState.data(data = HomeViewState(
+                        list_slider, list_random,list
+                    ), response = null
+                    ))
+                }
+
+//                updateCache(list)
+//                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<HomeDiscountProductsResponse>> {

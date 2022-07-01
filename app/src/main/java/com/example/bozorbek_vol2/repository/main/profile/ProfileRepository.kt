@@ -518,7 +518,7 @@ constructor(
                             list.add(
                                 ProfileActiveOrHistoryOrder(
                                     id = item.value.id,
-                                    address = item.value.address.toInt(),
+                                    address = item.value.address,
                                     created_at = item.value.created_at,
                                     status = item.value.status,
                                     user_approved = item.value.user_approved,

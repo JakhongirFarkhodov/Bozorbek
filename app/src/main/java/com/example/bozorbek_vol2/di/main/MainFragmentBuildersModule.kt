@@ -12,7 +12,9 @@ import com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.*
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.*
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpListOfReadyPackagesProductsFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpOfAuthOrderFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpSuccessfullySavedReadyPackageInAutoOrderFragment
 import com.example.bozorbek_vol2.ui.main.search.fragment.SearchCatalogViewProductFragment
 import com.example.bozorbek_vol2.ui.main.search.fragment.SearchFragment
 import dagger.Module
@@ -99,16 +101,6 @@ abstract class MainFragmentBuildersModule {
     //Ready Packages
     @ContributesAndroidInjector
     abstract fun contributesReadyPackagesFragment():ReadyPackagesFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributesAllReadyPackagesFragment():AllReadyPackagesFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributesMineReadyPackagesFragment():MineReadyPackagesFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributesRecommendedReadyPackagesFragment():RecommendedReadyPackagesFragment
-
 
     @ContributesAndroidInjector
     abstract fun contributesAutoOrderFragment():AutoOrderFragment
