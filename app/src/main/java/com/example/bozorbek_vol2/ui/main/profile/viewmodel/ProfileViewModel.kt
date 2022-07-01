@@ -3,6 +3,7 @@ package com.example.bozorbek_vol2.ui.main.profile.viewmodel
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import com.example.bozorbek_vol2.model.main.profile.*
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 import com.example.bozorbek_vol2.repository.main.profile.ProfileRepository
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.BaseViewModel
@@ -44,6 +45,12 @@ class ProfileViewModel
             is ProfileStateEvent.SetReadyPackageToAutoOrder ->{
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
                     profileRepository.setReadyPackageToAutoOrder(auth_token = authToken, stateEvent.profileReadyPackageAutoOrder)
+                }?:AbsentLiveData.create()
+            }
+
+            is ProfileStateEvent.GetSearchHistory -> {
+                return sessionManager.cachedAuthToken.value?.let { authToken ->
+                    profileRepository.getSearchHistory(authToken)
                 }?:AbsentLiveData.create()
             }
 
@@ -161,6 +168,13 @@ class ProfileViewModel
     {
         val update = getCurrentViewStateOrCreateNew()
         update.profileAutoOrderList = list
+        _viewState.value = update
+    }
+
+    fun setSearchHistoryList(list:List<SearchHistoryResponse>)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        update.searchHistoryOrder = list
         _viewState.value = update
     }
 

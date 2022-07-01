@@ -24,6 +24,7 @@ import com.example.bozorbek_vol2.network.main.network_services.profile.response.
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileSetReadyPackageAutoOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
 import okhttp3.MultipartBody
@@ -124,5 +125,8 @@ interface MainApiServices {
 
     //Search
     @GET("/search/product/{query}")
-    fun searchProduct(@Path("query") query:String):LiveData<GenericApiResponse<SearchProductResponse>>
+    fun searchProduct(@Header("Authorization") accessToken: String, @Path("query") query:String):LiveData<GenericApiResponse<SearchProductResponse>>
+
+    @GET("/search/history/")
+    fun getSearchHistory(@Header("Authorization") accessToken: String):LiveData<GenericApiResponse<List<SearchHistoryResponse>>>
 }

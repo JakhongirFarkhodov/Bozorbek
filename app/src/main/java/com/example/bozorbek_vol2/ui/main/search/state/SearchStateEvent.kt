@@ -6,6 +6,8 @@ sealed class SearchStateEvent{
 
     data class SearchProductEvent(val query:String):SearchStateEvent()
 
+
+
     data class GetCatalogViewProductListOfData(val category_slug:String, val product_slug:String):
         SearchStateEvent()
 

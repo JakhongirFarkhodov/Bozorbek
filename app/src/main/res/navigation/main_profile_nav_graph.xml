@@ -98,53 +98,43 @@
     <fragment
         android:id="@+id/searchHistoryFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.SearchHistoryFragment"
-        android:label="fragment_search_history"
+        android:label="История поиска"
         tools:layout="@layout/fragment_search_history" />
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.NotificationFragment"
-        android:label="fragment_notification"
+        android:label="Уведомление"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/orderHistoryFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.OrderHistoryFragment"
-        android:label="fragment_order_history"
+        android:label="История закзака"
         tools:layout="@layout/fragment_order_history" />
     <fragment
         android:id="@+id/companyInfoFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.CompanyInfoFragment"
-        android:label="fragment_company_info"
+        android:label="Информация о компании"
         tools:layout="@layout/fragment_company_info" />
     <fragment
         android:id="@+id/securitySettingsFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.SecuritySettingsFragment"
-        android:label="fragment_security_settings"
+        android:label="Настройки безопасности"
         tools:layout="@layout/fragment_security_settings" />
     <fragment
         android:id="@+id/complaintsFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ComplaintsFragment"
-        android:label="fragment_complaints"
+        android:label="Жалобы"
         tools:layout="@layout/fragment_complaints" />
     <fragment
         android:id="@+id/readyPackagesFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ReadyPackagesFragment"
-        android:label="fragment_ready_packages"
+        android:label="Готовые корзины"
         tools:layout="@layout/fragment_ready_packages" />
     <fragment
         android:id="@+id/autoOrderFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.AutoOrderFragment"
-        android:label="fragment_auto_order"
+        android:label="Авто заказ"
         tools:layout="@layout/fragment_auto_order" />
-    <fragment
-        android:id="@+id/activeOrderFragment"
-        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment"
-        android:label="fragment_active_order"
-        tools:layout="@layout/fragment_active_order" />
-    <fragment
-        android:id="@+id/historyOrderFragment"
-        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment"
-        android:label="fragment_history_order"
-        tools:layout="@layout/fragment_history_order" />
     <dialog
         android:id="@+id/popUpListOfReadyPackagesProductsFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpListOfReadyPackagesProductsFragment"

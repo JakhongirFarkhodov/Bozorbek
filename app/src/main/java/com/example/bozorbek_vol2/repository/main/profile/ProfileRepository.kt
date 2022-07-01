@@ -17,6 +17,7 @@ import com.example.bozorbek_vol2.network.main.network_services.profile.response.
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesAddItemToBasketResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileAllReadyPackagesResponse
 import com.example.bozorbek_vol2.network.main.network_services.profile.response.ready_packages.ProfileSetReadyPackageAutoOrderResponse
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 import com.example.bozorbek_vol2.persistance.main.profile.ProfileDao
 import com.example.bozorbek_vol2.repository.JobManager
 import com.example.bozorbek_vol2.repository.NetworkBoundResource
@@ -1018,6 +1019,57 @@ constructor(
 
             override fun setJob(job: Job) {
                 addJob("getAutoOrderItem", job)
+            }
+
+        }.asLiveData()
+    }
+
+    fun getSearchHistory(authToken: AuthToken):LiveData<DataState<ProfileViewState>>
+    {
+        return object : NetworkBoundResource<List<SearchHistoryResponse>, Void, ProfileViewState>(
+            isNetworkRequest = true,
+            isNetworkAvailable = sessionManager.isInternetAvailable(),
+            shouldUseCacheObject = false,
+            cancelJobIfNoInternet = true
+        )
+        {
+            override suspend fun createCacheAndReturn() {
+                TODO("Not yet implemented")
+            }
+
+            override fun loadFromCache(): LiveData<ProfileViewState> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun updateCache(cacheObject: Void?) {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<List<SearchHistoryResponse>>) {
+                withContext(Main)
+                {
+                    val list = ArrayList<SearchHistoryResponse>()
+                    for (item in response.body)
+                    {
+                        list.add(
+                            SearchHistoryResponse(
+                                id = item.id,
+                                query = item.query,
+                                user = item.user,
+                                date_added = item.date_added
+                            )
+                        )
+                    }
+                    onCompleteJob(dataState = DataState.data(data = ProfileViewState(searchHistoryOrder = list), response = null))
+                }
+            }
+
+            override fun createCall(): LiveData<GenericApiResponse<List<SearchHistoryResponse>>> {
+                return apiServices.getSearchHistory("Bearer " + authToken.access_token)
+            }
+
+            override fun setJob(job: Job) {
+                addJob("getSearchHistory", job)
             }
 
         }.asLiveData()

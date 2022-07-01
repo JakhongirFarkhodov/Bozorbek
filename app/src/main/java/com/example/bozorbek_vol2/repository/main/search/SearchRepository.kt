@@ -16,6 +16,7 @@ import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
@@ -130,7 +131,7 @@ constructor(
         }.asLiveData()
     }
 
-    fun searchProduct(query:String): LiveData<DataState<SearchViewState>>
+    fun searchProduct(authToken: AuthToken,query:String): LiveData<DataState<SearchViewState>>
     {
         return object : NetworkBoundResource<SearchProductResponse, List<SearchProduct>, SearchViewState>(
             isNetworkRequest = true,
@@ -202,7 +203,7 @@ constructor(
             }
 
             override fun createCall(): LiveData<GenericApiResponse<SearchProductResponse>> {
-                return apiServices.searchProduct(query = query)
+                return apiServices.searchProduct(query = query, accessToken = "Bearer " + authToken.access_token)
             }
 
             override fun setJob(job: Job) {
@@ -1051,6 +1052,9 @@ constructor(
 
         }.asLiveData()
     }
+
+
+
 
     private fun phoneNotFound(): LiveData<DataState<SearchViewState>> {
         return object : LiveData<DataState<SearchViewState>>()

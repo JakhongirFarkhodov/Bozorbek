@@ -12,6 +12,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_arrow_forward.xml" value="0.1635" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_company_info.xml" value="0.1635" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_dot.xml" value="0.1635" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_location.xml" value="0.1665" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_notifications.xml" value="0.1635" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_ready_package.xml" value="0.1635" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/drawable/ic_ready_package_grey.xml" value="0.1635" />
@@ -33,7 +34,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_basket_show_dilaog.xml" value="0.264" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_basket_successfully_saved.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_catalog.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_company_info.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_company_info.xml" value="0.264" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_complaints.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_create_password.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_history_order.xml" value="0.22826086956521738" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_register.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_search_catalog_view_product.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_search_history.xml" value="0.23550724637681159" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_security_settings.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_sms_verification.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/fragment_successfully_register.xml" value="0.22826086956521738" />
@@ -70,6 +72,7 @@
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_ready_package.xml" value="0.2" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_ready_packages_category.xml" value="0.25" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_save_created_package.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_search_history.xml" value="0.23550724637681159" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_search_product.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/layout/item_slider.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Jakhongir Farkhodov/AndroidStudioProjects/Bozorbek_vol2/app/src/main/res/menu/main_bottom_navigation_menu.xml" value="0.25416666666666665" />

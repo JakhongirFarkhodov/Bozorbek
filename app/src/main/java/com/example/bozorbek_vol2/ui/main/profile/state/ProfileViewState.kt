@@ -1,6 +1,7 @@
 package com.example.bozorbek_vol2.ui.main.profile.state
 
 import com.example.bozorbek_vol2.model.main.profile.*
+import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 
 data class ProfileViewState(
 
@@ -9,9 +10,10 @@ data class ProfileViewState(
     var profileActiveOrHistoryOrder:List<ProfileActiveOrHistoryOrder>? = ArrayList(),
     var profileNotificationList:List<ProfileNotification>? = ArrayList(),
     var profileReadyPackageIdList:List<ProfileReadyPackageId>? = ArrayList(),
-    var profileAutoOrderList:List<ProfileAutoOrder>? = ArrayList()
+    var profileAutoOrderList:List<ProfileAutoOrder>? = ArrayList(),
+    var searchHistoryOrder:List<SearchHistoryResponse>? = ArrayList()
 
-)
+    )
 
 data class ProfilePasswordValue(
     val old_password: String? = null,

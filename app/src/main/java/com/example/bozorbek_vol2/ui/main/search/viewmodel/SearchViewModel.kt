@@ -31,8 +31,13 @@ class SearchViewModel
             }
 
             is SearchStateEvent.SearchProductEvent ->{
-                return searchRepository.searchProduct(stateEvent.query)
+                return sessionManager.cachedAuthToken.value?.let {auth_token ->
+                    searchRepository.searchProduct(auth_token, stateEvent.query)
+                }?:AbsentLiveData.create()
+
             }
+
+
 
             is SearchStateEvent.GetCatalogViewProductListOfData ->{
                 return searchRepository.getCatalogViewProduct(category_slug = stateEvent.category_slug, product_slug = stateEvent.product_slug)

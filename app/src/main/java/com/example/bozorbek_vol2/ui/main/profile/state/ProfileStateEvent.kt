@@ -37,6 +37,8 @@ sealed class ProfileStateEvent {
 
     class GetProfileAutoOrderList : ProfileStateEvent()
 
+    class GetSearchHistory : ProfileStateEvent()
+
     class None : ProfileStateEvent()
 
 }
