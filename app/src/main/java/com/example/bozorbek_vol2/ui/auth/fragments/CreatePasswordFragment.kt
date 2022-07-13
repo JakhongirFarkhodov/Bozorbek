@@ -34,13 +34,18 @@ class CreatePasswordFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         registration_create_password_button.setOnClickListener {
-            viewModel.setStateEvent(event = AuthStateEvent.SetPasswordStateEvent(
-                phone_number = args.phoneNumber,
-                sms_code = args.smsCode,
-                first_name = args.firstName,
-                password = edT_new_password.text.toString(),
-                confirm_password = edT_confirm_password.text.toString()
-            ))
+            if (checkbox_political_agreement.isChecked) {
+                viewModel.setStateEvent(event = AuthStateEvent.SetPasswordStateEvent(
+                    phone_number = args.phoneNumber,
+                    sms_code = args.smsCode,
+                    first_name = args.firstName,
+                    password = edT_new_password.text.toString(),
+                    confirm_password = edT_confirm_password.text.toString()
+                ))
+            }
+            else{
+                Toast.makeText(requireContext(), "Пожалуйста согласитесть политикой конфидециальности.", Toast.LENGTH_LONG).show()
+            }
         }
 
 

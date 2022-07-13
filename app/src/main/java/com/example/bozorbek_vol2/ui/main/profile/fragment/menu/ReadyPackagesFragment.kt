@@ -116,6 +116,7 @@ class ReadyPackagesFragment : BaseProfileFragment(),
                                 {
                                     viewModel.setStateEvent(event = ProfileStateEvent.GetProfileReadyPackages(""))
                                 }
+
                             }
                         }
                     }
@@ -134,7 +135,6 @@ class ReadyPackagesFragment : BaseProfileFragment(),
                                 {
                                     val dialog = PopUpListOfReadyPackagesProductsFragment()
                                     dialog.show(requireActivity().supportFragmentManager, "Fragment")
-
 
                                 }
 
@@ -171,9 +171,8 @@ class ReadyPackagesFragment : BaseProfileFragment(),
     }
 
     private fun setListOfDataToUI(list: List<ProfileReadyPackages>) {
-
-
-
+        readyPackagesData.clear()
+        readyPackagesDataList.clear()
         for (package_item in list) {
             readyPackagesData.add(
                 PackagesData(

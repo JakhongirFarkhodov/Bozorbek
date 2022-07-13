@@ -6,6 +6,8 @@ sealed class CatalogStateEvent {
 
     data class GetCatalogProductListOfData(val slug: String) : CatalogStateEvent()
 
+    data class SetCatalogViewProductsData(val category_slug:String, val product_slug:String):CatalogStateEvent()
+
     data class GetCatalogViewProductListOfData(val category_slug:String, val product_slug:String):CatalogStateEvent()
 
     data class GetCatalogViewProductBySortValue(val sort_value:String):CatalogStateEvent()

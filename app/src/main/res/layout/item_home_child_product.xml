@@ -41,7 +41,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="#ECEDEA"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="20dp"
         android:layout_marginTop="@dimen/_10sdp"
         app:cardElevation="6dp"

@@ -22,6 +22,7 @@ interface CatalogDao {
     @Query("SELECT * FROM catalog_table")
     fun getListOfCatalog():LiveData<List<Catalog>>?
 
+
     //Catalog Product
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCatalogProducts(catalogProduct: CatalogProduct):Long

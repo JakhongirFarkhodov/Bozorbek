@@ -25,7 +25,6 @@ abstract class BaseCatalogFragment : DaggerFragment() {
     lateinit var viewModel: CatalogViewModel
     @Inject
     lateinit var requestManager: RequestManager
-
     @Inject
     lateinit var sessionManager: SessionManager
     @Inject
@@ -33,6 +32,7 @@ abstract class BaseCatalogFragment : DaggerFragment() {
     @Inject
     lateinit var editor: SharedPreferences.Editor
 
+    var isAvailableToTrigger: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,4 +56,5 @@ abstract class BaseCatalogFragment : DaggerFragment() {
             activity, findNavController(), appBarConfiguration
         )
     }
+
 }

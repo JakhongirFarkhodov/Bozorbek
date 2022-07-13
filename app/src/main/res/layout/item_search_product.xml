@@ -2,66 +2,88 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/search_product_item_imv"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_10sdp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ex_fruit4"
-        android:elevation="@dimen/_10sdp"
-        />
+        android:layout_margin="@dimen/_10sdp"
+        >
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/search_product_item_name_mtv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Авакадо"
-        android:textSize="@dimen/_15sdp"
-        android:textColor="#02B698"
-        app:layout_constraintStart_toEndOf="@id/search_product_item_imv"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/search_product_item_price_mtv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="15.000 Сум"
-        app:layout_constraintTop_toBottomOf="@id/search_product_item_name_mtv"
-        app:layout_constraintStart_toEndOf="@id/search_product_item_imv"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:textColor="@color/fruit_grey"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold"
-        />
+            <ImageView
+                android:id="@+id/search_product_item_imv"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/ex_fruit4"
+                android:elevation="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:padding="@dimen/_5sdp"
+                android:layout_margin="@dimen/_5sdp"
+                />
 
-    <ImageView
-        android:id="@+id/search_product_dot"
-        android:layout_width="@dimen/_5sdp"
-        android:layout_height="@dimen/_5sdp"
-        android:src="@drawable/ic_dot"
-        app:layout_constraintTop_toTopOf="@id/search_product_item_price_mtv"
-        app:layout_constraintBottom_toBottomOf="@id/search_product_item_price_mtv"
-        app:layout_constraintStart_toEndOf="@id/search_product_item_price_mtv"
-        android:layout_marginStart="@dimen/_10sdp"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/search_product_item_name_mtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Авакадо"
+                android:textSize="@dimen/_15sdp"
+                android:textColor="#02B698"
+                app:layout_constraintStart_toEndOf="@id/search_product_item_imv"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Органик"
-        app:layout_constraintTop_toTopOf="@id/search_product_dot"
-        app:layout_constraintBottom_toBottomOf="@id/search_product_dot"
-        app:layout_constraintStart_toStartOf="@id/search_product_dot"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:textStyle="bold"
-        android:textColor="#7024C4"
-        android:alpha="0.4"
-        />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/search_product_item_price_mtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15.000 Сум"
+                app:layout_constraintTop_toBottomOf="@id/search_product_item_name_mtv"
+                app:layout_constraintStart_toEndOf="@id/search_product_item_imv"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:textColor="@color/fruit_grey"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:id="@+id/search_product_dot"
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:src="@drawable/ic_dot"
+                app:layout_constraintTop_toTopOf="@id/search_product_item_price_mtv"
+                app:layout_constraintBottom_toBottomOf="@id/search_product_item_price_mtv"
+                app:layout_constraintStart_toEndOf="@id/search_product_item_price_mtv"
+                android:layout_marginStart="@dimen/_10sdp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Органик"
+                app:layout_constraintTop_toTopOf="@id/search_product_dot"
+                app:layout_constraintBottom_toBottomOf="@id/search_product_dot"
+                app:layout_constraintStart_toStartOf="@id/search_product_dot"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:textColor="#7024C4"
+                android:alpha="0.4"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

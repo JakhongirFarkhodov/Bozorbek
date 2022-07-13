@@ -21,6 +21,7 @@
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/fruit_grey"
             android:background="@color/tool_bar_color"
             android:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
@@ -41,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?attr/actionBarSize"
+            android:backgroundTint="@color/fruit_grey"
             app:defaultNavHost="true" />
 
 
@@ -68,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:fabCradleMargin="10dp"
+        android:backgroundTint="@color/tool_bar_color"
         app:fabCradleRoundedCornerRadius="20dp"
         app:fabCradleVerticalOffset="10dp">
 
@@ -77,6 +80,7 @@
             android:layout_height="56dp"
             android:layout_gravity="bottom"
             android:layout_marginEnd="16dp"
+            app:itemIconTint="@drawable/selector_bottom_icon"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -92,6 +96,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_search"
+        app:borderWidth="0dp"
         app:layout_anchor="@id/bottomAppBar" />
 
 

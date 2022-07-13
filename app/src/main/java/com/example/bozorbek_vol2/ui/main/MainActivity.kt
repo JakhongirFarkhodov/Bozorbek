@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.catalog.Catalog
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.ui.BaseActivity
@@ -39,10 +40,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeListener,
     OnNavigationItemReselectedListener {
 
+    private var listOfCatalogObjects:ArrayList<Catalog> = ArrayList()
+
     private var listOfBasketObjects: ArrayList<BasketOrderProduct> = ArrayList()
     private var listOfReadyPackageItemIdObjects: ArrayList<ProfileReadyPackageId> = ArrayList()
     private var listOfReadyPackageCategoryObjects: ArrayList<CategoryData> = ArrayList()
     private var categoryReadyPackageId: Int = 0
+    private var catalogProductPosition: Int = 0
     private lateinit var profileReadyPackageAutoOrderItem: ProfileReadyPackageAutoOrder
 
     private var triggerProfileReadyPackageAutoOrderParameters:Boolean = false
@@ -262,6 +266,23 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
     override fun getItemCount(): Int {
         return count
+    }
+
+    override fun setCatalogListOfObject(list: List<Catalog>) {
+        listOfCatalogObjects.clear()
+        listOfCatalogObjects.addAll(list)
+    }
+
+    override fun getCatalogListOfObject(): List<Catalog> {
+       return listOfCatalogObjects
+    }
+
+    override fun setCatalogProductPosition(position: Int) {
+        catalogProductPosition = position
+    }
+
+    override fun getCatalogProductPosition(): Int {
+        return catalogProductPosition
     }
 
 

@@ -46,6 +46,13 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
         observeData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: Поиск каталога...")
+        viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogListOfData())
+        catalog_recyclerView.visibility = View.INVISIBLE
+        editor.putInt("catalogProductPosition", 0).commit()
+    }
 
     private fun observeData() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
@@ -71,6 +78,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
                 catalogList.list?.let { list ->
                     Log.d(TAG, "catalog viewState: ${list}")
                     setCatalogListToAdapter(list)
+                    onDataStateChangeListener.setCatalogListOfObject(list)
                 }
             }
         })
@@ -97,12 +105,7 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: Поиск каталога...")
-        viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogListOfData())
-        catalog_recyclerView.visibility = View.INVISIBLE
-    }
+
 
 
     override fun onAttach(context: Context) {
@@ -116,8 +119,9 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
 
     override fun onCatalogItemClickListener(item: Catalog, position: Int) {
         val action =
-            CatalogFragmentDirections.actionCatalogFragmentToCatalogProductFragment(slug = item.slug)
+            CatalogFragmentDirections.actionCatalogFragmentToCatalogProductFragment(slug = item.slug, position)
         findNavController().navigate(action)
+        onDataStateChangeListener.setCatalogProductPosition(position)
         Toast.makeText(requireContext(), "${item.name}", Toast.LENGTH_LONG).show()
     }
 
@@ -125,7 +129,6 @@ class CatalogFragment : BaseCatalogFragment(), CatalogAdapter.OnCatalogItemClick
     override fun onDestroyView() {
         super.onDestroyView()
         editor.putInt("catalogPosition",lastPosition).apply()
-        editor.putInt("catalogProductPosition",0).apply()
     }
 
 }

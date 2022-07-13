@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class CatalogProductsListResponse (
     @SerializedName("name")
     @Expose
-    var name: String? = null,
+    var name: String,
 
     @SerializedName("get_absolute_url")
     @Expose

@@ -206,6 +206,7 @@ constructor(
                     list.add(
                         CatalogProduct(
                             name = catalogProduct.name,
+                            name_catalog = response.body.name,
                             getAbsoluteUrl = catalogProduct.getAbsoluteUrl,
                             slug = catalogProduct.slug,
                             category = catalogProduct.category,
@@ -217,9 +218,8 @@ constructor(
                     )
                 }
 
-                onCompleteJob(dataState = DataState.data(data = CatalogViewState(catalogProductList = CatalogProductList(list)),response = null))
-
 //                updateCache(cacheObject = list)
+                onCompleteJob(dataState = DataState.data(data = CatalogViewState(catalogProductList = CatalogProductList(list)),response = null))
 //                createCacheAndReturn()
             }
 
@@ -233,6 +233,7 @@ constructor(
 
         }.asLiveData()
     }
+
 
     fun getCatalogViewProduct(
         category_slug: String,

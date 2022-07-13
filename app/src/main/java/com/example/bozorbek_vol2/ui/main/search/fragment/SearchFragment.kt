@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -40,24 +41,60 @@ class SearchFragment : BaseSearchFragment(), SearchProductAdapter.OnSearchItemCl
         observeData()
         searchOnClick()
 
+
     }
 
     private fun searchOnClick() {
+
+        edT_search.setOnTouchListener { view, motionEvent ->
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                if(motionEvent.getRawX() >= (edT_search.getRight() - edT_search.getCompoundDrawables()[2].getBounds().width())) {
+                    // your action here
+                    viewModel.sessionManager.cachedAuthToken.value?.let { authToken ->
+                        if (authToken != null)
+                        {
+                            viewModel.setStateEvent(SearchStateEvent.SearchProductEvent(edT_search.text.toString()))
+                            search_rec_bg.visibility = View.GONE
+                            search_overView.visibility = View.GONE
+                            search_rv.visibility = View.VISIBLE
+                            search_result_mtv.visibility = View.VISIBLE
+                            search_rounded_corners.visibility = View.VISIBLE
+                            val param = mcv_search.layoutParams as ViewGroup.MarginLayoutParams
+                            param.setMargins(0,40,0,0)
+                            mcv_search.layoutParams = param
+                        }
+                        else{
+                            Toast.makeText(requireContext(), "Вы еще не зарегистрированы", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+
 
         edT_search.setOnEditorActionListener { textView, actionId, keyEvent ->
 
             if (actionId == EditorInfo.IME_ACTION_SEARCH)
             {
-                viewModel.setStateEvent(SearchStateEvent.SearchProductEvent(edT_search.text.toString()))
-                search_rec_bg.visibility = View.GONE
-                search_overView.visibility = View.GONE
-                go_main_mtv.visibility = View.GONE
-                fb_go_next.visibility = View.GONE
-                search_rv.visibility = View.VISIBLE
-                search_rounded_corners.visibility = View.VISIBLE
-                val param = mcv_search.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,40,0,0)
-                mcv_search.layoutParams = param
+                viewModel.sessionManager.cachedAuthToken.value?.let { authToken ->
+                    if (authToken != null)
+                    {
+                        viewModel.setStateEvent(SearchStateEvent.SearchProductEvent(edT_search.text.toString()))
+                        search_rec_bg.visibility = View.GONE
+                        search_overView.visibility = View.GONE
+                        search_result_mtv.visibility = View.VISIBLE
+                        search_rv.visibility = View.VISIBLE
+                        search_rounded_corners.visibility = View.VISIBLE
+                        val param = mcv_search.layoutParams as ViewGroup.MarginLayoutParams
+                        param.setMargins(0,40,0,0)
+                        mcv_search.layoutParams = param
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Вы еще не зарегистрированы", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
 
             return@setOnEditorActionListener false

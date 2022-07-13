@@ -72,6 +72,7 @@
                 android:backgroundTint="#000000"
                 android:alpha="0.25"
                 android:paddingVertical="@dimen/_10sdp"
+                android:textColor="@color/white"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 app:cornerRadius="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"

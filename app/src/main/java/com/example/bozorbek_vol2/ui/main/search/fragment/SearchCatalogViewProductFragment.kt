@@ -70,6 +70,11 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
     private var catalogProductOwnerHasBeenHandled:Boolean = true
     private var catalogPaketHasBeenHandled:Boolean = true
 
+
+    private var catalogIsUnit:Boolean = true
+    private var catalogIsSize:Boolean = true
+
+
     val sort_list = ArrayList<String>()
     val paket_list = ArrayList<String>()
     val product_owner_list = ArrayList<String>()
@@ -251,6 +256,40 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
                     if (catalogProductOwnerHasBeenHandled) {
                         product_owner_list.add(items.product_owner_value)
                     }
+
+                    if (catalogIsUnit) {
+                        if (items.in_gramme && !items.in_piece)
+                        {
+                            unit = "GRAMME"
+                        }
+                        else if (!items.in_gramme && items.in_piece)
+                        {
+                            unit = "PIECE"
+                        }
+                        else if (items.in_gramme && !items.in_piece)
+                        {
+                            unit = "GRAMME"
+                        }
+                    }
+
+                    if (catalogIsSize) {
+                        if ((items.large && items.middle && items.small) || (items.large && items.middle && !items.small) || (items.large && !items.middle && items.small))
+                        {
+                            size = "LARGE"
+                        }
+                        else if ((!items.large && items.middle && items.small) || (!items.large && items.middle && !items.small) || (items.large && items.middle && !items.small))
+                        {
+                            size = "MIDDLE"
+                        }
+                        else if ((!items.large && !items.middle && items.small) || (!items.large && items.middle && items.small) || (!items.large && items.middle && items.small))
+                        {
+                            size = "SMALL"
+                        }
+                        else{
+                            size = "SMALL"
+                        }
+                    }
+
 
                     paket_list.add(items.paket_value)
 
@@ -445,6 +484,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
 
         search_view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
+            catalogIsUnit = true
+            catalogIsSize = true
             Toast.makeText(this.requireContext(), "${sort_list[position]}", Toast.LENGTH_LONG).show()
             catalogProductOwnerHasBeenHandled = true
             viewModel.setStateEvent(event = SearchStateEvent.GetCatalogViewProductBySortValue(sort_value = sort_list[position]))
@@ -481,6 +522,7 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
 
         search_view_product_size_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
 
+            catalogIsSize = false
             if (size_list[position].equals("Маленький"))
             {
                 size = "SMALL"
@@ -528,6 +570,8 @@ class SearchCatalogViewProductFragment : BaseSearchFragment() {
     }
 
     private fun observeWeightClickListener(position: Int) {
+        catalogIsUnit = false
+
         if (weight_list[position].equals("Килограмм"))
         {
             viewModel.setStateEvent(

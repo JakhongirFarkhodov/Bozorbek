@@ -100,15 +100,9 @@ class CatalogProductAdapter constructor(val onCatalogProductItemClickListener: O
 
             requestManager.load(item.image).transition(withCrossFade()).into(itemView.item_catalog_product_image)
 
-//            val bitmap = (itemView.item_catalog_product_image as BitmapDrawable).bitmap
-//            Palette.from(bitmap).generate(object : Palette.PaletteAsyncListener{
-//                override fun onGenerated(p0: Palette?) {
-//                    lightVibrantSwatch = p0?.lightVibrantSwatch!!
-//                }
-//            })
-//
-//            if (lightVibrantSwatch != null) {
-//                itemView.item_product_cardView.setCardBackgroundColor(lightVibrantSwatch.rgb)
+//            if (item.name_catalog.lowercase().equals("зелень"))
+//            {
+//                itemView.catalog_product_item_constraint.background = ContextCompat.getDrawable(itemView.context, R.drawable.catalog_product_item_background)
 //            }
 
         }

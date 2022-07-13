@@ -9,16 +9,18 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="status_bar_color">#121212</color>
-    <color name="tool_bar_color">#1F1F1F</color>
+    <color name="status_bar_color">#FFFFFFFF</color>
+    <color name="tool_bar_color">#FFFFFFFF</color>
 
     <color name="button_text_color">#FFFFFFFF</color>
 
-    <color name="fruit_light_green">#FFBB86FC</color>
-    <color name="fruit_grey">#FDFDFD</color>
+    <color name="fruit_light_green">#0BD9A9</color>
+    <color name="fruit_grey">#42445A</color>
     <color name="fruit_light_blue">#EFF4FA</color>
     <color name="fruit_light_dark_blue">#70ADEE</color>
     <color name="fruit_yellow_bg">#F6E27B</color>
     <color name="fruit_text_color">#42445A</color>
     <color name="search_color">#BEEBE0</color>
+
+    <color name="splash_green">#00CF53</color>
 </resources>

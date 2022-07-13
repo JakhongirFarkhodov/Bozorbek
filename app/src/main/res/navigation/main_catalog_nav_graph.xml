@@ -45,6 +45,9 @@
         <argument
             android:name="slug"
             app:argType="string" />
+        <argument
+            android:name="catalog_position"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/catalogViewProductFragment"

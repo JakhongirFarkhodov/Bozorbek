@@ -5,6 +5,7 @@ import com.example.bozorbek_vol2.ui.main.basket.fragment.BasketMapFragment
 import com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogFragment
 import com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogProductFragment
 import com.example.bozorbek_vol2.ui.main.catalog.fragment.CatalogViewProductFragment
+import com.example.bozorbek_vol2.ui.main.catalog.fragment.ItemCatalogProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
@@ -48,6 +49,9 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributesViewCatalogFragment(): CatalogProductFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributesItemCatalogProductFragment() : ItemCatalogProductFragment
 
     @ContributesAndroidInjector
     abstract fun contributesViewCatalogProductFragment(): CatalogViewProductFragment

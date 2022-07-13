@@ -11,6 +11,9 @@ data class CatalogProduct(
     @ColumnInfo(name = "name")
     var name: String,
 
+    @ColumnInfo(name = "name_catalog")
+    var name_catalog:String,
+
     @ColumnInfo(name = "get_absolute_url")
     var getAbsoluteUrl: String,
 

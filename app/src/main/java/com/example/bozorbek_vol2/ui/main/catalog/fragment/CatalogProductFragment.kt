@@ -6,30 +6,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.bozorbek_vol2.R
-import com.example.bozorbek_vol2.model.main.catalog.CatalogProduct
 import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.main.catalog.adapter.CatalogProductAdapter
-import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogStateEvent
+import com.example.bozorbek_vol2.ui.main.catalog.adapter.CatalogProductViewPagerAdapter
+import com.example.bozorbek_vol2.ui.main.catalog.fragment.model.CatalogModel
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_view_catalog.*
 
 
-class CatalogProductFragment : BaseCatalogFragment(),
-    CatalogProductAdapter.OnCatalogProductItemClickListener {
+class CatalogProductFragment : BaseCatalogFragment() {
 
     private val args: CatalogProductFragmentArgs by navArgs()
 
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
     private lateinit var catalogProductAdapter: CatalogProductAdapter
-    private var lastPosition:Int = 0
+    private lateinit var slug:String
 
+    private var lastPosition: Int = 0
+
+    private lateinit var adapter: CatalogProductViewPagerAdapter
+    private var onTabIsSelected:Boolean = false
 
 
     override fun onCreateView(
@@ -43,62 +44,63 @@ class CatalogProductFragment : BaseCatalogFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeData()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.setStateEvent(event = CatalogStateEvent.GetCatalogProductListOfData(slug = args.slug))
-        catalog_product_recyclerView.visibility = View.INVISIBLE
+        adapter = CatalogProductViewPagerAdapter(this, onDataStateChangeListener.getCatalogListOfObject())
+        catalog_view_pager2.adapter = adapter
+
+        TabLayoutMediator(catalog_tab_layout, catalog_view_pager2) { tab, index ->
+
+            tab.text = onDataStateChangeListener.getCatalogListOfObject()[index].name
+
+        }.attach()
+
+        catalog_view_pager2.setCurrentItem(onDataStateChangeListener.getCatalogProductPosition())
+
+
+        onDataStateChangeListener.setCatalogProductPosition(onDataStateChangeListener.getCatalogProductPosition())
+        catalog_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let { tab ->
+
+                    slug = onDataStateChangeListener.getCatalogListOfObject()[tab.position].slug
+                    Log.d(TAG, "onTabSelected: ${slug}")
+                    onDataStateChangeListener.setCatalogProductPosition(tab.position)
+                    catalog_view_pager2.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                catalog_view_pager2.visibility = View.INVISIBLE
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+//                TODO("Not yet implemented")
+            }
+
+        })
+
+
+        observeData()
+
     }
 
     private fun observeData() {
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataState?.let { dataState ->
-                onDataStateChangeListener.onDataStateChange(dataState)
-                dataState.data?.let { data ->
-                    data.data?.let { event ->
-                        event.getContentIfNotHandled()?.let { catalogViewState ->
-                            catalogViewState.catalogProductList.let { catalogProductList ->
-                                catalogProductList.list?.let { list ->
-                                    Log.d(TAG, "CatalogProduct dataState: ${catalogProductList}")
-                                    viewModel.setCatalogProductListOfData(list)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { cataloViewState ->
-            cataloViewState.catalogProductList.let { catalogProductList ->
-                Log.d(TAG, "CatalogProduct viewState: ${catalogProductList}")
-                catalogProductList.list?.let { list ->
-                    setCatalogProductListToAdapter(list)
-                }
-            }
-        })
+       viewModel.viewState.observe(viewLifecycleOwner, Observer { catalogViewState ->
+           catalogViewState.catalogModel?.let { catalogModel ->
+               if (!catalogModel.category_slug.isNullOrBlank() && !catalogModel.product_slug.isNullOrBlank())
+               {
+                   Log.d(TAG, "observeData: ${catalogModel}")
+                   val action = CatalogProductFragmentDirections.actionCatalogProductFragmentToCatalogViewProductFragment(
+                       categorySlug = catalogModel.category_slug!!,
+                       productSlug = catalogModel.product_slug!!
+                   )
+                   viewModel.setCatalogModel(catalogModel = CatalogModel(null, null))
+                   findNavController().navigate(action)
+               }
+           }
+       })
     }
 
-    private fun setCatalogProductListToAdapter(list: List<CatalogProduct>) {
-        catalog_product_recyclerView.visibility = View.VISIBLE
-        catalogProductAdapter = CatalogProductAdapter(this, requestManager)
-        catalogProductAdapter.submitList(list)
-        lastPosition = sharedPreferences.getInt("catalogProductPosition",0)
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        catalog_product_recyclerView.layoutManager = staggeredGridLayoutManager
-        catalog_product_recyclerView.scrollToPosition(lastPosition)
-        catalog_product_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val layoutManager = recyclerView.layoutManager as StaggeredGridLayoutManager
-                lastPosition = layoutManager.findFirstVisibleItemPositions(null)[0]
-            }
-        })
-        catalog_product_recyclerView.adapter = catalogProductAdapter
-
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -111,11 +113,6 @@ class CatalogProductFragment : BaseCatalogFragment(),
 
     }
 
-    override fun onCatalogProductItemClick(position: Int, item: CatalogProduct) {
-        val action = CatalogProductFragmentDirections.actionCatalogProductFragmentToCatalogViewProductFragment(categorySlug = args.slug, productSlug = item.slug)
-        findNavController().navigate(action)
-        Toast.makeText(requireContext(), "${item.name}", Toast.LENGTH_LONG).show()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

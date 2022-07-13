@@ -1,6 +1,7 @@
 package com.example.bozorbek_vol2.ui
 
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.catalog.Catalog
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.model.CategoryData
@@ -12,6 +13,13 @@ interface OnDataStateChangeListener {
     fun getOnOrderItemCount(itemCount:Int)
     fun getItemCount():Int
     fun isStoragePermissionGranted():Boolean
+
+    fun setCatalogListOfObject(list:List<Catalog>)
+    fun getCatalogListOfObject():List<Catalog>
+
+    fun setCatalogProductPosition(position:Int)
+    fun getCatalogProductPosition():Int
+
 
     fun setListOfObjects(list: List<BasketOrderProduct>)
     fun getListOfObjects():List<BasketOrderProduct>

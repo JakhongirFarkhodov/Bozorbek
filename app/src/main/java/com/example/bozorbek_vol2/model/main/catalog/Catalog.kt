@@ -3,8 +3,7 @@ package com.example.bozorbek_vol2.model.main.catalog
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(tableName = "catalog_table")
 data class Catalog(
@@ -21,4 +20,4 @@ data class Catalog(
 
     @ColumnInfo(name = "slug")
     val slug:String
-)
+):Serializable

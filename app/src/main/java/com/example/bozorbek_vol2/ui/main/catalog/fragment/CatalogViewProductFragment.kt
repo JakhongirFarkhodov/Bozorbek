@@ -69,6 +69,9 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
     private var catalogProductOwnerHasBeenHandled: Boolean = true
     private var catalogPaketHasBeenHandled: Boolean = true
 
+    private var catalogIsUnit:Boolean = true
+    private var catalogIsSize:Boolean = true
+
     val sort_list = ArrayList<String>()
     val paket_list = ArrayList<String>()
     val product_owner_list = ArrayList<String>()
@@ -92,8 +95,6 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
     override fun onResume() {
         super.onResume()
-
-
 
         viewModel.setStateEvent(
             event = CatalogStateEvent.GetCatalogViewProductListOfData(
@@ -196,23 +197,10 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
     private fun observeData() {
 
-
-
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
                 dataState.data?.let { data ->
-                    data.response?.let { event ->
-                        event.getContentIfNotHandled()?.let { response ->
-                            response.message?.let { message ->
-//                                if (message.equals("Продукт добавлен в корзину")) {
-//                                    observeWeightClickListener(
-//                                        position = weight_value_position,
-//                                    )
-//                                }
-                            }
-                        }
-                    }
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { catalogViewState ->
                             catalogViewState.parametersValue?.let { parametersValue ->
@@ -245,20 +233,6 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
         }
 
 
-//        sort_adapter = ArrayAdapter(
-//            this.requireContext(),
-//            R.layout.item_drop_down,
-//            sort_list.distinct().toList()
-//        )
-//
-//        view_product_sort_autocomplete.apply {
-//            if (!sort_list.isEmpty()) {
-//                setText(sort_list[sort_value_position])
-//                setAdapter(sort_adapter)
-//            }
-//        }
-
-
         if (!parametersValue.items.isEmpty()) {
             Log.d(TAG, "parametersValue.items is not empty: ${parametersValue.items}")
             if (catalogImageHasBeenHandeld) {
@@ -272,6 +246,39 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
             for (items in parametersValue.items) {
                 if (!sort_list.isEmpty() && items.sort_value.equals(sort_list[sort_value_position])) {
                     Log.d(TAG, "setParameterValueToSpinner: ${items.product_owner_value}")
+
+                    if (catalogIsUnit) {
+                        if (items.in_gramme && !items.in_piece)
+                        {
+                            unit = "GRAMME"
+                        }
+                        else if (!items.in_gramme && items.in_piece)
+                        {
+                            unit = "PIECE"
+                        }
+                        else if (items.in_gramme && !items.in_piece)
+                        {
+                            unit = "GRAMME"
+                        }
+                    }
+
+                    if (catalogIsSize) {
+                        if ((items.large && items.middle && items.small) || (items.large && items.middle && !items.small) || (items.large && !items.middle && items.small))
+                        {
+                            size = "LARGE"
+                        }
+                        else if ((!items.large && items.middle && items.small) || (!items.large && items.middle && !items.small) || (items.large && items.middle && !items.small))
+                        {
+                            size = "MIDDLE"
+                        }
+                        else if ((!items.large && !items.middle && items.small) || (!items.large && items.middle && items.small) || (!items.large && items.middle && items.small))
+                        {
+                            size = "SMALL"
+                        }
+                        else{
+                            size = "SMALL"
+                        }
+                    }
 
                     if (catalogProductOwnerHasBeenHandled) {
                         product_owner_list.add(items.product_owner_value)
@@ -478,6 +485,8 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
 
         view_product_sort_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
+            catalogIsUnit = true
+            catalogIsSize = true
             Toast.makeText(this.requireContext(), "${sort_list[position]}", Toast.LENGTH_LONG)
                 .show()
             catalogProductOwnerHasBeenHandled = true
@@ -529,7 +538,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
 
         view_product_size_autocomplete.setOnItemClickListener { adapterView, view, position, l ->
-
+            catalogIsSize = false
             if (size_list[position].equals("Маленький")) {
                 size = "SMALL"
                 in_small_selected = true
@@ -578,6 +587,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
     }
 
     private fun observeWeightClickListener(position: Int) {
+        catalogIsUnit = false
         if (weight_list[position].equals("Килограмм")) {
             viewModel.setStateEvent(
                 CatalogStateEvent.GetCatalogViewProductByGramme(

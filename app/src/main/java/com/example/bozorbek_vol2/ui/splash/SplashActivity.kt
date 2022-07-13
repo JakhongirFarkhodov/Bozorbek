@@ -8,6 +8,7 @@ import android.view.WindowInsetsController
 import androidx.core.content.ContextCompat
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.basket.BasketOrderProduct
+import com.example.bozorbek_vol2.model.main.catalog.Catalog
 import com.example.bozorbek_vol2.model.main.profile.ProfileReadyPackageId
 import com.example.bozorbek_vol2.network.main.network_services.profile.request.ProfileReadyPackageAutoOrder
 import com.example.bozorbek_vol2.ui.BaseActivity
@@ -67,6 +68,22 @@ class SplashActivity : BaseActivity() {
 
     override fun getItemCount(): Int {
         return 0
+    }
+
+    override fun setCatalogListOfObject(list: List<Catalog>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCatalogListOfObject(): List<Catalog> {
+        return ArrayList<Catalog>()
+    }
+
+    override fun setCatalogProductPosition(position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCatalogProductPosition(): Int {
+       return 0
     }
 
     override fun setListOfObjects(list: List<BasketOrderProduct>) {

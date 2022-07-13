@@ -9,6 +9,7 @@ import com.example.bozorbek_vol2.repository.main.catalog.CatalogRepository
 import com.example.bozorbek_vol2.session.SessionManager
 import com.example.bozorbek_vol2.ui.BaseViewModel
 import com.example.bozorbek_vol2.ui.DataState
+import com.example.bozorbek_vol2.ui.main.catalog.fragment.model.CatalogModel
 import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogStateEvent
 import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogStateEvent.*
 import com.example.bozorbek_vol2.ui.main.catalog.state.CatalogViewState
@@ -20,7 +21,8 @@ class CatalogViewModel
 constructor(val catalogRepository: CatalogRepository, val sessionManager: SessionManager)
     : BaseViewModel<CatalogStateEvent, CatalogViewState>() {
 
-    var trigger:Boolean = true
+    var category_slug:String = ""
+    var product_slug:String = ""
 
     override fun initNewViewState(): CatalogViewState {
         return CatalogViewState()
@@ -35,6 +37,16 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
 
             is GetCatalogProductListOfData ->{
                 return catalogRepository.getCatalogProduct(slug = stateEvent.slug)
+            }
+
+            is SetCatalogViewProductsData ->{
+                return object : LiveData<DataState<CatalogViewState>>()
+                {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.data(data = CatalogViewState(catalogModel = CatalogModel(stateEvent.category_slug, stateEvent.product_slug)), response = null)
+                    }
+                }
             }
 
             is GetCatalogViewProductListOfData ->{
@@ -115,12 +127,33 @@ constructor(val catalogRepository: CatalogRepository, val sessionManager: Sessio
         _viewState.value = update
     }
 
+    fun setCatalogModel(catalogModel: CatalogModel)
+    {
+        val update = getCurrentViewStateOrCreateNew()
+        update.catalogModel = catalogModel
+        _viewState.value = update
+    }
+
     fun setParametersValue(parametersValue: ParametersValue)
     {
         val update = getCurrentViewStateOrCreateNew()
         update.parametersValue = parametersValue
         _viewState.value = update
     }
+
+
+    fun getCategoryViewProductsSlugs():LiveData<CatalogModel>
+    {
+        return object : LiveData<CatalogModel>()
+        {
+            override fun onActive() {
+                super.onActive()
+                value = CatalogModel(category_slug, product_slug)
+            }
+        }
+    }
+
+
 
     fun setAddOrderItemMessage(message:String)
     {
