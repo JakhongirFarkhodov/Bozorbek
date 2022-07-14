@@ -2,6 +2,7 @@ package com.example.bozorbek_vol2.ui.main.catalog.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.RequestManager
 import com.example.bozorbek_vol2.model.main.catalog.Catalog
 import com.example.bozorbek_vol2.model.main.catalog.CatalogProduct
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 class CatalogViewModel
 @Inject
-constructor(val catalogRepository: CatalogRepository, val sessionManager: SessionManager)
+constructor(val catalogRepository: CatalogRepository, val sessionManager: SessionManager, val requestManager: RequestManager)
     : BaseViewModel<CatalogStateEvent, CatalogViewState>() {
 
     var category_slug:String = ""

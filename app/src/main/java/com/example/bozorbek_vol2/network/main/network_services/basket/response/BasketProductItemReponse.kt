@@ -91,7 +91,7 @@ data class BasketProductItemReponse(
 
     @SerializedName("description")
     @Expose
-    val description:String,
+    val description:String? = null,
 
     @SerializedName("main_image")
     @Expose

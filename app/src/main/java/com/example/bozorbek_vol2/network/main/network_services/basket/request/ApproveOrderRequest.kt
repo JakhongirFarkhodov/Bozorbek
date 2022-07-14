@@ -15,6 +15,10 @@ data class ApproveOrderRequest(
 
     @SerializedName("phone_num")
     @Expose
-    val phone_num:String
+    val phone_num:String,
+
+    @SerializedName("comment")
+    @Expose
+    val comment:String
 
 )

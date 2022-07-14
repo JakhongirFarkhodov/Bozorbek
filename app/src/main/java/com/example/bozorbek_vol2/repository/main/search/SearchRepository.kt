@@ -16,7 +16,6 @@ import com.example.bozorbek_vol2.network.main.MainApiServices
 import com.example.bozorbek_vol2.network.main.network_services.catalog.request.CatalogAddItemOrderRequest
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogAddOrderItemResponse
 import com.example.bozorbek_vol2.network.main.network_services.catalog.response.catalogViewProduct.CatalogViewProductListResponse
-import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchHistoryResponse
 import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.persistance.auth.AccountPropertiesDao
 import com.example.bozorbek_vol2.persistance.auth.AuthTokenDao
@@ -243,26 +242,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getAllCatalogViewProduct()
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getAllCatalogViewProduct()
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -330,13 +323,13 @@ constructor(
                 var product_owner_list = ArrayList<ProductOwner>()
 
                 var count = 0
+
                 for (parameters in response.body.parameters) {
                     if (parameters.name.equals("Сорт")) {
                         for (sort in parameters.values) {
                             count++
                             sort_list.add(
                                 Sort(
-
                                     sort_id = parameters.id,
                                     sort_name = parameters.name,
                                     sort_value_id = sort.id,
@@ -405,17 +398,17 @@ constructor(
                                 piece_size = items.piece_size,
                                 in_piece = items.in_piece,
                                 price_in_piece = items.price_in_piece,
-                                discount_in_piece = items.discount_in_piece,
+                                discount_in_piece = items.discount_in_piece/100,
                                 in_gramme = items.in_gramme,
                                 price_in_gramme = items.price_in_gramme * 1000,
-                                discount_in_gramme = items.discount_in_gramme,
+                                discount_in_gramme = items.discount_in_gramme/100,
                                 size_gramme = items.size_gramme,
                                 size_diameter = items.size_diameter,
                                 expiration = items.expiration,
                                 certification = items.certification,
                                 condition = items.condition,
                                 storage_temp = items.storage_temp,
-                                description = items.description,
+                                description = items.description?:"Some description",
                                 main_image = Constants.BASE_URL + items.main_image,
                                 product_name = items.product_name,
                                 large = items.large,
@@ -487,26 +480,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortValue(sortValue)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySortValue(sortValue)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -531,6 +518,8 @@ constructor(
 
     fun getCatalogViewProductBySortAndProductOwnerValue(sortValue: String, productOwner_value:String):LiveData<DataState<SearchViewState>>
     {
+        Log.d(TAG, "getCatalogViewProductBySortAndProductOwnerValue:${productOwner_value} ")
+
         return object : NetworkBoundResource<Void, Void, SearchViewState>(
             isNetworkRequest = false,
             isNetworkAvailable = sessionManager.isInternetAvailable(),
@@ -550,26 +539,21 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sort_value = sortValue, productOwner_value =  productOwner_value)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySortAndProductOwnerValue(sort_value = sortValue, productOwner_value = productOwner_value)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    Log.d(TAG, "onActive productOwner: ${catalogViewProduct_list}")
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -613,26 +597,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySortAndProductOwnerAndPaketValue(sort_value, productOwner_value, paket_value)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySortAndProductOwnerAndPaketValue(sort_value, productOwner_value, paket_value)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -676,26 +654,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductByGramme(sort_value, productOwner_value, paket_value, gramme)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductByGramme(sort_value, productOwner_value, paket_value, gramme)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -739,26 +711,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductByPiece(sort_value, productOwner_value, paket_value, piece)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductByPiece(sort_value, productOwner_value, paket_value, piece)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -803,26 +769,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, large)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, large)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -867,26 +827,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, middle)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, middle)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -931,26 +885,20 @@ constructor(
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return catalogDao.getAllSortData()?.switchMap { sort_list ->
-                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-                            catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, small)
-                                ?.switchMap { catalogViewProduct_list ->
-                                    object : LiveData<SearchViewState>() {
-                                        override fun onActive() {
-                                            super.onActive()
-                                            value = SearchViewState(
-                                                parametersValue = ParametersValue(
-                                                    sort = sort_list,
-                                                    paket = paket_list,
-                                                    productOwner = product_owner_list,
-                                                    items = catalogViewProduct_list
-                                                )
-                                            )
-                                        }
-                                    }
-                                } ?: AbsentLiveData.create()
+                    catalogDao.getCatalogViewProductBySizeLarge(sort_value, productOwner_value, paket_value, in_gramme, in_piece, small)
+                        ?.switchMap { catalogViewProduct_list ->
+                            object : LiveData<SearchViewState>() {
+                                override fun onActive() {
+                                    super.onActive()
+                                    value = SearchViewState(
+                                        parametersValue = ParametersValue(
+                                            sort = sort_list,
+                                            items = catalogViewProduct_list
+                                        )
+                                    )
+                                }
+                            }
                         } ?: AbsentLiveData.create()
-                    } ?: AbsentLiveData.create()
                 } ?: AbsentLiveData.create()
             }
 
@@ -973,7 +921,7 @@ constructor(
         }.asLiveData()
     }
 
-    fun addItemCatalogViewProduct(authToken: AuthToken, product_item_id:String, quantity:Int, unit:String, size:String, sortValue: String):LiveData<DataState<SearchViewState>>
+    fun addItemCatalogViewProduct(authToken: AuthToken,product_item_id:String, quantity:Int, unit:String, size:String,sortValue: String):LiveData<DataState<SearchViewState>>
     {
         return object : NetworkBoundResource<CatalogAddOrderItemResponse, Void, SearchViewState>(
             isNetworkRequest = true,
@@ -983,45 +931,11 @@ constructor(
         )
         {
             override suspend fun createCacheAndReturn() {
-//                withContext(Main)
-//                {
-//                    val loadCache = loadFromCache()
-//                    result.addSource(loadCache, Observer { catalogViewState ->
-//                        result.removeSource(loadCache)
-//                        onCompleteJob(
-//                            dataState = DataState.data(
-//                                data = null,
-//                                response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())
-//                            )
-//                        )
-//                    })
-//                }
+
             }
 
             override fun loadFromCache(): LiveData<SearchViewState> {
                 return AbsentLiveData.create()
-//                return catalogDao.getAllSortData()?.switchMap { sort_list ->
-//                    catalogDao.getAllPaketData()?.switchMap { paket_list ->
-//                        catalogDao.getALlProductOwnerData()?.switchMap { product_owner_list ->
-//                            catalogDao.getCatalogViewProductBySortValue(sortValue)
-//                                ?.switchMap { catalogViewProduct_list ->
-//                                    object : LiveData<CatalogViewState>() {
-//                                        override fun onActive() {
-//                                            super.onActive()
-//                                            value = CatalogViewState(
-//                                                parametersValue = ParametersValue(
-//                                                    sort = sort_list,
-//                                                    paket = paket_list,
-//                                                    productOwner = product_owner_list,
-//                                                    items = catalogViewProduct_list
-//                                                )
-//                                            )
-//                                        }
-//                                    }
-//                                } ?: AbsentLiveData.create()
-//                        } ?: AbsentLiveData.create()
-//                    } ?: AbsentLiveData.create()
-//                } ?: AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Void?) {
@@ -1033,7 +947,6 @@ constructor(
                 {
                     onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Продукт добавлен в корзину", responseType = ResponseType.Toast())))
                 }
-//                createCacheAndReturn()
             }
 
             override fun createCall(): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>> {
@@ -1052,8 +965,6 @@ constructor(
 
         }.asLiveData()
     }
-
-
 
 
     private fun phoneNotFound(): LiveData<DataState<SearchViewState>> {

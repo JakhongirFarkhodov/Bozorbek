@@ -2,6 +2,7 @@ package com.example.bozorbek_vol2.ui.main.search.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.RequestManager
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
 import com.example.bozorbek_vol2.model.main.search.SearchProduct
 import com.example.bozorbek_vol2.repository.main.search.SearchRepository
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 class SearchViewModel
     @Inject
-    constructor(val searchRepository: SearchRepository, val sessionManager: SessionManager)
+    constructor(val searchRepository: SearchRepository, val sessionManager: SessionManager,val requestManager: RequestManager)
     : BaseViewModel<SearchStateEvent, SearchViewState>() {
     override fun initNewViewState(): SearchViewState {
         return SearchViewState()

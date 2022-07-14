@@ -554,7 +554,7 @@ constructor(
                                     certification = product_item.product_item.certification,
                                     condition = product_item.product_item.condition,
                                     storage_temp = product_item.product_item.storage_temp,
-                                    description = product_item.product_item.description,
+                                    description = product_item.product_item.description?:"Some description",
                                     main_image = product_item.product_item.main_image,
                                     product_name = product_item.product_item.product_name,
                                     large = product_item.product_item.large,

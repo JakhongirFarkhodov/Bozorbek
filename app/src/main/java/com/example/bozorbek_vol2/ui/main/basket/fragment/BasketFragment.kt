@@ -219,7 +219,8 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                         event = BasketStateEvent.ApproveOrder(
                             address_id = listAddress[0].id,
                             name = edText_name_basket.text.toString(),
-                            phone_num = edText_phone_basket.text.toString()
+                            phone_num = edText_phone_basket.text.toString(),
+                            comment = edText_comment_basket.text.toString()
                         )
                     )
                 }

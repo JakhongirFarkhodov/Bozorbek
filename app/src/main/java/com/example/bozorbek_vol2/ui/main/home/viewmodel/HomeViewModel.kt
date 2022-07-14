@@ -2,6 +2,7 @@ package com.example.bozorbek_vol2.ui.main.home.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.RequestManager
 import com.example.bozorbek_vol2.model.main.catalog.parametrs.ParametersValue
 import com.example.bozorbek_vol2.model.main.home.HomeDiscountProducts
 import com.example.bozorbek_vol2.model.main.home.HomeRandomProducts
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 class HomeViewModel
     @Inject
-    constructor(val sessionManager: SessionManager, val homeRepository: HomeRepository)
+    constructor(val sessionManager: SessionManager, val homeRepository: HomeRepository, val requestManager: RequestManager)
     : BaseViewModel<HomeStateEvent, HomeViewState>() {
     override fun initNewViewState(): HomeViewState {
         return HomeViewState()

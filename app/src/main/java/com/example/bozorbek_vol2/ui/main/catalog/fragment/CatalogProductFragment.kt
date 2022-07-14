@@ -45,6 +45,7 @@ class CatalogProductFragment : BaseCatalogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
         adapter = CatalogProductViewPagerAdapter(this, onDataStateChangeListener.getCatalogListOfObject())
         catalog_view_pager2.adapter = adapter
 

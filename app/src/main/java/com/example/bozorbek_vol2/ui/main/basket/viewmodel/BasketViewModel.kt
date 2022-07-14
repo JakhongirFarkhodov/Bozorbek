@@ -60,7 +60,7 @@ class BasketViewModel
             is BasketStateEvent.ApproveOrder ->
             {
                 return sessionManager.cachedAuthToken.value?.let { authToken ->
-                    basketRepository.approveBasketOrder(authToken = authToken, address_id = stateEvent.address_id, name = stateEvent.name, phone_num = stateEvent.phone_num)
+                    basketRepository.approveBasketOrder(authToken = authToken, address_id = stateEvent.address_id, name = stateEvent.name, phone_num = stateEvent.phone_num, comment = stateEvent.comment)
                 }?:AbsentLiveData.create()
             }
 

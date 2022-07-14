@@ -62,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Авакадо"
                 android:textColor="@color/fruit_grey"
                 android:textSize="@dimen/_20ssp"
                 android:textStyle="bold"
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="40.000 Сум"
+
                 android:textColor="@color/fruit_light_green"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold"
@@ -87,7 +86,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:text="(40.000 Сум - за 1 кг)"
                 android:textColor="#B8B8B8"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="@id/home_view_product_price"
@@ -170,7 +168,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/home_view_product_txIL_sort"
                 app:layout_constraintTop_toBottomOf="@+id/home_view_catalog_minus">
 
@@ -193,7 +190,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/home_view_product_txIL_sort">
 
                 <AutoCompleteTextView
@@ -214,7 +210,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/home_view_product_txIL_paket"
                 app:layout_constraintTop_toBottomOf="@+id/home_view_product_txIL_sort">
 
@@ -236,7 +231,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/home_view_product_txIL_paket">
 
                 <AutoCompleteTextView

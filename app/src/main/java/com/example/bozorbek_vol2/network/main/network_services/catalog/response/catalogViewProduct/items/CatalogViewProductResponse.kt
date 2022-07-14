@@ -93,7 +93,7 @@ data class CatalogViewProductResponse(
 
     @SerializedName( "description")
     @Expose
-    val description:String,
+    val description:String? = null,
 
     @SerializedName("features")
     @Expose

@@ -377,7 +377,7 @@ constructor(
         }.asLiveData()
     }
 
-    fun approveBasketOrder(authToken: AuthToken, address_id:String, name:String, phone_num:String):LiveData<DataState<BasketViewState>>
+    fun approveBasketOrder(authToken: AuthToken, address_id:String, name:String, phone_num:String, comment:String):LiveData<DataState<BasketViewState>>
     {
         return object : NetworkBoundResource<ApproveOrderResponse, Void, BasketViewState>(
             isNetworkRequest = true,
@@ -409,7 +409,7 @@ constructor(
             }
 
             override fun createCall(): LiveData<GenericApiResponse<ApproveOrderResponse>> {
-                return apiServices.approveOrder(accessToken = "Bearer ${authToken.access_token}", approveOrderRequest = ApproveOrderRequest(address_id, name, phone_num))
+                return apiServices.approveOrder(accessToken = "Bearer ${authToken.access_token}", approveOrderRequest = ApproveOrderRequest(address_id, name, phone_num,comment))
             }
 
             override fun setJob(job: Job) {

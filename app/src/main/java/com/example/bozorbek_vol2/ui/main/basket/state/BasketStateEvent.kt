@@ -14,7 +14,7 @@ sealed class BasketStateEvent{
 
     class GetBasketAddressOrderList : BasketStateEvent()
 
-    data class ApproveOrder(val address_id:String, val name:String, val phone_num:String):BasketStateEvent()
+    data class ApproveOrder(val address_id:String, val name:String, val phone_num:String, val comment:String):BasketStateEvent()
 
     data class SetCreatedReadyPackage(val saveReadyPackageRequest: SaveReadyPackageRequest):BasketStateEvent()
 
