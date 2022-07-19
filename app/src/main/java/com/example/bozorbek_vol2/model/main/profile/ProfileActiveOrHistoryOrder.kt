@@ -1,14 +1,17 @@
 package com.example.bozorbek_vol2.model.main.profile
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "profile_active_or_history_order")
 data class ProfileActiveOrHistoryOrder(
 
     @PrimaryKey(autoGenerate = true)
-     @ColumnInfo(name = "id")
+    @ColumnInfo(name = "id")
     val id:Int,
 
     @ColumnInfo(name = "address")
@@ -185,4 +188,4 @@ data class ProfileActiveOrHistoryOrder(
     @ColumnInfo(name = "paket_parameter_id")
     val paket_parameter_id:Int
 
-)
+) : Parcelable

@@ -94,6 +94,9 @@
         <argument
             android:name="username"
             app:argType="string" />
+        <action
+            android:id="@+id/action_profileBottomSheetDialogFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </dialog>
     <fragment
         android:id="@+id/searchHistoryFragment"
@@ -109,7 +112,16 @@
         android:id="@+id/orderHistoryFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.OrderHistoryFragment"
         android:label="История закзака"
-        tools:layout="@layout/fragment_order_history" />
+        tools:layout="@layout/fragment_order_history" >
+        <action
+            android:id="@+id/action_orderHistoryFragment_to_ordersProcessInfoFragment"
+            app:destination="@id/ordersProcessInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
     <fragment
         android:id="@+id/companyInfoFragment"
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.CompanyInfoFragment"
@@ -158,4 +170,29 @@
         android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpSuccessfullySavedReadyPackageInAutoOrderFragment"
         android:label="fragment_pop_up_successfully_saved_ready_package_in_auto_order"
         tools:layout="@layout/fragment_pop_up_successfully_saved_ready_package_in_auto_order" />
+    <fragment
+        android:id="@+id/ordersProcessInfoFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.OrdersProcessInfoFragment"
+        android:label="fragment_orders_process_info"
+        tools:layout="@layout/fragment_orders_process_info" >
+        <action
+            android:id="@+id/action_ordersProcessInfoFragment_to_ordersInfoFragment"
+            app:destination="@id/ordersInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <argument
+            android:name="profileActiveOrHistoryOrder"
+            app:argType="com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/ordersInfoFragment"
+        android:name="com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.OrdersInfoFragment"
+        android:label="fragment_orders_info"
+        tools:layout="@layout/fragment_orders_info" />
 </navigation>

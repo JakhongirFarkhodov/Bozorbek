@@ -74,6 +74,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
         changeStatusBarColor()
         checkAuthUser()
 
+
     }
 
     private fun checkAuthUser() {
@@ -158,6 +159,7 @@ class MainActivity : BaseActivity(), NavGraphProvider, OnNavigationGraphChangeLi
 
             R.id.nav_profile -> {
                 R.navigation.main_profile_nav_graph
+
             }
 
             else -> {

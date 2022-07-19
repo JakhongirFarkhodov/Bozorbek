@@ -56,12 +56,25 @@ constructor(
             override suspend fun createCacheAndReturn() {
                 withContext(Main)
                 {
-                    onCompleteJob(DataState.data(data = null, response = Response(message = "Profile successfully", responseType = ResponseType.None())))
+                    val loadCache = loadFromCache()
+                    result.addSource(loadCache, Observer {
+                        result.removeSource(loadCache)
+                        onCompleteJob(DataState.data(data = it, response = Response(message = "Profile successfully", responseType = ResponseType.None())))
+
+                    })
                 }
             }
 
             override fun loadFromCache(): LiveData<BasketViewState> {
-                return AbsentLiveData.create()
+                return profileDao.getProfileData()?.switchMap {
+                    object : LiveData<BasketViewState>()
+                    {
+                        override fun onActive() {
+                            super.onActive()
+                            value = BasketViewState(profile = it)
+                        }
+                    }
+                }?:AbsentLiveData.create()
             }
 
             override suspend fun updateCache(cacheObject: Profile?) {
@@ -84,6 +97,7 @@ constructor(
             }
 
             override suspend fun handleSuccessResponse(response: ApiSuccessResponse<ProfileResponse>) {
+                Log.d(TAG, "handleSuccessResponse: ${response.body}")
                 val profile = Profile(
                     first_name = response.body.firstName,
                     last_name = response.body.lastName,

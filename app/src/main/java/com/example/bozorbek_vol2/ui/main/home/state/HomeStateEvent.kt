@@ -2,11 +2,13 @@ package com.example.bozorbek_vol2.ui.main.home.state
 
 sealed class HomeStateEvent {
 
-    class GetHomeSliderImage : HomeStateEvent()
+//    class GetHomeSliderImage : HomeStateEvent()
+//
+//    class GetRandomProducts : HomeStateEvent()
+//
+//    class GetDiscountProducts : HomeStateEvent()
 
-    class GetRandomProducts : HomeStateEvent()
-
-    class GetDiscountProducts : HomeStateEvent()
+    class GetHomeData :HomeStateEvent()
 
     data class GetCatalogViewProductListOfData(val category_slug:String, val product_slug:String):
         HomeStateEvent()

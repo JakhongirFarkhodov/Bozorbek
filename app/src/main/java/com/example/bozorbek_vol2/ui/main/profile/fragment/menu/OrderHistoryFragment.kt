@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bozorbek_vol2.R
 import com.example.bozorbek_vol2.model.main.profile.ProfileActiveOrHistoryOrder
@@ -21,7 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class OrderHistoryFragment : BaseProfileFragment() {
+class OrderHistoryFragment : BaseProfileFragment(), OrderHistoryAdapter.OnShowOrdersListener {
 
     lateinit var onDataStateChangeListener: OnDataStateChangeListener
     lateinit var adapter: OrderHistoryAdapter
@@ -156,12 +157,18 @@ class OrderHistoryFragment : BaseProfileFragment() {
 
     private fun setListToUi(list: List<ProfileActiveOrHistoryOrder>) {
         Log.d(TAG, "setListToUi: ${list}")
-        adapter = OrderHistoryAdapter()
+        adapter = OrderHistoryAdapter(this)
         adapter.submitList(list.distinct().toList())
         order_history_rv.adapter = adapter
         order_history_rv.layoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
+
+
+    override fun onShowOrder(position: Int, item: ProfileActiveOrHistoryOrder) {
+        val action = OrderHistoryFragmentDirections.actionOrderHistoryFragmentToOrdersProcessInfoFragment(position = position, profileActiveOrHistoryOrder = item)
+        findNavController().navigate(action)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

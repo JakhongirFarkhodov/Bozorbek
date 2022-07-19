@@ -10,7 +10,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lottie_constraint_basket"
@@ -37,7 +39,7 @@
                 android:id="@+id/mtv_profile_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ой вы походу ещё не зарегистрированы :("
+                android:text="@string/not_registrated"
                 android:textAlignment="center"
                 android:textColor="@color/fruit_light_green"
                 android:textSize="17sp"
@@ -51,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Перейти к регистрации"
+                android:text="@string/go_registration"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="17sp"
                 app:backgroundTint="@color/fruit_light_green"
@@ -75,6 +78,7 @@
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -113,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="Сумма доставки:"
+                        android:text="@string/sum_of_deliviring"
                         android:textColor="@color/fruit_grey"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -138,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="40dp"
-                        android:text="Общая сумма"
+                        android:text="@string/entire_sum"
                         android:textColor="@color/fruit_light_green"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -187,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="Имя:"
+                        android:text="@string/name"
                         android:textColor="@color/fruit_grey"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -214,6 +218,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             app:boxStrokeColor="@color/white"
+                            android:background="@color/white"
                             app:boxStrokeWidth="0dp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -222,7 +227,8 @@
                                 android:layout_height="wrap_content"
                                 android:alpha="0.5"
                                 android:paddingTop="5dp"
-                                android:text="Имя"
+                                android:text="@string/name"
+                                android:background="@color/white"
                                 android:textColor="@color/fruit_grey"
                                 android:textSize="15sp" />
 
@@ -236,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="Номер:"
+                        android:text="@string/number"
                         android:textColor="@color/fruit_grey"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -263,6 +269,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             app:boxStrokeColor="@color/white"
+                            android:background="@color/white"
                             app:boxStrokeWidth="0dp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -272,7 +279,8 @@
                                 android:alpha="0.5"
                                 android:inputType="phone"
                                 android:paddingTop="5dp"
-                                android:text="Номер телефона"
+                                android:background="@color/white"
+                                android:text="@string/tel_number"
                                 android:textColor="@color/fruit_grey"
                                 android:textSize="15sp" />
 
@@ -286,7 +294,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="Адрес:"
+                        android:text="@string/adress"
                         android:textColor="@color/fruit_grey"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -313,6 +321,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             app:boxStrokeColor="@color/white"
+                            android:background="@color/white"
                             app:boxStrokeWidth="0dp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -321,8 +330,9 @@
                                 android:layout_height="wrap_content"
                                 android:alpha="0.5"
                                 android:paddingTop="5dp"
-                                android:text="Адрес"
+                                android:text="@string/adress_of_user"
                                 android:textColor="@color/fruit_grey"
+                                android:background="@color/white"
                                 android:textSize="15sp" />
 
 
@@ -336,9 +346,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:backgroundTint="@color/fruit_light_dark_blue"
-                        android:text="Показать на карте"
+                        android:text="@string/show_on_map"
                         android:textAllCaps="false"
                         android:textSize="15sp"
+                        android:textColor="@color/white"
                         app:cornerRadius="7dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -359,7 +370,8 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/tv_comment_order"
@@ -367,7 +379,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Комментарий к заказу"
+                                android:text="@string/comment_to_order"
                                 android:textColor="@color/fruit_grey"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
@@ -381,7 +393,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="10dp"
                                 android:alpha="0.5"
-                                android:text="Добавить комментарии"
+                                android:text="@string/add_comment"
                                 android:textColor="@color/fruit_grey"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -425,7 +437,9 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            >
 
                             <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/tv_add_comment"
@@ -433,7 +447,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="10dp"
-                                android:text="Добавить комментарии"
+                                android:text="@string/add_comment"
                                 android:textColor="@color/fruit_grey"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
@@ -449,6 +463,7 @@
                                 android:layout_marginBottom="10dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
+                                app:boxStrokeColor="@color/fruit_grey"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_add_comment">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -458,7 +473,7 @@
                                     android:alpha="0.5"
                                     android:padding="0dp"
                                     android:paddingTop="5dp"
-                                    android:text="Адрес"
+                                    android:text="@string/adress"
                                     android:textColor="@color/fruit_grey"
                                     android:textSize="15sp" />
 
@@ -472,7 +487,8 @@
                                 android:layout_marginEnd="15dp"
                                 android:backgroundTint="@color/fruit_light_dark_blue"
                                 android:drawableEnd="@drawable/ic_telegram"
-                                android:text="Отправить"
+                                android:text="@string/send"
+                                android:textColor="@color/white"
                                 android:textAllCaps="false"
                                 app:cornerRadius="7dp"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -493,7 +509,8 @@
                         android:layout_marginBottom="30dp"
                         android:backgroundTint="@color/fruit_light_green"
                         android:elevation="10dp"
-                        android:text="Оформить заказ"
+                        android:text="@string/check_out"
+                        android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:textSize="17sp"
                         app:cornerRadius="7dp"
@@ -512,7 +529,8 @@
                         android:layout_marginBottom="50dp"
                         android:backgroundTint="@color/fruit_light_dark_blue"
                         android:elevation="10dp"
-                        android:text="Сохранить заказ"
+                        android:text="@string/save_order"
+                        android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:textSize="17sp"
                         app:cornerRadius="7dp"

@@ -368,6 +368,9 @@ constructor(
         auth_token: AuthToken,
         image: MultipartBody.Part?
     ): LiveData<DataState<ProfileViewState>> {
+
+
+
         return object : NetworkBoundResource<ProfileUploadImageResponse, Void, ProfileViewState>(
             isNetworkRequest = true,
             isNetworkAvailable = sessionManager.isInternetAvailable(),

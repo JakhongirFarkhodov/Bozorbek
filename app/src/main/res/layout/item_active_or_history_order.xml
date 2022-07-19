@@ -10,6 +10,7 @@
     app:cardElevation="@dimen/_10sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/active_or_history_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

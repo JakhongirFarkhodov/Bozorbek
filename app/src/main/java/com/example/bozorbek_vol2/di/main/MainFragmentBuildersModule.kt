@@ -11,8 +11,8 @@ import com.example.bozorbek_vol2.ui.main.home.fragment.HomeProductFragment
 import com.example.bozorbek_vol2.ui.main.home.fragment.HomeViewProductFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.ProfileFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.*
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.ActiveOrderFragment
-import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.HistoryOrderFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.OrdersInfoFragment
+import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.active_orders.fragment.OrdersProcessInfoFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpListOfReadyPackagesProductsFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpOfAuthOrderFragment
 import com.example.bozorbek_vol2.ui.main.profile.fragment.menu.ready_packages.fragments.PopUpSuccessfullySavedReadyPackageInAutoOrderFragment
@@ -75,11 +75,9 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributesProfileFragment(): ProfileFragment
 
-
     //Profile Menu
     @ContributesAndroidInjector
     abstract fun contributesSearchHistoryFragment():SearchHistoryFragment
-
 
     @ContributesAndroidInjector
     abstract fun contributesNotificationFragment():NotificationFragment
@@ -88,10 +86,10 @@ abstract class MainFragmentBuildersModule {
     abstract fun contributesOrderHistoryFragment():OrderHistoryFragment
 
     @ContributesAndroidInjector
-    abstract fun contributesActiveOrderFragment() : ActiveOrderFragment
+    abstract fun contributesOrdersProcessInfoFragment() : OrdersProcessInfoFragment
 
     @ContributesAndroidInjector
-    abstract fun contributesHistoryOrderFragment() : HistoryOrderFragment
+    abstract fun contributesOrdersInfoFragment() : OrdersInfoFragment
 
     @ContributesAndroidInjector
     abstract fun contributesCompanyInfoFragment():CompanyInfoFragment

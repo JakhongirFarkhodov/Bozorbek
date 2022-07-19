@@ -33,12 +33,9 @@ import com.example.bozorbek_vol2.util.AbsentLiveData
 import com.example.bozorbek_vol2.util.ApiSuccessResponse
 import com.example.bozorbek_vol2.util.Constants
 import com.example.bozorbek_vol2.util.GenericApiResponse
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class HomeRepository
@@ -65,247 +62,114 @@ constructor(
     var paket_parameter = ""
     var paket_parameter_id = 0
 
-    fun getAllSliderImages(): LiveData<DataState<HomeViewState>> {
-        Log.d(TAG, "getAllSliderImages: triggered")
-        return object :
-            NetworkBoundResource<HomeSliderImagesResponse, List<HomeSliderImage>, HomeViewState>(
-                isNetworkRequest = true,
-                isNetworkAvailable = sessionManager.isInternetAvailable(),
-                shouldUseCacheObject = false,
-                cancelJobIfNoInternet = true
-            ) {
-            override suspend fun createCacheAndReturn() {
-              withContext(Main)
-                {
-                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "Image downloaded", responseType = ResponseType.None())))
+    private lateinit var sliders:Deferred<retrofit2.Response<HomeSliderImagesResponse>>
+    private lateinit var randomProducts:Deferred<retrofit2.Response<List<HomeRandomProductsResponse>>>
+    private lateinit var discountProducts:Deferred<retrofit2.Response<HomeDiscountProductsResponse>>
 
-                }
-            }
-
-            override fun loadFromCache(): LiveData<HomeViewState> {
-                return AbsentLiveData.create()
-
-            }
-
-            override suspend fun updateCache(cacheObject: List<HomeSliderImage>?) {
-                cacheObject?.let { list ->
-                    withContext(Dispatchers.IO)
-                    {
-                        for (item in list)
-                        {
-                            try {
-                                launch {
-                                    Log.d(TAG, "updateCache:Inserting data:${item}")
-                                    homeDao.insertSliderImage(item)
-                                }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache:Error inserting image:${item}")
-                            }
-                        }
-                    }
-                }
-            }
-
-            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<HomeSliderImagesResponse>) {
-                val list = ArrayList<HomeSliderImage>()
-
-                for (item in response.body.results)
-                {
-                    list.add(
-                        HomeSliderImage(
-                        name = item.name,
-                        image = Constants.BASE_URL + item.image,
-                            text = item.text
-                    )
-                    )
-                }
-
-                updateCache(list)
-                createCacheAndReturn()
-            }
-
-            override fun createCall(): LiveData<GenericApiResponse<HomeSliderImagesResponse>> {
-                return apiServices.getSliderImages()
-            }
-
-            override fun setJob(job: Job) {
-                addJob("getAllSliderImages", job)
-            }
-
-        }.asLiveData()
-    }
-
-    fun getRandomProducts():LiveData<DataState<HomeViewState>>
+    fun getHomeData():LiveData<DataState<HomeViewState>>
     {
-        return object : NetworkBoundResource<List<HomeRandomProductsResponse>, List<HomeRandomProducts>, HomeViewState>(
-            isNetworkRequest = true,
-            isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = false,
-            cancelJobIfNoInternet = true
-        )
-        {
-            override suspend fun createCacheAndReturn() {
-                withContext(Main)
-                {
-                    onCompleteJob(dataState = DataState.data(data = null, response = Response(message = "rounded products downloaded", responseType = ResponseType.None())))
+        val sliderList = ArrayList<HomeSliderImage>()
+        val randomList = ArrayList<HomeRandomProducts>()
+        val discount_Products = ArrayList<HomeDiscountProducts>()
 
-                }
+        CoroutineScope(IO).launch {
+            sliders = async {
+                Log.d(TAG, "getHomeData sliders called: ")
+                apiServices.getSliderImages()
             }
 
-            override fun loadFromCache(): LiveData<HomeViewState> {
-                return AbsentLiveData.create()
-
+            randomProducts = async {
+                Log.d(TAG, "getHomeData randomProducts called: ")
+                apiServices.getRandomProducts()
             }
 
-            override suspend fun updateCache(cacheObject: List<HomeRandomProducts>?) {
-                cacheObject?.let { list ->
-                    withContext(IO)
+            discountProducts = async {
+                Log.d(TAG, "getHomeData discountProducts called: ")
+                apiServices.getDiscountProducts()
+            }
+        }
+
+        runBlocking {
+            delay(200)
+            if (sliders.await().isSuccessful)
+            {
+                Log.d(TAG, "getHomeData: ${sliders.await().body()}")
+                sliders.await().body()?.let {
+                    for (item in it.results)
                     {
-                        for (item in list)
-                        {
-                            try {
-                                Log.d(TAG, "updateCache: Inserting data:${item}")
-                                launch {
-                                    homeDao.insertRandomProduct(item)
-                                }
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting data:${item}")
-                            }
-                        }
-                    }
-                }
-            }
-
-            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<List<HomeRandomProductsResponse>>) {
-                val list = ArrayList<HomeRandomProducts>()
-                for (item in response.body)
-                {
-                    list.add(HomeRandomProducts(
-                        name = item.name,
-                        get_absolute_url = item.get_absolute_url,
-                        slug = item.slug,
-                        category = item.category,
-                        image = item.image,
-                        price = item.price,
-                        discount = item.discount,
-                        unit = item.unit
-                    )
-                    )
-                }
-                updateCache(list)
-                createCacheAndReturn()
-            }
-
-            override fun createCall(): LiveData<GenericApiResponse<List<HomeRandomProductsResponse>>> {
-                return apiServices.getRandomProducts()
-            }
-
-            override fun setJob(job: Job) {
-                addJob("getRandomProducts", job)
-            }
-
-        }.asLiveData()
-    }
-
-    fun getDiscountProducts():LiveData<DataState<HomeViewState>>
-    {
-        return object : NetworkBoundResource<HomeDiscountProductsResponse, List<HomeDiscountProducts>, HomeViewState>(
-            isNetworkRequest = true,
-            isNetworkAvailable = sessionManager.isInternetAvailable(),
-            shouldUseCacheObject = false,
-            cancelJobIfNoInternet = true
-        )
-        {
-            override suspend fun createCacheAndReturn() {
-                withContext(Main)
-                {
-                    val loadCache = loadFromCache()
-                    result.addSource(loadCache, Observer { homeViewState ->
-                        result.removeSource(loadCache)
-                        onCompleteJob(dataState = DataState.data(data = homeViewState, response = null))
-                    })
-                }
-            }
-
-            override fun loadFromCache(): LiveData<HomeViewState> {
-                return AbsentLiveData.create()
-
-            }
-
-            override suspend fun updateCache(cacheObject: List<HomeDiscountProducts>?) {
-                cacheObject?.let { list ->
-                    withContext(IO)
-                    {
-                        for (item in list)
-                        {
-                            try {
-                                launch {
-                                    Log.d(TAG, "updateCache: Inserting data:${item}")
-                                    homeDao.insertDiscountProduct(item)
-                                }.join()
-                            }
-                            catch (e:Exception)
-                            {
-                                Log.d(TAG, "updateCache: Error inserting data:${item}")
-                            }
-                        }
-                    }
-                }
-            }
-
-            override suspend fun handleSuccessResponse(response: ApiSuccessResponse<HomeDiscountProductsResponse>) {
-                val list = ArrayList<HomeDiscountProducts>()
-                val list_random = homeDao.getAllRandomProducts()?.let {
-                    it
-                }
-                val list_slider = homeDao.getAllSliderImages()?.let {
-                    it
-                }
-
-
-                for (item in response.body.list)
-                {
-                    list.add(
-                        HomeDiscountProducts(
+                        sliderList.add(
+                            HomeSliderImage(
                             name = item.name,
-                            get_absolute_url = item.get_absolute_url,
-                            slug = item.slug,
-                            category = item.category,
-                            image = item.image,
-                            price = item.price,
-                            discount = item.discount,
-                            unit = item.unit
-                    )
-                    )
+                            image = Constants.BASE_URL + item.image,
+                            text = item.text?:"text"
+                        )
+                        )
+                    }
                 }
+                Log.d(TAG, "getHomeDataList: ${sliderList}")
+            }
 
-                withContext(Main)
-                {
-                    Log.d(TAG, "handleSuccessResponse: list_slider:${list_slider}\nlist_random:${list_random}\nlist_discount:${list}")
-                    onCompleteJob(dataState = DataState.data(data = HomeViewState(
-                        list_slider, list_random,list
-                    ), response = null
-                    ))
+            if (randomProducts.await().isSuccessful)
+            {
+                randomProducts.await().body()?.let { random_list ->
+                    for (item in random_list)
+                    {
+                        randomList.add(
+                            HomeRandomProducts(
+                                name = item.name,
+                                get_absolute_url = item.get_absolute_url,
+                                slug = item.slug,
+                                category = item.category,
+                                image = item.image,
+                                price = item.price,
+                                discount = item.discount,
+                                unit = item.unit
+                        ))
+                    }
                 }
-
-//                updateCache(list)
-//                createCacheAndReturn()
             }
 
-            override fun createCall(): LiveData<GenericApiResponse<HomeDiscountProductsResponse>> {
-                return apiServices.getDiscountProducts()
+            if (discountProducts.await().isSuccessful)
+            {
+                discountProducts.await().body()?.let {
+                    for (item in it.list)
+                    {
+                        discount_Products.add(
+                            HomeDiscountProducts(
+                                name = item.name,
+                                get_absolute_url = item.get_absolute_url,
+                                slug = item.slug,
+                                category = item.category,
+                                image = item.image,
+                                price = item.price,
+                                discount = item.discount,
+                                unit = item.unit
+                        )
+                        )
+                    }
+                }
             }
 
-            override fun setJob(job: Job) {
-                addJob("getDiscountProducts", job)
-            }
 
-        }.asLiveData()
+        }
+
+
+        Log.d(TAG, "getHomeData Main: ${sliderList}")
+        return object : LiveData<DataState<HomeViewState>>()
+        {
+            override fun onActive() {
+                super.onActive()
+                value = DataState.data(data = HomeViewState(
+                    listOfSliderImage = sliderList,
+                    listOfRandomProducts = randomList,
+                    listOfDiscountProducts = discount_Products
+                ), response = null
+                )
+            }
+        }
     }
+
+
 
     fun getCatalogViewProduct(
         category_slug: String,

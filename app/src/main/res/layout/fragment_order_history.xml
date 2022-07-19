@@ -27,13 +27,13 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Активные заказы"
+            android:text="@string/active_order"
             />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="История заказов" />
+            android:text="@string/history_order" />
 
 
     </com.google.android.material.tabs.TabLayout>

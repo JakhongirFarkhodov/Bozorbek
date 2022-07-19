@@ -257,6 +257,7 @@ class CatalogViewProductFragment : BaseCatalogFragment() {
 
 
     private fun setProductOwnerItemsToSpinner(items: List<CatalogViewProduct>) {
+
         for (product_owner in items)
         {
             if (product_owner.sort_value.equals(sort_list[sort_value_position]))

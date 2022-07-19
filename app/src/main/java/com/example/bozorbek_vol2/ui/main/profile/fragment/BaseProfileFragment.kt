@@ -1,5 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.profile.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,7 @@ abstract class BaseProfileFragment : DaggerFragment() {
     @Inject
     lateinit var requestManager: RequestManager
 
+    lateinit var localeHelper: Context
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +41,6 @@ abstract class BaseProfileFragment : DaggerFragment() {
         }?:throw Exception("Invalid value")
 
         setAppBarConfiguration(R.id.profileFragment, activity as DaggerAppCompatActivity)
-
         cancelActiveJob()
     }
 
@@ -50,6 +51,7 @@ abstract class BaseProfileFragment : DaggerFragment() {
 
     private fun setAppBarConfiguration(fragment: Int, activity: DaggerAppCompatActivity) {
         val appBarConfiguration = AppBarConfiguration(setOf(fragment))
+
         NavigationUI.setupActionBarWithNavController(
             activity, findNavController(), appBarConfiguration
         )

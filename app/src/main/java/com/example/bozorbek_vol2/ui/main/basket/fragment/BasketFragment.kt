@@ -76,8 +76,6 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
         }
         
 
-
-
         mb_basket_go_to_registration.setOnClickListener {
             Toast.makeText(requireContext(), "Click", Toast.LENGTH_LONG).show()
             val intent = Intent(requireContext(), AuthActivity::class.java)
@@ -151,7 +149,6 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
                 dataState.data?.let { data ->
-
                     data.response?.let { event ->
                         event.peekContent()?.let { response ->
                             response.message?.let { message ->
@@ -160,13 +157,15 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                                 {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
                                 }
-
+//
                                 if (message.equals("Remove successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketProductOrderList())
                                 }
+
                                 if (message.equals("Address added successfully")) {
                                     viewModel.setStateEvent(event = BasketStateEvent.GetBasketAddressOrderList())
                                 }
+
                                 if (message.equals("Пакет создан"))
                                 {
                                     findNavController().navigate(R.id.action_basketFragment_to_basketSuccessfullySavedFragment)
@@ -179,6 +178,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
                     data.data?.let { event ->
                         event.getContentIfNotHandled()?.let { basketViewState ->
                             basketViewState.profile?.let { profile ->
+                                Log.d(TAG, "basket profile datastate: ${profile}")
                                 viewModel.setProfileInfo(profile)
                             }
 
@@ -210,6 +210,7 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
             }
 
             basketViewState.profile?.let { profile ->
+                Log.d(TAG, "basket profile viewState: ${profile}")
                 setProfileDataToView(profile)
             }
 
@@ -263,7 +264,6 @@ class BasketFragment : BaseBasketFragment(), BasketAdapter.OnBasketItemClickList
 
     override fun onBasketItemClick(position: Int, item: BasketOrderProduct) {
         Toast.makeText(this.requireContext(), "${item.name}", Toast.LENGTH_LONG).show()
-
     }
 
     override fun onBasketItemRemove(position: Int, item: BasketOrderProduct) {

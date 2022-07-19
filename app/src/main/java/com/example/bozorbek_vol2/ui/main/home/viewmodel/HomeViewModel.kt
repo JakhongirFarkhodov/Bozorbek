@@ -28,17 +28,9 @@ class HomeViewModel
     override fun handleStateEvent(stateEvent: HomeStateEvent): LiveData<DataState<HomeViewState>> {
         when(stateEvent)
         {
-            is GetHomeSliderImage ->{
-                Log.d(TAG, "GetHomeSliderImage triggered: ")
-                return homeRepository.getAllSliderImages()
-            }
 
-            is GetRandomProducts ->{
-                return homeRepository.getRandomProducts()
-            }
-
-            is GetDiscountProducts ->{
-                return homeRepository.getDiscountProducts()
+            is GetHomeData -> {
+                return homeRepository.getHomeData()
             }
 
             is GetCatalogViewProductListOfData ->{

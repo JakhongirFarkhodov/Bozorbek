@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/profile_name_mtv"
-        android:text="Покупатель № 15"
+        android:text="@string/example_order_title"
         app:layout_constraintStart_toEndOf="@id/profile_imv"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_7sdp"
@@ -89,13 +89,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_search_history_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_search_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_search_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_search_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="История поиска"
+            android:text="@string/search_history"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -150,13 +151,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_notification_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_notification_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_notification_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_notification_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Уведомления"
+            android:text="@string/title_notification"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -211,13 +213,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_search_order_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_order_history_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_order_history_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_order_history_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="История закза"
+            android:text="@string/title_search_order"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -272,13 +275,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_company_info_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_search_company_info_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_search_company_info_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_search_company_info_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Информация о компании"
+            android:text="@string/title_company_info"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -333,13 +337,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_settings_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_settings_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_settings_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_settings_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Настройки безопасности"
+            android:text="@string/title_settings"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -394,13 +399,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_complaints_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_reviews_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_reviews_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_reviews_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Жалобы"
+            android:text="@string/complaints"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -455,13 +461,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_ready_package"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_ready_package_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_ready_package_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_ready_package_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Готовые корзины"
+            android:text="@string/ready_package"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -516,13 +523,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/auto_order_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_auto_order_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_auto_order_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_auto_order_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Авто заказ"
+            android:text="@string/auto_order"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="#708088"
@@ -577,13 +585,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_exit_mtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/profile_exit_mbtn"
             app:layout_constraintStart_toEndOf="@id/profile_exit_mbtn"
             app:layout_constraintBottom_toBottomOf="@id/profile_exit_mbtn"
             android:layout_marginStart="@dimen/_20sdp"
-            android:text="Выйти из профиля"
+            android:text="@string/exit_profile"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:textColor="@android:color/holo_red_dark"
@@ -605,5 +614,109 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sm_bozorbek"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/profile_constratin_exit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Bozorbek соц сетях"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textSize="@dimen/_13sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        />
+
+    <ImageView
+        android:id="@+id/instagramm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_instagram"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+    <ImageView
+        android:id="@+id/telegram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_telegram"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintStart_toEndOf="@id/instagramm"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        />
+
+    <ImageView
+        android:id="@+id/facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_facebook"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintStart_toEndOf="@id/telegram"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/uz_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="УЗ"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/facebook"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_13sdp"
+        />
+
+        <ImageView
+            android:id="@+id/flag_uz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_flag_for_uzb"
+            app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+            app:layout_constraintEnd_toStartOf="@id/uz_text"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:layout_marginEnd="@dimen/_5sdp"
+            />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/ru_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="РУ"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintEnd_toStartOf="@id/flag_uz"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/facebook"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_13sdp"
+        />
+
+    <ImageView
+        android:id="@+id/flag_rus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_flag_for_russia"
+        app:layout_constraintTop_toBottomOf="@id/sm_bozorbek"
+        app:layout_constraintEnd_toStartOf="@id/ru_text"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    tools:context=".ui.main.profile.fragment.menu.active_orders.fragment.OrdersProcessInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:backgroundTint="@color/white">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardBackgroundColor="#F6FBFF"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/number_of_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:text="@string/order_number"
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/order_process_check_1"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/default_image"
+                    app:civ_border_color="@color/fruit_light_green"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_circle_background_color="@color/fruit_light_green"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/number_of_order" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/process_text_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:text="1"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_1"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_1"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_1"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_1" />
+
+                <ImageView
+                    android:id="@+id/process_image_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:scaleX="1.4"
+                    android:scaleY="1.4"
+                    android:src="@drawable/ic_icon_done"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_1"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_1"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_1"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_1" />
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/process_line_1"
+                    android:layout_width="@dimen/_7sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginTop="-10dp"
+                    android:alpha="0.3"
+                    app:cardBackgroundColor="@color/fruit_light_green"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_1"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_1"
+                    app:layout_constraintTop_toBottomOf="@id/order_process_check_1" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/order_process_check_2"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="-10dp"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/default_image"
+                    app:civ_border_color="@color/fruit_light_green"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_circle_background_color="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/process_line_1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/process_text_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:text="2"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_2"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_2"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_2"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_2" />
+
+                <ImageView
+                    android:id="@+id/process_image_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:scaleX="1.4"
+                    android:scaleY="1.4"
+                    android:src="@drawable/ic_icon_done"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_2"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_2"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_2"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_2" />
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/process_line_2"
+                    android:layout_width="@dimen/_7sdp"
+                    android:layout_height="@dimen/_120sdp"
+                    android:layout_marginTop="-10dp"
+                    android:alpha="0.3"
+                    app:cardBackgroundColor="@color/fruit_light_green"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_2"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_2"
+                    app:layout_constraintTop_toBottomOf="@id/order_process_check_2" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/order_process_check_3"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="-10dp"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/default_image"
+                    app:civ_border_color="@color/fruit_light_green"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_circle_background_color="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/process_line_2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/process_text_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:text="3"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_3"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_3"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_3"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_3" />
+
+                <ImageView
+                    android:id="@+id/process_image_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/_10sdp"
+                    android:scaleX="1.4"
+                    android:scaleY="1.4"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_icon_done"
+                    android:textColor="@color/fruit_light_green"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_3"
+                    app:layout_constraintEnd_toEndOf="@id/order_process_check_3"
+                    app:layout_constraintStart_toStartOf="@id/order_process_check_3"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_3" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/order_send_to_collector"
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_1"
+                    app:layout_constraintStart_toEndOf="@id/order_process_check_1"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/curier_in_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/clloector_is_collecting"
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_2"
+                    app:layout_constraintStart_toEndOf="@id/order_process_check_2"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/curier_in_process_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Сбощик:  Зиедуллаев Асадулло."
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_13sdp"
+                    app:layout_constraintStart_toStartOf="@id/curier_in_process"
+                    app:layout_constraintTop_toBottomOf="@id/curier_in_process" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/curier_in_going"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/currier_on_way"
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/order_process_check_3"
+                    app:layout_constraintStart_toEndOf="@id/order_process_check_3"
+                    app:layout_constraintTop_toTopOf="@id/order_process_check_3" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/curier_in_going_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Курьер:   Зиедуллаев Асадулло."
+                    android:textColor="@color/fruit_grey"
+                    android:textSize="@dimen/_13sdp"
+                    app:layout_constraintStart_toStartOf="@id/curier_in_going"
+                    app:layout_constraintTop_toBottomOf="@id/curier_in_going" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/curier_in_going_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="+998 99 888 88 88."
+                    android:textColor="@color/fruit_light_dark_blue"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/curier_in_going_name"
+                    app:layout_constraintTop_toBottomOf="@id/curier_in_going_name" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mtb_order_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:backgroundTint="@color/fruit_light_green"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/order_info"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/curier_in_going_phone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:backgroundTint="@color/white"
+                    android:elevation="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/cancel_order"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/_15sdp"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mtb_order_info" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

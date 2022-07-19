@@ -1,6 +1,6 @@
 package com.example.bozorbek_vol2.ui.main.profile.fragment
 
-import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.loader.content.CursorLoader
 import androidx.navigation.fragment.findNavController
@@ -19,8 +18,12 @@ import com.example.bozorbek_vol2.ui.OnDataStateChangeListener
 import com.example.bozorbek_vol2.ui.auth.AuthActivity
 import com.example.bozorbek_vol2.ui.main.profile.state.ProfileStateEvent
 import com.example.bozorbek_vol2.util.Constants
+import com.example.bozorbek_vol2.util.LocaleHelper
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.model.AspectRatio
+import com.yalantis.ucrop.view.CropImageView
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,6 +31,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.util.*
 
 
 //import com.theartofdev.edmodo.cropper.CropImage
@@ -36,11 +40,11 @@ import java.io.File
 
 class ProfileFragment : BaseProfileFragment() {
 
-    private var showMenu:Boolean = false
+    private var showMenu: Boolean = false
     private lateinit var onDataStateChangeListener: OnDataStateChangeListener
-    private lateinit var uri_image:String
-    private lateinit var image_url:String
-    private lateinit var username:String
+    private lateinit var uri_image: String
+    private lateinit var image_url: String
+    private lateinit var username: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,67 +64,153 @@ class ProfileFragment : BaseProfileFragment() {
         }
 
         profile_user_image2.setOnClickListener {
-            if (onDataStateChangeListener.isStoragePermissionGranted())
-            {
+            if (onDataStateChangeListener.isStoragePermissionGranted()) {
                 pickFromGallery()
             }
         }
+
+        observeLanguage()
 
         observeData()
         getProfileInfo()
     }
 
+    private fun observeLanguage() {
+        localeHelper = LocaleHelper().setLocale(requireContext(), Locale.getDefault().language)!!
+        val resurs = localeHelper.resources
+
+        save_profile.setText(resurs.getString(R.string.save_profile_data))
+    }
+
     private fun pickFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
-        val mimeTypes = arrayListOf("image/jpeg","image/jpg","image/png")
+        val mimeTypes = arrayListOf("image/jpeg", "image/jpg", "image/png")
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivityForResult(intent, Constants.GALLERY_REQUEST_CODE)
     }
 
+    
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.GALLERY_REQUEST_CODE)
-        {
-            Toast.makeText(this.requireContext(), "OK", Toast.LENGTH_LONG).show()
-            val uri = data?.data
-            var multiPartBody:MultipartBody.Part? = null
-            uri?.let { uri1 ->
-
-                Log.d(TAG, "uri: ${uri1}")
-                uri1.path?.let { filePath ->
-                    val imageFile = File(getRealPathFromURI(uri1))
-                    Log.d(TAG, "imageFile: ${imageFile}")
-                    val requestBody = RequestBody.create(
-                        this.requireContext()?.contentResolver?.getType(uri1)
-                            ?.let { it.toMediaTypeOrNull() },
-                        imageFile
-                    )
-
-                    multiPartBody = MultipartBody.Part.createFormData(
-                        "image",
-                        imageFile.name,
-                        requestBody,
-                    )
-
-                    multiPartBody?.let {
-                        Log.d(TAG, "onActivityResult: ")
-                        GlobalScope.launch(Main) {
-                            delay(2000)
-                            viewModel.setStateEvent(event = ProfileStateEvent.UploadProfileImage(image = it))
-
-                        }
-                    }
+        Log.d(TAG, "onActivityResult: ${requestCode}")
+        if (resultCode == RESULT_OK && requestCode == Constants.GALLERY_REQUEST_CODE) {
+            data?.data?.let { uri ->
+                activity?.let {
+                    launchImageCrop(uri)
                 }
             }
-
-
-
-
-            uri_image = uri.toString()
-            profile_user_image2.setImageURI(uri)
+            }
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK)
+        {
+//            Log.d(TAG, "onActivityResult: ${requestCode}")
+            data?.let { data ->
+                setImageToServerAndUI(data)
+            }
         }
+
+    }
+
+    fun launchImageCrop(uri: Uri) {
+        context?.let {
+            Log.d(TAG, "launchImageCrop: ${uri}")
+            UCrop.of(uri, Uri.fromFile(File(requireContext().cacheDir, "SampleImageCrop.jpg")))
+                .withAspectRatio(16f, 9f)
+                .withAspectRatio(4f, 3f)
+                .withOptions(getCropOptions())
+                .withMaxResultSize(450, 450)
+                .start(requireContext(),this, UCrop.REQUEST_CROP)
+
+
+        }
+    }
+
+    private fun getCropOptions(): UCrop.Options {
+        val options = UCrop.Options()
+        options.setCompressionQuality(70)
+        options.setHideBottomControls(false)
+        options.setFreeStyleCropEnabled(false)
+        options.setImageToCropBoundsAnimDuration(666)
+        options.setAspectRatioOptions(
+            2,
+            AspectRatio("1:2", 1f, 2f),
+            AspectRatio("3:4", 3f, 4f),
+            AspectRatio(
+                "ORIGINAL",
+                CropImageView.DEFAULT_ASPECT_RATIO,
+                CropImageView.DEFAULT_ASPECT_RATIO
+            ),
+            AspectRatio("16:9", 16f, 9f),
+            AspectRatio("1:1", 1f, 1f)
+        )
+
+        options.withAspectRatio(
+            CropImageView.DEFAULT_ASPECT_RATIO,
+            CropImageView.DEFAULT_ASPECT_RATIO
+        )
+        options.useSourceImageAspectRatio()
+        return options
+    }
+
+    private fun setImageToServerAndUI(data: Intent) {
+        val uri_image = UCrop.getOutput(data)
+        if (uri_image != null) {
+            Log.d(TAG, "setImageToServerAndUI: ${uri_image}")
+            profile_user_image2.setImageURI(Uri.EMPTY)
+            profile_user_image2.setImageURI(uri_image)
+
+            var multiPartBody: MultipartBody.Part? = null
+            uri_image.path?.let {filePath ->
+                val imageFile = File(filePath)
+                Log.d(TAG, "imageFile: ${imageFile}")
+                val requestBody = RequestBody.create(
+                    "image/*".toMediaTypeOrNull(),
+                    imageFile
+                )
+                multiPartBody = MultipartBody.Part.createFormData(
+                    "image",
+                    imageFile.name,
+                    requestBody
+                )
+            }
+
+            multiPartBody?.let {
+                GlobalScope.launch(Dispatchers.Main) {
+                    delay(2000)
+                    viewModel.setStateEvent(event = ProfileStateEvent.UploadProfileImage(image = it))
+
+                }
+            }
+        }
+
+//            uri_image?.path?.let { filePath ->
+//                val imageFile = File(getRealPathFromURI(uri_image))
+//                Log.d(TAG, "imageFile: ${imageFile}")
+//                val requestBody = RequestBody.create(
+//                    this.requireContext()?.contentResolver?.getType(uri_image)
+//                        ?.let { it.toMediaTypeOrNull() },
+//                    imageFile
+//                )
+//
+//                multiPartBody = MultipartBody.Part.createFormData(
+//                    "image",
+//                    imageFile.name,
+//                    requestBody,
+//                )
+//
+//                multiPartBody?.let {
+//                    Log.d(TAG, "onActivityResult: ")
+//                    GlobalScope.launch(Dispatchers.Main) {
+//                        delay(2000)
+//                        viewModel.setStateEvent(event = ProfileStateEvent.UploadProfileImage(image = it))
+//
+//                    }
+//                }
+//            }
+
+
     }
 
 
@@ -135,15 +225,13 @@ class ProfileFragment : BaseProfileFragment() {
         Log.d(TAG, "observeData: ${viewModel.sessionManager.cachedAuthToken.value}")
         val checkUser = viewModel.sessionManager.cachedAuthToken.value
 
-        if (checkUser != null)
-        {
+        if (checkUser != null) {
             showMenu = true
             lottie_constraint.visibility = View.GONE
             profile_constraint_layout.visibility = View.VISIBLE
             viewModel.setStateEvent(event = ProfileStateEvent.GetProfileInfo())
 
-        }
-        else{
+        } else {
             showMenu = false
             lottie_constraint.visibility = View.VISIBLE
             profile_constraint_layout.visibility = View.GONE
@@ -153,8 +241,7 @@ class ProfileFragment : BaseProfileFragment() {
 
     private fun getProfileInfo() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            if (dataState != null)
-            {
+            if (dataState != null) {
                 onDataStateChangeListener.onDataStateChange(dataState)
                 dataState.data?.let { data ->
                     data.data?.let { event ->
@@ -190,21 +277,23 @@ class ProfileFragment : BaseProfileFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (showMenu)
-        {
+        if (showMenu) {
             inflater.inflate(R.menu.main_bottom_sheet, menu)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId)
-        {
-            R.id.menu ->{
-                val action = ProfileFragmentDirections.actionProfileFragmentToProfileBottomSheetDialogFragment(image = image_url, username = username)
+        when (item.itemId) {
+            R.id.menu -> {
+                val action =
+                    ProfileFragmentDirections.actionProfileFragmentToProfileBottomSheetDialogFragment(
+                        image = image_url,
+                        username = username
+                    )
                 findNavController().navigate(action)
             }
 
-            R.id.log_out ->{
+            R.id.log_out -> {
                 sessionManager.logOut()
             }
 

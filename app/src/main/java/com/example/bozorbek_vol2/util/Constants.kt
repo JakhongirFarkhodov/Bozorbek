@@ -14,6 +14,8 @@ class Constants {
         const val  HEADER_CACHE_CONTROL:String = "Cache-Control"
         const val HEADER_PRAGMA:String = "Pragma"
         const val cacheSize:Long = 5 * 1024 * 1024
+
+
     }
 
 }

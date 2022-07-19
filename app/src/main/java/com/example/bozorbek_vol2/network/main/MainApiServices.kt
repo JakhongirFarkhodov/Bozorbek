@@ -28,19 +28,21 @@ import com.example.bozorbek_vol2.network.main.network_services.search.response.S
 import com.example.bozorbek_vol2.network.main.network_services.search.response.SearchProductResponse
 import com.example.bozorbek_vol2.util.GenericApiResponse
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.*
+import java.util.*
 
 interface MainApiServices {
 
     //Home
     @GET("/sliders/")
-    fun getSliderImages():LiveData<GenericApiResponse<HomeSliderImagesResponse>>
+    suspend fun getSliderImages():Response<HomeSliderImagesResponse>
 
     @GET("/products/random_products/")
-    fun getRandomProducts():LiveData<GenericApiResponse<List<HomeRandomProductsResponse>>>
+    suspend fun getRandomProducts(@Header("Accept-Language") lan:String = Locale.getDefault().language):Response<List<HomeRandomProductsResponse>>
 
     @GET("/products/discount_products/")
-    fun getDiscountProducts():LiveData<GenericApiResponse<HomeDiscountProductsResponse>>
+    suspend fun getDiscountProducts(@Header("Accept-Language") lan:String = Locale.getDefault().language):Response<HomeDiscountProductsResponse>
 
     //Profile
     @GET("/customer/get_info/")
@@ -52,13 +54,13 @@ interface MainApiServices {
 
     //Profile ready package
     @GET("/readypackages/")
-    fun getAllReadyPackages(@Header("Authorization") token: String, @Query("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
+    fun getAllReadyPackages(@Header("Authorization") token: String, @Header("Accept-Language") lan:String = Locale.getDefault().language, @Query("type") type:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesResponse>>
 
     @POST("/readypackages/")
     fun setCreatedReadyPackage(@Header("Authorization") token: String, @Body saveReadyPackageRequest: SaveReadyPackageRequest):LiveData<GenericApiResponse<SaveReadyPackageResponse>>
 
     @GET("/readypackages/{id}")
-    fun getReadyPackageById(@Header("Authorization") token: String, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<ReadyPackageIdResponse>>
+    fun getReadyPackageById(@Header("Authorization") token: String, @Header("Accept-Language") lan:String = Locale.getDefault().language, @Path("id") ready_package_id:Int):LiveData<GenericApiResponse<ReadyPackageIdResponse>>
 
     @POST("/readypackages/add_to_cart/{id}/")
     fun addItemReadyPackageToBasket(@Header("Authorization") token: String, @Path("id") ready_package_id:String):LiveData<GenericApiResponse<ProfileAllReadyPackagesAddItemToBasketResponse>>
@@ -70,11 +72,11 @@ interface MainApiServices {
     fun setReadyPackageAutoOrder(@Header("Authorization") token: String, @Body profileReadyPackageAutoOrder: ProfileReadyPackageAutoOrder):LiveData<GenericApiResponse<ProfileSetReadyPackageAutoOrderResponse>>
 
     @GET("/orders/auto-order/")
-    fun getAutoOrderItem(@Header("Authorization") token: String):LiveData<GenericApiResponse<ProfileAutoOrderResponse>>
+    fun getAutoOrderItem(@Header("Authorization") token: String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<ProfileAutoOrderResponse>>
 
     //Notification
     @GET("/notifications/")
-    fun getNotifications(@Header("Authorization") token: String):LiveData<GenericApiResponse<List<ProfileNotificationResponse>>>
+    fun getNotifications(@Header("Authorization") token: String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<List<ProfileNotificationResponse>>>
 
     //Update password
     @POST("/customer/update_password/")
@@ -86,29 +88,31 @@ interface MainApiServices {
 
     //Catalog
     @GET("/products/categories/")
-    fun getCatalogList(): LiveData<GenericApiResponse<List<CatalogResponse>>>
+    fun getCatalogList(@Header("Accept-Language") lan:String = Locale.getDefault().language): LiveData<GenericApiResponse<List<CatalogResponse>>>
 
     @GET("/products/{slug}/")
-    fun getCatalogProductList(@Path("slug") slug: String): LiveData<GenericApiResponse<CatalogProductsListResponse>>
+    fun getCatalogProductList(@Header("Accept-Language") lan:String = Locale.getDefault().language, @Path("slug") slug: String): LiveData<GenericApiResponse<CatalogProductsListResponse>>
 
     @GET("/products/{category_slug}/{product_slug}/")
     fun getCatalogViewProductList(
         @Path("category_slug") category_slug: String,
-        @Path("product_slug") product_slug: String
+        @Path("product_slug") product_slug: String,
+        @Header("Accept-Language") lan:String = Locale.getDefault().language
     ): LiveData<GenericApiResponse<CatalogViewProductListResponse>>
 
     @POST("/orders/add_item/")
     fun addOrderItem(
         @Header("Authorization") token: String,
+        @Header("Accept-Language") lan:String = Locale.getDefault().language,
         @Body catalogAddItemOrder: CatalogAddItemOrderRequest
     ): LiveData<GenericApiResponse<CatalogAddOrderItemResponse>>
 
     //Basket
     @GET("/orders/cart/")
-    fun getBasketOrderList(@Header("Authorization") accessToken: String): LiveData<GenericApiResponse<BasketOrderResponse>>
+    fun getBasketOrderList(@Header("Authorization") accessToken: String, @Header("Accept-Language") lan:String = Locale.getDefault().language): LiveData<GenericApiResponse<BasketOrderResponse>>
 
     @GET("/orders/order_list/")
-    fun getActiveOrHistoryOrder(@Header("Authorization") accessToken: String):LiveData<GenericApiResponse<List<ProfileActiveOrHistoryOrderResponse>>>
+    fun getActiveOrHistoryOrder(@Header("Authorization") accessToken: String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<List<ProfileActiveOrHistoryOrderResponse>>>
 
     @POST("/orders/remove_item/")
     fun removeBasketOrderProductById(@Header("Authorization") accessToken: String, @Body basketRemoveProductRequest: BasketRemoveProductRequest):LiveData<GenericApiResponse<BasketRemoveProductResponse>>
@@ -117,7 +121,7 @@ interface MainApiServices {
     fun setOrderAddress(@Header("Authorization") accessToken: String, @Body addAddressOrderRequest: AddAddressOrderRequest):LiveData<GenericApiResponse<AddAddressOrderResponse>>
 
     @GET("/orders/address_list/")
-    fun getBasketAddressList(@Header("Authorization") accessToken: String):LiveData<GenericApiResponse<List<GetBasketListAddressResponse>>>
+    fun getBasketAddressList(@Header("Authorization") accessToken: String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<List<GetBasketListAddressResponse>>>
 
     @POST("/orders/approve_order/")
     fun approveOrder(@Header("Authorization") accessToken: String, @Body
@@ -125,8 +129,8 @@ interface MainApiServices {
 
     //Search
     @GET("/search/product/{query}")
-    fun searchProduct(@Header("Authorization") accessToken: String, @Path("query") query:String):LiveData<GenericApiResponse<SearchProductResponse>>
+    fun searchProduct(@Header("Authorization") accessToken: String, @Path("query") query:String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<SearchProductResponse>>
 
     @GET("/search/history/")
-    fun getSearchHistory(@Header("Authorization") accessToken: String):LiveData<GenericApiResponse<List<SearchHistoryResponse>>>
+    fun getSearchHistory(@Header("Authorization") accessToken: String, @Header("Accept-Language") lan:String = Locale.getDefault().language):LiveData<GenericApiResponse<List<SearchHistoryResponse>>>
 }

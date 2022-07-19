@@ -159,7 +159,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Сорт"
+                    android:text="@string/sort"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -180,7 +180,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Производитель"
+                    android:text="@string/product_owner"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -201,7 +201,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Упаковка"
+                    android:text="@string/package_product"
 
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -222,7 +222,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Килограм"
+                    android:text="@string/weight"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,7 +242,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:inputType="none"
                     android:padding="0dp"
-                    android:text="Размер"
+                    android:text="@string/size"
                     android:textSize="@dimen/_10ssp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -291,7 +291,7 @@
                 android:backgroundTint="@color/fruit_light_green"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="В корзину"
+                android:text="@string/to_basket"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintBottom_toBottomOf="parent"

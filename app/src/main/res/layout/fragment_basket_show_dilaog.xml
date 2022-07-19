@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.5"
-            android:text="Придумайте названия корзины"
+            android:text="@string/create_title_of_basket"
             android:textColor="@color/fruit_grey"
             android:textSize="15sp" />
 
@@ -65,7 +65,7 @@
         android:backgroundTint="#33D980"
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingVertical="@dimen/_6sdp"
-        android:text="Создать"
+        android:text="@string/create"
         android:textAllCaps="false"
         android:textSize="@dimen/_12sdp"
         app:cornerRadius="@dimen/_7sdp"
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/item_save_mcv_recyclerView_basket"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Отменить"
+        android:text="@string/cancel"
         android:layout_marginVertical="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:textAllCaps="false"

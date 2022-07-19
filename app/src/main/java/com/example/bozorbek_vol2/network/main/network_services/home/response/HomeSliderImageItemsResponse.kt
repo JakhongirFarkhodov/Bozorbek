@@ -15,6 +15,6 @@ data class HomeSliderImageItemsResponse(
 
     @SerializedName("text")
     @Expose
-    val text:String
+    val text:String? = null
 
 )

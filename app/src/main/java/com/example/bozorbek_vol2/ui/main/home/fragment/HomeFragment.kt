@@ -24,6 +24,10 @@ import com.example.bozorbek_vol2.ui.main.home.fragment.adapter.SliderImageAdapte
 import com.example.bozorbek_vol2.ui.main.home.fragment.adapter.model.HomeProduct
 import com.example.bozorbek_vol2.ui.main.home.state.HomeStateEvent
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemClickListener {
@@ -50,79 +54,50 @@ class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemCli
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: GetHomeSliderImage() triggered")
-        viewModel.setStateEvent(event = HomeStateEvent.GetHomeSliderImage())
+//        viewModel.setStateEvent(event = HomeStateEvent.GetHomeSliderImage())
         home_products_rv_parent.visibility = View.INVISIBLE
+
     }
 
     private fun observeData() {
+        GlobalScope.launch(Main) {
+            delay(300)
+
+            viewModel.setStateEvent(event = HomeStateEvent.GetHomeData())
+        }
+
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            if (dataState != null) {
-                onDataStateChangeListener.onDataStateChange(dataState)
-                dataState.data?.let { data ->
-                    data.response?.let { event ->
-                        event.peekContent()?.let { response ->
-                            response.message?.let { message ->
-                                if (message.equals("Image downloaded"))
-                                {
-                                    viewModel.setStateEvent(event = HomeStateEvent.GetRandomProducts())
-                                }
-                                else if (message.equals("rounded products downloaded"))
-                                {
-                                    viewModel.setStateEvent(event = HomeStateEvent.GetDiscountProducts())
-                                }
-                            }
+            dataState.data?.let { data ->
+                data.data?.let { event ->
+                    event.getContentIfNotHandled()?.let { homeViewState ->
+                        Log.d(TAG, "home dataState: ${homeViewState}")
+                        homeViewState.listOfSliderImage?.let { slider ->
+                            viewModel.setHomeSliderImage(slider)
                         }
-                    }
-                    data.data?.let { event ->
-                        event.getContentIfNotHandled()?.let { homeViewState ->
-                            homeViewState.listOfSliderImage?.let { list ->
-                                if (!list.isEmpty())
-                                {
-                                    Log.d(TAG, "HomeFragment dataState Image:${list}")
-                                    viewModel.setHomeSliderImage(list)
-                                }
-                            }
-                            homeViewState.listOfRandomProducts?.let { list ->
-                                if (!list.isEmpty())
-                                {
-                                    Log.d(TAG, "HomeFragment dataState Products: ${list}")
-                                    viewModel.setHomeRandomProduct(list)
-                                }
-                            }
-                            homeViewState.listOfDiscountProducts?.let { list ->
-                                if (!list.isEmpty())
-                                {
-                                    Log.d(TAG, "HomeFragment dataState discount: ${list}")
-                                    viewModel.setHomeDiscountProduct(list)
-                                }
-                            }
+                        homeViewState.listOfRandomProducts?.let { random ->
+                            viewModel.setHomeRandomProduct(random)
+                        }
+                        homeViewState.listOfDiscountProducts?.let { discount ->
+                            viewModel.setHomeDiscountProduct(discount)
                         }
                     }
                 }
             }
         })
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { homeViewState ->
-            homeViewState.listOfSliderImage?.let { list ->
-                if (!list.isEmpty())
-                {
-                    Log.d(TAG, "HomeFragment viewState Image: ${list}")
-                    setImagesToUI(list)
-                }
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState->
+            Log.d(TAG, "home viewState: ${viewState}")
+            viewState.listOfSliderImage?.let { list ->
+                Log.d(TAG, "slider: ${list}")
+                setImagesToUI(list)
             }
-            homeViewState.listOfRandomProducts?.let { list ->
-                if (!list.isEmpty())
-                {
-                    Log.d(TAG, "HomeFragment viewState Products: ${list}")
-                    setRandomProduct(list)
-                }
+            viewState.listOfRandomProducts?.let { list ->
+                Log.d(TAG, "random: ${list}")
+                setRandomProduct(list)
             }
-            homeViewState.listOfDiscountProducts?.let { list ->
-                if (!list.isEmpty())
-                {
-                    Log.d(TAG, "HomeFragment viewState discount: ${list}")
-                    setDiscountProducts(list)
-                }
+            viewState.listOfDiscountProducts?.let { list ->
+                Log.d(TAG, "discount: ${list}")
+                setDiscountProducts(list)
             }
         })
     }
@@ -160,7 +135,7 @@ class HomeFragment : BaseHomeFragment(), HomeProductParentAdapter.OnPrentItemCli
             "Вкусные скидки",list_discount
         )
         )
-
+        Log.d(TAG, "setDiscountProducts: ${list_of_products}")
         parentAdapter = HomeProductParentAdapter(requestManager, this)
         parentAdapter.submitList(list_of_products.distinct().toList())
         home_products_rv_parent.visibility = View.VISIBLE
